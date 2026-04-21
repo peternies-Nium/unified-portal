@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///Users/peternies/Downloads/nium-dashboard_23.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIUM Portal — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./nium-dashboard_files/css2" rel="stylesheet">
+  <style>
+    :root {
+      /* NIUM neutrals */
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f1f5f9;
+      --color-bg-tertiary: #f9fafb;
+
+      /* Text */
+      --color-text-primary: #212b36;
+      --color-text-secondary: #5f5e5a;
+      --color-text-tertiary: #919eab;
+
+      /* Borders */
+      --color-border-tertiary: rgba(145, 158, 171, 0.24);
+      --color-border-secondary: rgba(145, 158, 171, 0.45);
+
+      /* Brand */
+      --color-brand-navy: #0b0e58;
+      --color-brand-navy-text: #ffffff;
+      --color-brand-accent-light: #a9b4ff;
+
+      /* Status / feedback */
+      --color-success-bg: #e8f4eb;
+      --color-success-dot: #4d9c5e;
+      --color-success-text: #27500a;
+      --color-success-tag-bg: #eaf3de;
+
+      --color-danger-dot: #e24b4a;
+      --color-danger-text: #a32d2d;
+      --color-danger-tag-bg: #fcebeb;
+      --color-danger-tag-text: #791f1f;
+
+      --color-warning-tag-bg: #faeeda;
+      --color-warning-tag-text: #633806;
+
+      --color-info-tag-bg: #e6f1fb;
+      --color-info-tag-text: #0c447c;
+
+      /* Avatar */
+      --color-avatar-bg: #dce0ff;
+      --color-avatar-text: #1f35ca;
+
+      /* Attention (pending) */
+      --color-attention-bg: #fef3f1;
+      --color-attention-border: #f0997b;
+      --color-attention-text: #993c1d;
+
+      /* Chart colors */
+      --color-chart-sent: #0b0e58;
+      --color-chart-received: #5dcaa5;
+      --color-chart-spark: #5567f7;
+      --color-chart-axis: #5F5E5A;
+
+      /* Layout */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f1f5f9;
+      color: var(--color-text-primary);
+      min-height: 100vh;
+    }
+
+    .viewport {
+      background: #f1f5f9;
+      width: 100%;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      min-height: 100vh;
+    }
+
+    .content-inner {
+      max-width: 1432px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Sidebar — Travel-style: light, wide, collapsible, grouped */
+    :root {
+      --sidebar-w-expanded: 240px;
+      --sidebar-w-collapsed: 64px;
+    }
+    .sidebar {
+      width: var(--sidebar-w-expanded);
+      background: var(--color-brand-navy);
+      border-right: none;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      align-self: start;
+      overflow: visible;
+      z-index: 50;
+      transition: width 0.18s ease-out;
+    }
+    .sidebar.collapsed { width: var(--sidebar-w-collapsed); padding: 16px 8px; }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px 16px;
+      gap: 8px;
+    }
+    .sidebar-logo .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.2px;
+    }
+    .sidebar.collapsed .logo-mark .logo-text { display: none; }
+    .sidebar.collapsed .sidebar-logo-svg { width: 32px; height: auto; }
+    .sidebar.collapsed .sidebar-logo { padding: 4px 0 16px; justify-content: center; }
+    .collapse-toggle {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(255,255,255,0.6);
+      flex-shrink: 0;
+    }
+    .collapse-toggle:hover { background: rgba(255,255,255,0.08); color: #ffffff; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+      transition: background 0.1s ease-out;
+    }
+    .nav-item .nav-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--color-brand-accent-light);
+    }
+    .nav-item .nav-label {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .nav-item .nav-chevron-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin: -6px -6px -6px 0;
+      border-radius: 6px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: background 0.1s ease-out;
+    }
+    .nav-item .nav-chevron-wrap:hover { background: rgba(255,255,255,0.1); }
+    .nav-item .nav-chevron {
+      width: 16px;
+      height: 16px;
+      color: rgba(255,255,255,0.5);
+      transition: transform 0.15s ease-out;
+      pointer-events: none;
+    }
+    .nav-item.expanded .nav-chevron { transform: rotate(180deg); }
+    .nav-item.expanded .nav-chevron,
+    .nav-item:hover .nav-chevron,
+    .nav-item.active .nav-chevron { color: rgba(255,255,255,0.9); }
+    /* Sidebar-link wrapper: keeps anchor purely structural — no visual */
+    .nav-item-link { display: block; text-decoration: none; color: inherit; }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
+    .nav-item:hover .nav-icon { color: #ffffff; }
+    .nav-item.active { background: rgba(255,255,255,0.12); color: #ffffff; }
+    .nav-item.active .nav-icon { color: #ffffff; }
+    .nav-item.expanded {
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .nav-item.expanded .nav-icon { color: #ffffff; }
+
+    .nav-children {
+      display: none;
+      background: rgba(255,255,255,0.04);
+      padding: 2px 6px 6px 6px;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      margin-top: -2px;
+    }
+    .nav-item.expanded + .nav-children,
+    .nav-item-link:has(.nav-item.expanded) + .nav-children { display: block; }
+    .sidebar.collapsed .nav-children { display: none !important; }
+    .nav-child {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px 8px 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .nav-child:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
+    .nav-child.active {
+      background: rgba(255,255,255,0.16);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .nav-spacer { flex: 1; min-height: 16px; }
+
+    .sidebar.collapsed .nav-item { justify-content: center; padding: 9px; gap: 0; }
+    .sidebar.collapsed .nav-label,
+    .sidebar.collapsed .nav-chevron-wrap,
+    .sidebar.collapsed .nav-chevron { display: none; }
+
+    .nav-item[data-label]::after {
+      content: attr(data-label);
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: #212b36;
+      color: #ffffff;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.12s ease-out;
+      z-index: 60;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      display: none;
+    }
+    .sidebar.collapsed .nav-item[data-label]::after { display: block; }
+    .sidebar.collapsed .nav-item[data-label]:hover::after { opacity: 1; }
+
+    /* Top bar */
+    .content {
+      display: flex;
+      flex-direction: column;
+      background: #f1f5f9;
+      min-width: 0;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 32px;
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--color-bg-primary);
+    }
+    .topbar-collapse-toggle {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      flex-shrink: 0;
+    }
+    .topbar-collapse-toggle:hover { background: var(--color-bg-secondary); color: var(--color-text-primary); }
+    .account-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-primary);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .search-wrap {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .search-input {
+      width: 100%;
+      padding: 8px 64px 8px 34px;
+      border: 0.5px solid #e4e8ef;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      font-family: inherit;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--color-brand-navy);
+    }
+    .search-kbd {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 3px;
+      pointer-events: none;
+    }
+    .search-kbd kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-text-tertiary);
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: 4px;
+      line-height: 1;
+    }
+    .spacer { flex: 1; }
+
+    .live-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: var(--color-success-bg);
+      border-radius: 999px;
+    }
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-success-dot);
+    }
+    .live-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-success-text);
+      letter-spacing: 0.3px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+    }
+    .icon-btn:hover { background: var(--color-bg-secondary); }
+    .notification-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-danger-dot);
+      border: 1.5px solid var(--color-bg-primary);
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-avatar-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-avatar-text);
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--color-brand-navy);
+      color: var(--color-brand-navy-text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: #0a0c4b; }
+
+    /* Welcome */
+    .welcome { padding: 32px 32px 24px; }
+    .welcome h1 {
+      font-size: 24px;
+      font-weight: 500;
+      margin: 0 0 4px;
+      color: var(--color-text-primary);
+    }
+    .welcome p {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    /* KPI grid */
+    .kpi-grid {
+      padding: 0 32px 24px;
+      display: grid;
+      grid-template-columns: 1.3fr repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .kpi-attention {
+      background: var(--color-attention-bg);
+      border-radius: var(--radius-md);
+      padding: 18px 20px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 210px;
+      box-shadow: inset 4px 0 0 #d80000;
+    }
+    .kpi-attention .title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+    }
+    .kpi-attention .number {
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--color-attention-text);
+      line-height: 1;
+      margin-top: 4px;
+    }
+    .kpi-attention .hint {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+    .kpi-attention .action {
+      margin-top: auto;
+      text-align: left;
+      padding: 0;
+      border: none;
+      background: none;
+      font-size: 13px;
+      color: var(--color-attention-text);
+      font-weight: 500;
+      cursor: pointer;
+      width: fit-content;
+      font-family: inherit;
+    }
+
+    .kpi-card {
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 18px 20px 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 210px;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.12s ease-out;
+    }
+    .kpi-card:hover { border-color: var(--color-border-secondary); }
+    .kpi-card .drill {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      color: var(--color-text-tertiary);
+      opacity: 0.6;
+      transition: opacity 0.12s ease-out, color 0.12s ease-out;
+    }
+    .kpi-card:hover .drill {
+      opacity: 1;
+      color: var(--color-brand-navy);
+    }
+    .kpi-attention {
+      position: relative;
+      cursor: pointer;
+    }
+    .kpi-attention .drill {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      color: var(--color-attention-text);
+      opacity: 0.6;
+      transition: opacity 0.12s ease-out;
+    }
+    .kpi-attention:hover .drill { opacity: 1; }
+    .kpi-card .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+    }
+    .kpi-card .value {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      margin-bottom: 8px;
+    }
+    .kpi-card .value .major {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      letter-spacing: -0.5px;
+    }
+    .kpi-card .value .cents {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+    .period-dropdown {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+      border: none;
+      background: none;
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      width: fit-content;
+      font-family: inherit;
+    }
+    .period-dropdown:hover { color: var(--color-text-primary); }
+
+    .period-wrap {
+      position: relative;
+      width: fit-content;
+    }
+    .period-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 140px;
+      padding: 4px;
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      z-index: 20;
+      display: none;
+    }
+    .period-menu.open { display: block; }
+    .period-menu button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 7px 10px;
+      border: none;
+      background: none;
+      font-size: 12px;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+    }
+    .period-menu button:hover { background: var(--color-bg-secondary); }
+    .period-menu button.selected {
+      font-weight: 500;
+      color: var(--color-brand-navy);
+    }
+
+    /* Client / account dropdown */
+    .client-wrap {
+      position: relative;
+    }
+    .client-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 200px;
+      padding: 4px;
+      background: var(--color-bg-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      z-index: 20;
+      display: none;
+    }
+    .client-menu.open { display: block; }
+    .client-menu button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      border: none;
+      background: none;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+    }
+    .client-menu button:hover { background: var(--color-bg-secondary); }
+    .client-menu button.selected {
+      font-weight: 500;
+      color: var(--color-brand-navy);
+    }
+    .sparkline-wrap {
+      margin-top: auto;
+      position: relative;
+    }
+    .sparkline {
+      width: calc(100% + 40px);
+      margin: 0 -20px;
+      height: 70px;
+      display: block;
+    }
+    .sparkline-tooltip {
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 0;
+      transform: translateX(-50%);
+      background: #212b36;
+      color: #ffffff;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.08s ease-out;
+      z-index: 5;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .sparkline-tooltip .date {
+      display: block;
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+      font-size: 10px;
+      margin-top: 1px;
+    }
+    .sparkline-wrap.hover .sparkline-tooltip { opacity: 0; }  /* tooltip suppressed; card displays hovered value instead */
+    .kpi-card .hover-date {
+      display: none;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+      padding: 4px 8px 4px 0;
+    }
+    .kpi-card.hovered .period-wrap { display: none; }
+    .kpi-card.hovered .hover-date { display: inline-block; }
+    .kpi-card.hovered .value { color: var(--color-brand-navy); }
+
+    /* FX rates */
+    .fx-row {
+      margin: 0 32px 24px;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-bg-primary);
+    }
+    .fx-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: var(--color-bg-primary);
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+    }
+    .fx-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fx-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .fx-sub {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+    }
+    .view-all {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .view-all:hover { color: var(--color-text-primary); }
+    .fx-cells {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .fx-cell {
+      padding: 16px 20px;
+      border-right: 0.5px solid var(--color-border-tertiary);
+    }
+    .fx-cell:last-child { border-right: none; }
+    .fx-pair {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      margin-bottom: 4px;
+    }
+    .fx-rate {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .fx-delta {
+      font-size: 11px;
+      margin-top: 2px;
+    }
+    .fx-delta.up { color: #3b6d11; }
+    .fx-delta.down { color: var(--color-danger-text); }
+
+    /* Section heading */
+    .section-heading {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 12px;
+    }
+
+    /* Quick actions */
+    .actions-section { padding: 0 32px 24px; }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-primary);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+    .action-btn:hover { background: #e4eaf0; }
+    .action-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .action-sub {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Overview: chart + activity */
+    .overview {
+      padding: 0 32px 24px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      background: var(--color-bg-primary);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .card-sub {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      margin-top: 2px;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+    }
+    .legend-label {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+    }
+
+    /* Activity list */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 82px;
+      height: 22px;
+      padding: 0;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .status-pill span {
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+    }
+    .status-completed { background: var(--color-success-tag-bg); }
+    .status-completed span { color: var(--color-success-text); }
+    .status-pending { background: var(--color-warning-tag-bg); }
+    .status-pending span { color: var(--color-warning-tag-text); }
+    .status-converted { background: var(--color-info-tag-bg); }
+    .status-converted span { color: var(--color-info-tag-text); }
+    .status-failed { background: var(--color-danger-tag-bg); }
+    .status-failed span { color: var(--color-danger-tag-text); }
+    .activity-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .activity-line1 {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .activity-name {
+      font-size: 12px;
+      color: var(--color-text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .activity-amount {
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .activity-amount.positive { color: var(--color-success-text); }
+    .activity-amount.negative { color: var(--color-danger-tag-text); }
+    .activity-amount.neutral { color: var(--color-text-primary); }
+    .activity-meta {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* Wallets */
+    .wallets-section { padding: 0 32px 32px; }
+    .wallets-wrap {
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-bg-primary);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr {
+      background: #f9fafb;
+      text-align: left;
+    }
+    th {
+      padding: 14px 20px;
+      font-weight: 500;
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    th.num, td.num { text-align: right; }
+    th.center, td.center { text-align: center; }
+    tbody tr {
+      border-top: 0.5px solid var(--color-border-tertiary);
+    }
+    td {
+      padding: 16px 20px;
+      vertical-align: middle;
+    }
+    .currency-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .currency-cell .flag { font-size: 20px; }
+    .currency-cell .code {
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .currency-cell .name {
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+    }
+    td.balance {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .service-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .service-dot.on { background: #3b6d11; }
+    .service-dot.off {
+      background: transparent;
+      border: 1.5px solid var(--color-border-secondary);
+    }
+    .btn-secondary {
+      margin-right: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary:last-child { margin-right: 0; }
+    .btn-secondary:hover { background: var(--color-bg-secondary); }
+    /* -------------------------------------------------------------
+       Search modal (command palette)
+       ------------------------------------------------------------- */
+    .search-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(33, 43, 54, 0.32);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease-out;
+    }
+    .search-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .search-modal {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translate(-50%, -8px);
+      width: min(720px, calc(100vw - 64px));
+      background: var(--color-bg-primary);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.06);
+      z-index: 201;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+      overflow: hidden;
+      max-height: calc(100vh - 120px);
+      display: flex;
+      flex-direction: column;
+    }
+    .search-backdrop.open + .search-modal,
+    .search-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .search-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 2px solid var(--color-brand-navy);
+      position: relative;
+    }
+    .search-modal-header .search-icon { position: static; transform: none; }
+    .search-modal-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-family: inherit;
+      background: transparent;
+      color: var(--color-text-primary);
+    }
+    .search-modal-input::placeholder { color: var(--color-text-tertiary); }
+    .search-modal-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      flex-shrink: 0;
+    }
+    .search-modal-close:hover { background: var(--color-bg-secondary); color: var(--color-text-primary); }
+
+    .search-filters {
+      display: flex;
+      gap: 8px;
+      padding: 14px 20px;
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+      overflow-x: auto;
+    }
+    .search-filter {
+      padding: 6px 14px;
+      border: 0.5px solid var(--color-border-tertiary);
+      background: var(--color-bg-primary);
+      color: var(--color-text-secondary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.1s ease-out, color 0.1s ease-out, border-color 0.1s ease-out;
+    }
+    .search-filter:hover { background: var(--color-bg-secondary); color: var(--color-text-primary); }
+    .search-filter.active {
+      background: var(--color-avatar-bg);
+      color: var(--color-brand-navy);
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .search-results {
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+    .search-section-label {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      padding: 12px 20px 6px;
+      font-weight: 500;
+    }
+    .search-result {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.08s ease-out;
+    }
+    .search-result:hover { background: var(--color-bg-secondary); }
+    .search-result-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--color-text-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-result-text { flex: 1; min-width: 0; }
+    .search-result-title {
+      font-size: 14px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .search-result-sub {
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+      margin-top: 2px;
+      letter-spacing: 0.4px;
+    }
+    .search-result-chev {
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+    }
+    .search-empty {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--color-text-tertiary);
+      font-size: 13px;
+    }
+    /* Make the topbar search look clickable */
+    .search-input { cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+<div class="dashboard">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg class="sidebar-logo-svg" width="64" height="17" viewBox="0 0 60 16" fill="none" aria-label="nium">
+          <path d="M18.7269 0.000999078V15.2795H21.7379V0.000999078H18.7269ZM27.0254 9.46631C27.0254 13.4163 29.3755 15.6522 33.3412 15.6522C37.0131 15.6522 39.7304 13.4163 39.7304 9.46631V0.000999078H36.7193V9.46631C36.7193 11.3295 35.8379 12.8946 33.3412 12.8946C30.8442 12.8946 30.0364 11.106 30.0364 9.24266V0.000999078H27.0254V9.46631ZM0 0.000999078V15.2795H2.86407V4.91994H2.9376L9.91427 15.2795H12.9252V0.000999078H10.0611V10.2116H9.9877L3.08445 0.000999078H0ZM45.0179 0.000999078V15.2795H47.7351V4.77091H47.8084L52.2882 12.4474H52.582L57.2086 4.77091H57.2822V15.2795H59.9992V0.000999078H56.9148L52.7289 7.67753H52.6553L48.2491 0.000999078H45.0179Z" fill="#ffffff"></path>
+        </svg>
+        
+      </div>
+    </div>
+
+    <div class="nav-item active" data-label="Dashboard">
+      <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>
+      <span class="nav-label">Dashboard</span>
+    </div>
+
+    <a href="nium-portal-money.html" class="nav-item-link">
+      <div class="nav-item" data-label="Money" data-expandable="true">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2.5"></circle></svg></span>
+        <span class="nav-label">Money</span>
+        <span class="nav-chevron-wrap" data-chevron=""><svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+      </div>
+    </a>
+    <div class="nav-children">
+      <div class="nav-child">Send</div>
+      <div class="nav-child">Receive</div>
+      <div class="nav-child">Convert FX</div>
+      <div class="nav-child">Beneficiaries</div>
+    </div>
+
+    <a href="nium-portal-cards.html" class="nav-item-link">
+      <div class="nav-item" data-label="Cards" data-expandable="true">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></span>
+        <span class="nav-label">Cards</span>
+        <span class="nav-chevron-wrap" data-chevron=""><svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+      </div>
+    </a>
+    <div class="nav-children">
+      <div class="nav-child">Manage cards</div>
+      <div class="nav-child">Issue card</div>
+      <div class="nav-child">Card history</div>
+      <div class="nav-child">Authorisations</div>
+    </div>
+
+    <a href="nium-portal-customers.html" class="nav-item-link">
+      <div class="nav-item" data-label="Customers">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path></svg></span>
+        <span class="nav-label">Customers</span>
+      </div>
+    </a>
+
+    <a href="nium-portal-analytics.html" class="nav-item-link">
+      <div class="nav-item" data-label="Analytics">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>
+        <span class="nav-label">Analytics</span>
+      </div>
+    </a>
+
+    <a href="nium-portal-reports.html" class="nav-item-link">
+      <div class="nav-item" data-label="Reports">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></span>
+        <span class="nav-label">Reports</span>
+      </div>
+    </a>
+
+    <a href="nium-portal-compliance.html" class="nav-item-link">
+      <div class="nav-item" data-label="Compliance">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
+        <span class="nav-label">Compliance</span>
+      </div>
+    </a>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-item" data-label="Docs">
+      <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></span>
+      <span class="nav-label">Docs</span>
+    </div>
+
+    <div class="nav-item" data-label="Settings">
+      <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 005 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 005 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg></span>
+      <span class="nav-label">Settings</span>
+    </div>
+  </aside>
+
+  <div class="content">
+
+    <div class="topbar">
+      <button class="topbar-collapse-toggle" id="collapseToggle" title="Collapse sidebar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="client-wrap">
+        <button class="account-switcher" data-client-btn="">
+          Gusto
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="client-menu">
+          <button data-value="brex">Brex</button>
+          <button data-value="deel">Deel</button>
+          <button data-value="gusto" class="selected">Gusto</button>
+          <button data-value="mercury">Mercury</button>
+          <button data-value="ramp">Ramp</button>
+          <button data-value="rippling">Rippling</button>
+          <button data-value="chico">Chico State University</button>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a93a6" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input class="search-input" placeholder="Search for anything">
+        <span class="search-kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="live-pill">
+        <span class="live-dot"></span>
+        <span class="live-label">Live</span>
+      </div>
+
+      <button class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f5e5a" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg>
+        <span class="notification-dot"></span>
+      </button>
+
+      <div class="avatar">PJ</div>
+    </div>
+
+    <div class="content-inner">
+      <div class="welcome">
+        <h1>Hello, Prajit</h1>
+        <p>Wednesday, 8 April 2026</p>
+      </div>
+
+    <div class="kpi-grid">
+
+      <div class="kpi-attention">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="title">Pending Actions</div>
+        <div class="number">7</div>
+        <div class="hint">Need your attention</div>
+        <button class="action">Review now →</button>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="label">Total Balance</div>
+        <div class="value"><span class="major">$8,049</span><span class="cents">.39</span></div>
+        <div class="period-wrap">
+          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="period-menu">
+            <button data-value="today">Today</button>
+            <button data-value="7">Last 7 days</button>
+            <button data-value="15">Last 15 days</button>
+            <button data-value="90">Last 90 days</button>
+          </div>
+        </div>
+        <div class="sparkline-wrap" data-series="balance">
+          <svg class="sparkline" viewBox="0 0 220 70" preserveAspectRatio="none"><path d="M0.00 60.00 L20.00 53.52 L40.00 57.35 L60.00 47.04 L80.00 37.56 L100.00 35.56 L120.00 29.38 L140.00 25.84 L160.00 19.36 L180.00 15.83 L200.00 12.24 L220.00 10.00 L 220 70 L 0 70 Z" fill="#5567f7" fill-opacity="0.08"></path><path d="M0.00 60.00 L20.00 53.52 L40.00 57.35 L60.00 47.04 L80.00 37.56 L100.00 35.56 L120.00 29.38 L140.00 25.84 L160.00 19.36 L180.00 15.83 L200.00 12.24 L220.00 10.00" fill="none" stroke="#5567f7" stroke-width="1.5"></path><line class="hover-line" x1="0" y1="0" x2="0" y2="70" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"></line><circle class="hover-dot" cx="0" cy="0" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"></circle></svg>
+          <div class="sparkline-tooltip"></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="label">Sent</div>
+        <div class="value"><span class="major">$1.23M</span></div>
+        <div class="period-wrap">
+          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="period-menu">
+            <button data-value="today">Today</button>
+            <button data-value="7">Last 7 days</button>
+            <button data-value="15">Last 15 days</button>
+            <button data-value="90">Last 90 days</button>
+          </div>
+        </div>
+        <div class="sparkline-wrap" data-series="sent">
+          <svg class="sparkline" viewBox="0 0 220 70" preserveAspectRatio="none"><path d="M0.00 60.00 L20.00 54.71 L40.00 58.66 L60.00 48.41 L80.00 46.48 L100.00 41.37 L120.00 36.45 L140.00 31.09 L160.00 26.47 L180.00 21.14 L200.00 16.18 L220.00 10.00 L 220 70 L 0 70 Z" fill="#5567f7" fill-opacity="0.08"></path><path d="M0.00 60.00 L20.00 54.71 L40.00 58.66 L60.00 48.41 L80.00 46.48 L100.00 41.37 L120.00 36.45 L140.00 31.09 L160.00 26.47 L180.00 21.14 L200.00 16.18 L220.00 10.00" fill="none" stroke="#5567f7" stroke-width="1.5"></path><line class="hover-line" x1="0" y1="0" x2="0" y2="70" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"></line><circle class="hover-dot" cx="0" cy="0" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"></circle></svg>
+          <div class="sparkline-tooltip"></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="label">Received</div>
+        <div class="value"><span class="major">$890K</span></div>
+        <div class="period-wrap">
+          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="period-menu">
+            <button data-value="today">Today</button>
+            <button data-value="7">Last 7 days</button>
+            <button data-value="15">Last 15 days</button>
+            <button data-value="90">Last 90 days</button>
+          </div>
+        </div>
+        <div class="sparkline-wrap" data-series="received">
+          <svg class="sparkline" viewBox="0 0 220 70" preserveAspectRatio="none"><path d="M0.00 10.00 L20.00 18.45 L40.00 22.20 L60.00 31.98 L80.00 38.02 L100.00 43.91 L120.00 47.67 L140.00 49.81 L160.00 53.43 L180.00 55.58 L200.00 57.72 L220.00 60.00 L 220 70 L 0 70 Z" fill="#5567f7" fill-opacity="0.08"></path><path d="M0.00 10.00 L20.00 18.45 L40.00 22.20 L60.00 31.98 L80.00 38.02 L100.00 43.91 L120.00 47.67 L140.00 49.81 L160.00 53.43 L180.00 55.58 L200.00 57.72 L220.00 60.00" fill="none" stroke="#5567f7" stroke-width="1.5"></path><line class="hover-line" x1="200" y1="0" x2="200" y2="70" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"></line><circle class="hover-dot" cx="200" cy="57.72117962466488" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"></circle></svg>
+          <div class="sparkline-tooltip" style="left: 132.919px;">$68,900<span class="date">Apr 05</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="label">FX Converted</div>
+        <div class="value"><span class="major">$320K</span></div>
+        <div class="period-wrap">
+          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="period-menu">
+            <button data-value="today">Today</button>
+            <button data-value="7">Last 7 days</button>
+            <button data-value="15">Last 15 days</button>
+            <button data-value="90">Last 90 days</button>
+          </div>
+        </div>
+        <div class="sparkline-wrap" data-series="fx">
+          <svg class="sparkline" viewBox="0 0 220 70" preserveAspectRatio="none"><path d="M0.00 60.00 L20.00 54.44 L40.00 57.01 L60.00 46.97 L80.00 41.41 L100.00 45.04 L120.00 35.64 L140.00 28.38 L160.00 23.68 L180.00 18.12 L200.00 12.78 L220.00 10.00 L 220 70 L 0 70 Z" fill="#5567f7" fill-opacity="0.08"></path><path d="M0.00 60.00 L20.00 54.44 L40.00 57.01 L60.00 46.97 L80.00 41.41 L100.00 45.04 L120.00 35.64 L140.00 28.38 L160.00 23.68 L180.00 18.12 L200.00 12.78 L220.00 10.00" fill="none" stroke="#5567f7" stroke-width="1.5"></path><line class="hover-line" x1="180" y1="0" x2="180" y2="70" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"></line><circle class="hover-dot" cx="180" cy="18.11965811965812" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"></circle></svg>
+          <div class="sparkline-tooltip" style="left: 117.621px;">$32,400<span class="date">Apr 01</span></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <div class="label">Cards Active</div>
+        <div class="value"><span class="major">142</span></div>
+        <div class="period-wrap">
+          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="period-menu">
+            <button data-value="today">Today</button>
+            <button data-value="7">Last 7 days</button>
+            <button data-value="15">Last 15 days</button>
+            <button data-value="90">Last 90 days</button>
+          </div>
+        </div>
+        <div class="sparkline-wrap" data-series="cards">
+          <svg class="sparkline" viewBox="0 0 220 70" preserveAspectRatio="none"><path d="M0.00 60.00 L20.00 56.43 L40.00 49.29 L60.00 42.14 L80.00 38.57 L100.00 31.43 L120.00 27.86 L140.00 20.71 L160.00 17.14 L180.00 13.57 L200.00 13.57 L220.00 10.00 L 220 70 L 0 70 Z" fill="#5567f7" fill-opacity="0.08"></path><path d="M0.00 60.00 L20.00 56.43 L40.00 49.29 L60.00 42.14 L80.00 38.57 L100.00 31.43 L120.00 27.86 L140.00 20.71 L160.00 17.14 L180.00 13.57 L200.00 13.57 L220.00 10.00" fill="none" stroke="#5567f7" stroke-width="1.5"></path><line class="hover-line" x1="0" y1="0" x2="0" y2="70" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"></line><circle class="hover-dot" cx="0" cy="0" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"></circle></svg>
+          <div class="sparkline-tooltip"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="fx-row">
+      <div class="fx-header">
+        <div class="fx-header-left">
+          <span class="live-dot"></span>
+          <span class="fx-title">Live FX rates</span>
+          <span class="fx-sub">Updated just now</span>
+        </div>
+        <button class="view-all">View all →</button>
+      </div>
+      <div class="fx-cells">
+        <div class="fx-cell"><div class="fx-pair">USD → SGD</div><div class="fx-rate">1.3541</div><div class="fx-delta up">↑ 0.12%</div></div>
+        <div class="fx-cell"><div class="fx-pair">USD → INR</div><div class="fx-rate">83.42</div><div class="fx-delta down">↓ 0.05%</div></div>
+        <div class="fx-cell"><div class="fx-pair">USD → EUR</div><div class="fx-rate">0.9182</div><div class="fx-delta up">↑ 0.08%</div></div>
+        <div class="fx-cell"><div class="fx-pair">SGD → AUD</div><div class="fx-rate">1.1123</div><div class="fx-delta up">↑ 0.21%</div></div>
+        <div class="fx-cell"><div class="fx-pair">GBP → USD</div><div class="fx-rate">1.2764</div><div class="fx-delta down">↓ 0.03%</div></div>
+        <div class="fx-cell"><div class="fx-pair">USD → NPR</div><div class="fx-rate">133.10</div><div class="fx-delta up">↑ 0.30%</div></div>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <div class="section-heading">Quick actions</div>
+      <div class="actions-grid">
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          <div><div class="action-title">Send money</div><div class="action-sub">Payout</div></div>
+        </button>
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"></path><polyline points="21 3 21 8 16 8"></polyline><path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16"></path><polyline points="3 21 3 16 8 16"></polyline></svg>
+          <div><div class="action-title">Convert FX</div><div class="action-sub">Exchange</div></div>
+        </button>
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          <div><div class="action-title">Issue card</div><div class="action-sub">Virtual card</div></div>
+        </button>
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <div><div class="action-title">Add beneficiary</div><div class="action-sub">Onboard payee</div></div>
+        </button>
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <div><div class="action-title">Bulk upload</div><div class="action-sub">CSV / XLSX</div></div>
+        </button>
+        <button class="action-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0e58" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <div><div class="action-title">Reports</div><div class="action-sub">Analytics</div></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="overview">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Money flow</div>
+            <div class="period-wrap" style="margin-top: 4px;">
+              <button class="period-dropdown" data-period-btn="">Last 90 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              <div class="period-menu">
+                <button data-value="today">Today</button>
+                <button data-value="7">Last 7 days</button>
+                <button data-value="15">Last 15 days</button>
+                <button data-value="30">Last 30 days</button>
+                <button data-value="90" class="selected">Last 90 days</button>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div class="legend">
+              <div class="legend-item"><div class="legend-swatch" style="background:#0b0e58"></div><span class="legend-label">Sent</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background:#5dcaa5"></div><span class="legend-label">Received</span></div>
+            </div>
+            <button class="view-all">View all →</button>
+          </div>
+        </div>
+        <svg viewBox="0 0 780 260" style="width: 100%; height: 260px;" role="img" aria-label="Sent vs received by month">
+          <line x1="50" y1="20" x2="50" y2="220" stroke="rgba(145,158,171,0.24)" stroke-width="0.5"></line>
+          <line x1="50" y1="220" x2="770" y2="220" stroke="rgba(145,158,171,0.24)" stroke-width="0.5"></line>
+          <g style="font-size: 10px;" fill="#5F5E5A">
+            <text x="45" y="24" text-anchor="end">$2M</text><line x1="50" y1="20" x2="770" y2="20" stroke="rgba(145,158,171,0.24)" stroke-width="0.5" stroke-dasharray="2,3"></line>
+            <text x="45" y="74" text-anchor="end">$1.5M</text><line x1="50" y1="70" x2="770" y2="70" stroke="rgba(145,158,171,0.24)" stroke-width="0.5" stroke-dasharray="2,3"></line>
+            <text x="45" y="124" text-anchor="end">$1M</text><line x1="50" y1="120" x2="770" y2="120" stroke="rgba(145,158,171,0.24)" stroke-width="0.5" stroke-dasharray="2,3"></line>
+            <text x="45" y="174" text-anchor="end">$500K</text><line x1="50" y1="170" x2="770" y2="170" stroke="rgba(145,158,171,0.24)" stroke-width="0.5" stroke-dasharray="2,3"></line>
+            <text x="45" y="224" text-anchor="end">0</text>
+          </g>
+          <g><rect x="110" y="130" width="50" height="90" fill="#0b0e58" rx="1"></rect><rect x="165" y="155" width="50" height="65" fill="#5dcaa5" rx="1"></rect></g>
+          <g><rect x="280" y="105" width="50" height="115" fill="#0b0e58" rx="1"></rect><rect x="335" y="135" width="50" height="85" fill="#5dcaa5" rx="1"></rect></g>
+          <g><rect x="450" y="80" width="50" height="140" fill="#0b0e58" rx="1"></rect><rect x="505" y="125" width="50" height="95" fill="#5dcaa5" rx="1"></rect></g>
+          <g><rect x="620" y="55" width="50" height="165" fill="#0b0e58" rx="1"></rect><rect x="675" y="95" width="50" height="125" fill="#5dcaa5" rx="1"></rect></g>
+          <g style="font-size: 11px;" fill="#5F5E5A" text-anchor="middle">
+            <text x="165" y="240">Jan</text><text x="335" y="240">Feb</text><text x="505" y="240">Mar</text><text x="675" y="240">Apr</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="card">
+        <div class="card-header" style="margin-bottom: 16px;">
+          <div>
+            <div class="card-title">Recent activity</div>
+            <div class="period-wrap" style="margin-top: 4px;">
+              <button class="period-dropdown" data-period-btn="">Today<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+              <div class="period-menu">
+                <button data-value="today" class="selected">Today</button>
+                <button data-value="7">Last 7 days</button>
+                <button data-value="15">Last 15 days</button>
+                <button data-value="90">Last 90 days</button>
+              </div>
+            </div>
+          </div>
+          <button class="view-all">View all →</button>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="status-pill status-completed"><span>Completed</span></div>
+            <div class="activity-body">
+              <div class="activity-line1"><span class="activity-name">Payout · Alice Chen</span><span class="activity-amount positive">+$4,200</span></div>
+              <div class="activity-meta">SGD · 12 min ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="status-pill status-pending"><span>Pending</span></div>
+            <div class="activity-body">
+              <div class="activity-line1"><span class="activity-name">Bulk upload #4821</span><span class="activity-amount neutral">$87,000</span></div>
+              <div class="activity-meta">Awaiting approval · 1 hr ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="status-pill status-converted"><span>Converted</span></div>
+            <div class="activity-body">
+              <div class="activity-line1"><span class="activity-name">FX · USD → INR</span><span class="activity-amount neutral">$10,000</span></div>
+              <div class="activity-meta">2 hr ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="status-pill status-failed"><span>Failed</span></div>
+            <div class="activity-body">
+              <div class="activity-line1"><span class="activity-name">Payout · Raj Kumar</span><span class="activity-amount negative">−$500</span></div>
+              <div class="activity-meta">IBAN invalid · 3 hr ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="status-pill status-completed"><span>Received</span></div>
+            <div class="activity-body">
+              <div class="activity-line1"><span class="activity-name">Pay-in · Wire · JP Morgan</span><span class="activity-amount positive">+$25,000</span></div>
+              <div class="activity-meta">5 hr ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wallets-section">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div class="section-heading" style="margin-bottom: 0;">Your wallets</div>
+        <button class="view-all">View all →</button>
+      </div>
+      <div class="wallets-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Currency</th>
+              <th class="num">Balance</th>
+              <th class="center">Payout</th>
+              <th class="center">Pay-in</th>
+              <th class="center">Card</th>
+              <th class="num">FX rate</th>
+              <th class="num">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="currency-cell"><span class="flag">🇺🇸</span><div><div class="code">USD</div><div class="name">US Dollar</div></div></div></td>
+              <td class="num balance">$8,049.39</td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="center"><span class="service-dot off"></span></td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="num" style="color: var(--color-text-tertiary);">—</td>
+              <td class="num"><button class="btn-secondary">Send</button><button class="btn-secondary">Convert</button></td>
+            </tr>
+            <tr>
+              <td><div class="currency-cell"><span class="flag">🇸🇬</span><div><div class="code">SGD</div><div class="name">Singapore Dollar</div></div></div></td>
+              <td class="num balance">S$1,234.00</td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="num" style="color: var(--color-text-tertiary);">—</td>
+              <td class="num"><button class="btn-secondary">Send</button><button class="btn-secondary">Convert</button></td>
+            </tr>
+            <tr>
+              <td><div class="currency-cell"><span class="flag">🇮🇳</span><div><div class="code">INR</div><div class="name">Indian Rupee</div></div></div></td>
+              <td class="num balance">₹3,776.29</td>
+              <td class="center"><span class="service-dot off"></span></td>
+              <td class="center"><span class="service-dot off"></span></td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="num" style="color: var(--color-text-tertiary);">—</td>
+              <td class="num"><button class="btn-secondary">Send</button><button class="btn-secondary">Convert</button></td>
+            </tr>
+            <tr>
+              <td><div class="currency-cell"><span class="flag">🇳🇵</span><div><div class="code">NPR</div><div class="name">Nepalese Rupee</div></div></div></td>
+              <td class="num balance">Rs 0.00</td>
+              <td class="center"><span class="service-dot off"></span></td>
+              <td class="center"><span class="service-dot off"></span></td>
+              <td class="center"><span class="service-dot on"></span></td>
+              <td class="num" style="color: var(--color-text-tertiary);">—</td>
+              <td class="num"><button class="btn-secondary">Send</button><button class="btn-secondary">Convert</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    </div><!-- /content-inner -->
+
+  </div>
+</div>
+</div>
+
+<script>
+  // Generic dropdown handler — works for period + client menus
+  function setupDropdown(btnSelector, menuSelector) {
+    document.querySelectorAll(btnSelector).forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var menu = btn.nextElementSibling;
+        // Close all other open menus
+        document.querySelectorAll('.period-menu.open, .client-menu.open').forEach(function (m) {
+          if (m !== menu) m.classList.remove('open');
+        });
+        menu.classList.toggle('open');
+      });
+    });
+
+    document.querySelectorAll(menuSelector + ' button').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var menu = item.closest(menuSelector);
+        var btn = menu.previousElementSibling;
+        var caret = btn.querySelector('svg').outerHTML;
+        btn.innerHTML = item.textContent + caret;
+        menu.querySelectorAll('button').forEach(function (b) { b.classList.remove('selected'); });
+        item.classList.add('selected');
+        menu.classList.remove('open');
+      });
+    });
+  }
+
+  setupDropdown('[data-period-btn]', '.period-menu');
+  setupDropdown('[data-client-btn]', '.client-menu');
+
+  // Click outside to close all
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.period-menu.open, .client-menu.open').forEach(function (m) {
+      m.classList.remove('open');
+    });
+  });
+
+  // -----------------------------------------------------------------
+  // Sparkline rendering + hover tooltips
+  // -----------------------------------------------------------------
+  var seriesData = {
+    balance: [
+      {date: 'Mar 10', display: '$7,200.18', v: 7200},
+      {date: 'Mar 12', display: '$7,310.52', v: 7310},
+      {date: 'Mar 14', display: '$7,245.66', v: 7245},
+      {date: 'Mar 17', display: '$7,420.00', v: 7420},
+      {date: 'Mar 19', display: '$7,580.81', v: 7581},
+      {date: 'Mar 22', display: '$7,615.34', v: 7615},
+      {date: 'Mar 24', display: '$7,720.09', v: 7720},
+      {date: 'Mar 26', display: '$7,780.45', v: 7780},
+      {date: 'Mar 29', display: '$7,890.22', v: 7890},
+      {date: 'Apr 01', display: '$7,950.10', v: 7950},
+      {date: 'Apr 05', display: '$8,010.88', v: 8011},
+      {date: 'Apr 08', display: '$8,049.39', v: 8049}
+    ],
+    sent: [
+      {date: 'Mar 10', display: '$58,200', v: 58200},
+      {date: 'Mar 12', display: '$72,400', v: 72400},
+      {date: 'Mar 14', display: '$61,800', v: 61800},
+      {date: 'Mar 17', display: '$89,300', v: 89300},
+      {date: 'Mar 19', display: '$94,500', v: 94500},
+      {date: 'Mar 22', display: '$108,200', v: 108200},
+      {date: 'Mar 24', display: '$121,400', v: 121400},
+      {date: 'Mar 26', display: '$135,800', v: 135800},
+      {date: 'Mar 29', display: '$148,200', v: 148200},
+      {date: 'Apr 01', display: '$162,500', v: 162500},
+      {date: 'Apr 05', display: '$175,800', v: 175800},
+      {date: 'Apr 08', display: '$192,400', v: 192400}
+    ],
+    received: [
+      {date: 'Mar 10', display: '$104,500', v: 104500},
+      {date: 'Mar 12', display: '$98,200', v: 98200},
+      {date: 'Mar 14', display: '$95,400', v: 95400},
+      {date: 'Mar 17', display: '$88,100', v: 88100},
+      {date: 'Mar 19', display: '$83,600', v: 83600},
+      {date: 'Mar 22', display: '$79,200', v: 79200},
+      {date: 'Mar 24', display: '$76,400', v: 76400},
+      {date: 'Mar 26', display: '$74,800', v: 74800},
+      {date: 'Mar 29', display: '$72,100', v: 72100},
+      {date: 'Apr 01', display: '$70,500', v: 70500},
+      {date: 'Apr 05', display: '$68,900', v: 68900},
+      {date: 'Apr 08', display: '$67,200', v: 67200}
+    ],
+    fx: [
+      {date: 'Mar 10', display: '$12,800', v: 12800},
+      {date: 'Mar 12', display: '$15,400', v: 15400},
+      {date: 'Mar 14', display: '$14,200', v: 14200},
+      {date: 'Mar 17', display: '$18,900', v: 18900},
+      {date: 'Mar 19', display: '$21,500', v: 21500},
+      {date: 'Mar 22', display: '$19,800', v: 19800},
+      {date: 'Mar 24', display: '$24,200', v: 24200},
+      {date: 'Mar 26', display: '$27,600', v: 27600},
+      {date: 'Mar 29', display: '$29,800', v: 29800},
+      {date: 'Apr 01', display: '$32,400', v: 32400},
+      {date: 'Apr 05', display: '$34,900', v: 34900},
+      {date: 'Apr 08', display: '$36,200', v: 36200}
+    ],
+    cards: [
+      {date: 'Mar 10', display: '128 cards', v: 128},
+      {date: 'Mar 12', display: '129 cards', v: 129},
+      {date: 'Mar 14', display: '131 cards', v: 131},
+      {date: 'Mar 17', display: '133 cards', v: 133},
+      {date: 'Mar 19', display: '134 cards', v: 134},
+      {date: 'Mar 22', display: '136 cards', v: 136},
+      {date: 'Mar 24', display: '137 cards', v: 137},
+      {date: 'Mar 26', display: '139 cards', v: 139},
+      {date: 'Mar 29', display: '140 cards', v: 140},
+      {date: 'Apr 01', display: '141 cards', v: 141},
+      {date: 'Apr 05', display: '141 cards', v: 141},
+      {date: 'Apr 08', display: '142 cards', v: 142}
+    ]
+  };
+
+  function renderSparkline(wrap) {
+    var series = wrap.getAttribute('data-series');
+    var points = seriesData[series];
+    if (!points) return;
+
+    var svg = wrap.querySelector('svg.sparkline');
+    if (!svg) return;
+
+    // Locate the parent .kpi-card so we can swap value + period when scrubbing.
+    var card = wrap.closest('.kpi-card');
+    var valueEl = card && card.querySelector('.value');
+    var periodWrap = card && card.querySelector('.period-wrap');
+
+    // Cache the default value markup so we can restore on mouseleave.
+    var defaultValueHTML = valueEl ? valueEl.innerHTML : null;
+
+    // Inject a sibling .hover-date element next to the period-wrap (created lazily, once).
+    var hoverDateEl = card && card.querySelector('.hover-date');
+    if (card && !hoverDateEl && periodWrap) {
+      hoverDateEl = document.createElement('span');
+      hoverDateEl.className = 'hover-date';
+      periodWrap.parentNode.insertBefore(hoverDateEl, periodWrap.nextSibling);
+    }
+
+    var W = 220, H = 70;
+    var topPad = 10, botPad = 10;
+    var drawH = H - topPad - botPad;
+
+    var values = points.map(function (p) { return p.v; });
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var range = (maxV - minV) || 1;
+
+    var coords = points.map(function (p, i) {
+      var x = (i / (points.length - 1)) * W;
+      var y = topPad + (1 - (p.v - minV) / range) * drawH;
+      return { x: x, y: y };
+    });
+
+    var linePath = coords.map(function (c, i) {
+      return (i === 0 ? 'M' : 'L') + c.x.toFixed(2) + ' ' + c.y.toFixed(2);
+    }).join(' ');
+    var areaPath = linePath + ' L ' + W + ' ' + H + ' L 0 ' + H + ' Z';
+
+    svg.innerHTML =
+      '<path d="' + areaPath + '" fill="#5567f7" fill-opacity="0.08"/>' +
+      '<path d="' + linePath + '" fill="none" stroke="#5567f7" stroke-width="1.5"/>' +
+      '<line class="hover-line" x1="0" y1="0" x2="0" y2="' + H + '" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"/>' +
+      '<circle class="hover-dot" cx="0" cy="0" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"/>';
+
+    var hoverLine = svg.querySelector('.hover-line');
+    var hoverDot  = svg.querySelector('.hover-dot');
+
+    svg.addEventListener('mousemove', function (e) {
+      var svgRect = svg.getBoundingClientRect();
+      var relX = e.clientX - svgRect.left;
+      var ratio = Math.max(0, Math.min(1, relX / svgRect.width));
+      var idx = Math.round(ratio * (points.length - 1));
+      var c = coords[idx];
+      var p = points[idx];
+
+      hoverLine.setAttribute('x1', c.x);
+      hoverLine.setAttribute('x2', c.x);
+      hoverLine.setAttribute('opacity', '1');
+      hoverDot.setAttribute('cx', c.x);
+      hoverDot.setAttribute('cy', c.y);
+      hoverDot.setAttribute('opacity', '1');
+
+      // Swap card value + show date in place of period dropdown.
+      if (valueEl) {
+        // Split numeric values into major+cents like the default; otherwise show as-is.
+        var match = p.display.match(/^(.+?)(\.\d{2})$/);
+        if (match) {
+          valueEl.innerHTML = '<span class="major">' + match[1] + '</span><span class="cents">' + match[2] + '</span>';
+        } else {
+          valueEl.innerHTML = '<span class="major">' + p.display + '</span>';
+        }
+      }
+      if (hoverDateEl) hoverDateEl.textContent = p.date;
+      if (card) card.classList.add('hovered');
+    });
+
+    svg.addEventListener('mouseleave', function () {
+      hoverLine.setAttribute('opacity', '0');
+      hoverDot.setAttribute('opacity', '0');
+      if (card) card.classList.remove('hovered');
+      if (valueEl && defaultValueHTML !== null) valueEl.innerHTML = defaultValueHTML;
+    });
+  }
+
+  document.querySelectorAll('[data-series]').forEach(renderSparkline);
+
+  // -----------------------------------------------------------------
+  // Sidebar: collapse toggle + group expand/collapse
+  // -----------------------------------------------------------------
+  var sidebar = document.getElementById('sidebar');
+  var collapseBtn = document.getElementById('collapseToggle');
+
+  // Restore persisted collapsed state on page load
+  try {
+    if (localStorage.getItem('nium-sidebar-collapsed') === '1') {
+      sidebar.classList.add('collapsed');
+      sidebar.querySelectorAll('.nav-item.expanded').forEach(function (item) {
+        item.classList.remove('expanded');
+      });
+      if (collapseBtn) collapseBtn.title = 'Expand sidebar';
+    }
+  } catch (e) { /* localStorage not available */ }
+
+  if (collapseBtn) {
+    collapseBtn.addEventListener('click', function () {
+      sidebar.classList.toggle('collapsed');
+      // Collapse any open groups when shrinking
+      if (sidebar.classList.contains('collapsed')) {
+        sidebar.querySelectorAll('.nav-item.expanded').forEach(function (item) {
+          item.classList.remove('expanded');
+        });
+        collapseBtn.title = 'Expand sidebar';
+      } else {
+        collapseBtn.title = 'Collapse sidebar';
+      }
+      // Persist
+      try {
+        localStorage.setItem('nium-sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0');
+      } catch (e) { /* localStorage not available */ }
+    });
+  }
+
+  // Mercury pattern: chevron toggles, row click navigates (and opens if it has a link)
+  sidebar.querySelectorAll('[data-chevron]').forEach(function (chev) {
+    chev.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (sidebar.classList.contains('collapsed')) return;
+      var item = chev.closest('.nav-item');
+      if (item) item.classList.toggle('expanded');
+    });
+  });
+
+  // Row click on expandable items: if inside an <a> the browser navigates;
+  // either way, open the section (don't toggle — Mercury behavior).
+  sidebar.querySelectorAll('.nav-item[data-expandable="true"]').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      if (sidebar.classList.contains('collapsed')) return;
+      if (e.target.closest('[data-chevron]')) return; // chevron handles itself
+      var hasLink = item.closest('a.nav-item-link');
+      if (hasLink) {
+        item.classList.add('expanded');     // navigate + open
+      } else {
+        item.classList.toggle('expanded');  // no destination -> still toggle
+      }
+    });
+  });
+
+  // Child clicks: mark active among siblings
+  sidebar.querySelectorAll('.nav-children').forEach(function (group) {
+    group.querySelectorAll('.nav-child').forEach(function (child) {
+      child.addEventListener('click', function (e) {
+        e.stopPropagation();
+        // Remove active from all leaf nav items + child items
+        sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
+          n.classList.remove('active');
+        });
+        child.classList.add('active');
+      });
+    });
+  });
+
+  // Leaf nav-items (non-expandable, non-collapse-toggle): mark active on click
+  sidebar.querySelectorAll('.nav-item:not([data-expandable="true"])').forEach(function (item) {
+    item.addEventListener('click', function () {
+      sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
+        n.classList.remove('active');
+      });
+      item.classList.add('active');
+    });
+  });
+</script>
+
+
+
+<!-- =================================================================
+     Search modal (command palette)
+     ================================================================= -->
+<div class="search-backdrop" id="searchBackdrop"></div>
+
+<div class="search-modal" id="searchModal" role="dialog" aria-label="Search">
+  <div class="search-modal-header">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a93a6" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input class="search-modal-input" id="searchModalInput" placeholder="Search for anything" />
+    <button class="search-modal-close" id="searchModalClose" title="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="search-filters" id="searchFilters">
+    <button class="search-filter active" data-filter="all">All</button>
+    <button class="search-filter" data-filter="pages">Pages</button>
+    <button class="search-filter" data-filter="transactions">Transactions</button>
+    <button class="search-filter" data-filter="cards">Cards</button>
+  </div>
+
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<script>
+(function () {
+  // -----------------------------------------------------------------
+  // Search modal: open/close, filter switching, keyboard shortcuts
+  // -----------------------------------------------------------------
+  var topbarInput   = document.querySelector('.search-input');
+  var backdrop      = document.getElementById('searchBackdrop');
+  var modal         = document.getElementById('searchModal');
+  var modalInput    = document.getElementById('searchModalInput');
+  var closeBtn      = document.getElementById('searchModalClose');
+  var filtersWrap   = document.getElementById('searchFilters');
+  var resultsWrap   = document.getElementById('searchResults');
+
+  // Static placeholder data per filter — no real searching, just navigable scaffolding.
+  var DATA = {
+    all: {
+      placeholder: 'Search for anything',
+      sections: [
+        {
+          label: 'Examples',
+          items: [
+            { icon: 'list',     title: 'Recent transactions' },
+            { icon: 'calendar', title: 'Scheduled payments' },
+            { icon: 'check',    title: 'Payment approvals' },
+            { icon: 'card',     title: 'View your cards' },
+            { icon: 'folder',   title: 'View statements for Gusto' },
+            { icon: 'bank',     title: 'Go to Gusto' }
+          ]
+        }
+      ]
+    },
+    pages: {
+      placeholder: 'Search pages, dashboards, settings',
+      sections: [
+        {
+          items: [
+            { icon: 'home',     title: 'Dashboard' },
+            { icon: 'send',     title: 'Send Money' },
+            { icon: 'card',     title: 'Manage Cards' },
+            { icon: 'people',   title: 'Customers' },
+            { icon: 'chart',    title: 'Analytics' },
+            { icon: 'doc',      title: 'Reports' },
+            { icon: 'shield',   title: 'Compliance' }
+          ]
+        }
+      ]
+    },
+    transactions: {
+      placeholder: 'Search transactions by amount, date, or merchant',
+      sections: [
+        {
+          items: [
+            { icon: 'list', title: 'British Airways',  sub: '−€100.00 · 31/03/2026' },
+            { icon: 'list', title: 'Jet 2',            sub: '€1,800.00 · 20/10/2025' },
+            { icon: 'list', title: 'British Airways',  sub: '−€1,250.00 · 20/10/2025' },
+            { icon: 'list', title: 'Jet 2',            sub: '−€1,850.00 · 20/10/2025' },
+            { icon: 'list', title: 'British Airways',  sub: '−€900.00 · 03/09/2025' },
+            { icon: 'list', title: 'Stripe',           sub: '+$8,049.39 · 28/08/2025' }
+          ]
+        }
+      ]
+    },
+    cards: {
+      placeholder: 'Documents & Statements',
+      sections: [
+        {
+          items: [
+            { icon: 'card', title: 'Jane Black\u2019s Physical Debit', sub: '\u2022\u20223745' },
+            { icon: 'card', title: 'Jane Black\u2019s Grocery/Meals',  sub: '\u2022\u20224928' },
+            { icon: 'card', title: 'Jane Black\u2019s Google Ads',     sub: '\u2022\u20225555' },
+            { icon: 'card', title: 'Jane Black\u2019s AWS billing',    sub: '\u2022\u20220330' },
+            { icon: 'card', title: 'Jane Black\u2019s Facebook ads',   sub: '\u2022\u20223054' }
+          ]
+        }
+      ]
+    }
+  };
+
+  // Tiny inline SVG icon set — kept as path-d strings, rendered into <svg>.
+  var ICONS = {
+    list:     '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+    check:    '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><polyline points="9 12 11 14 15 10"/>',
+    card:     '<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
+    folder:   '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+    bank:     '<line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+    home:     '<path d="M3 12l9-9 9 9v9a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9z"/>',
+    send:     '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+    plane:    '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
+    people:   '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
+    chart:    '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+    doc:      '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+    shield:   '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
+  };
+
+  function svgIcon(name) {
+    var path = ICONS[name] || ICONS.list;
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + path + '</svg>';
+  }
+
+  function renderResults(filter) {
+    var data = DATA[filter] || DATA.all;
+    modalInput.placeholder = data.placeholder;
+    var html = '';
+    data.sections.forEach(function (section) {
+      if (section.label) {
+        html += '<div class="search-section-label">' + section.label + '</div>';
+      }
+      section.items.forEach(function (item) {
+        html += '<div class="search-result">' +
+          '<span class="search-result-icon">' + svgIcon(item.icon) + '</span>' +
+          '<div class="search-result-text">' +
+            '<div class="search-result-title">' + item.title + '</div>' +
+            (item.sub ? '<div class="search-result-sub">' + item.sub + '</div>' : '') +
+          '</div>' +
+          '<svg class="search-result-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' +
+        '</div>';
+      });
+    });
+    if (!html) html = '<div class="search-empty">No results</div>';
+    resultsWrap.innerHTML = html;
+  }
+
+  function openModal() {
+    backdrop.classList.add('open');
+    modal.classList.add('open');
+    setTimeout(function () { modalInput.focus(); }, 50);
+  }
+  function closeModal() {
+    backdrop.classList.remove('open');
+    modal.classList.remove('open');
+    modalInput.value = '';
+    // Reset to the contextual default filter for this page
+    filtersWrap.querySelectorAll('.search-filter').forEach(function (f) { f.classList.remove('active'); });
+    var defaultBtn = filtersWrap.querySelector('[data-filter="' + DEFAULT_FILTER + '"]');
+    if (defaultBtn) defaultBtn.classList.add('active');
+    renderResults(DEFAULT_FILTER);
+  }
+
+  // Open triggers
+  if (topbarInput) {
+    topbarInput.addEventListener('focus', openModal);
+    topbarInput.addEventListener('click', openModal);
+  }
+
+  // Close triggers
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (backdrop) backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+    }
+    // Cmd+K / Ctrl+K to open
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (modal.classList.contains('open')) closeModal();
+      else openModal();
+    }
+  });
+
+  // Filter pill switching
+  if (filtersWrap) {
+    filtersWrap.addEventListener('click', function (e) {
+      var btn = e.target.closest('.search-filter');
+      if (!btn) return;
+      filtersWrap.querySelectorAll('.search-filter').forEach(function (f) { f.classList.remove('active'); });
+      btn.classList.add('active');
+      renderResults(btn.dataset.filter);
+    });
+  }
+
+  // Initial render — contextual default for this page
+  var DEFAULT_FILTER = 'all';
+  renderResults(DEFAULT_FILTER);
+})();
+</script>
+
+</body></html>
