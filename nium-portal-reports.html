@@ -1476,6 +1476,7 @@
       </div>
     </a>
     <div class="nav-children">
+      <div class="nav-child">Balances</div>
       <div class="nav-child">Send</div>
       <div class="nav-child">Receive</div>
       <div class="nav-child">Convert FX</div>
@@ -1584,7 +1585,7 @@
 
       <div class="travel-page-header">
         <div class="travel-context">
-          <h1 class="travel-title">Reports</h1>
+          <h1 class="travel-title" id="page-h1">Reports</h1>
         </div>
         <button class="btn-primary travel-cta">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1869,22 +1870,29 @@
     });
   });
 
-  // Row click on expandable items: if inside an <a> the browser navigates;
-  // either way, open the section (don't toggle — Mercury behavior).
+  // Row click on expandable items: expand and activate first L2 child.
   sidebar.querySelectorAll('.nav-item[data-expandable="true"]').forEach(function (item) {
     item.addEventListener('click', function (e) {
       if (sidebar.classList.contains('collapsed')) return;
       if (e.target.closest('[data-chevron]')) return; // chevron handles itself
-      var hasLink = item.closest('a.nav-item-link');
-      if (hasLink) {
-        item.classList.add('expanded');     // navigate + open
-      } else {
-        item.classList.toggle('expanded');  // no destination -> still toggle
+      item.classList.add('expanded');
+      // Activate first L2 child
+      var group = item.closest('.nav-item-link')
+        ? item.closest('.nav-item-link').nextElementSibling
+        : null;
+      if (group && group.classList.contains('nav-children')) {
+        var firstChild = group.querySelector('.nav-child');
+        if (firstChild) {
+          sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
+            n.classList.remove('active');
+          });
+          firstChild.classList.add('active');
+        }
       }
     });
   });
 
-  // Child clicks: mark active among siblings
+  // Child clicks: mark active among siblings + update H1
   sidebar.querySelectorAll('.nav-children').forEach(function (group) {
     group.querySelectorAll('.nav-child').forEach(function (child) {
       child.addEventListener('click', function (e) {
@@ -1894,9 +1902,31 @@
           n.classList.remove('active');
         });
         child.classList.add('active');
+        // Update H1 to match selected L2
+        var h1 = document.getElementById('page-h1');
+        if (h1) h1.textContent = child.textContent.trim();
       });
     });
   });
+
+  // Also update H1 when L1 is clicked (first L2 auto-selected)
+  // Patch: extend the expandable handler's firstChild activation to also set H1
+  (function patchL1H1() {
+    var h1 = document.getElementById('page-h1');
+    if (!h1) return;
+    sidebar.querySelectorAll('.nav-item[data-expandable="true"]').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        if (e.target.closest('[data-chevron]')) return;
+        var group = item.closest('.nav-item-link')
+          ? item.closest('.nav-item-link').nextElementSibling
+          : null;
+        if (group && group.classList.contains('nav-children')) {
+          var firstChild = group.querySelector('.nav-child');
+          if (firstChild) h1.textContent = firstChild.textContent.trim();
+        }
+      });
+    });
+  }());
 
   // Leaf nav-items (non-expandable, non-collapse-toggle): mark active on click
   sidebar.querySelectorAll('.nav-item:not([data-expandable="true"])').forEach(function (item) {
