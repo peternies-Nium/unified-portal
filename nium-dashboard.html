@@ -787,6 +787,11 @@
     }
     .period-dropdown:hover { color: var(--color-text-primary); }
 
+    .card-filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .period-wrap {
       position: relative;
       width: fit-content;
@@ -1551,13 +1556,27 @@
         <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         <div class="label">Total Balance</div>
         <div class="value"><span class="major">$8,049</span><span class="cents">.39</span></div>
-        <div class="period-wrap">
-          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <div class="period-menu">
-            <button data-value="today">Today</button>
-            <button data-value="7">Last 7 days</button>
-            <button data-value="15">Last 15 days</button>
-            <button data-value="90">Last 90 days</button>
+        <div class="card-filters">
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="today">Today</button>
+              <button data-value="7">Last 7 days</button>
+              <button data-value="15">Last 15 days</button>
+              <button data-value="90">Last 90 days</button>
+            </div>
+          </div>
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">USD<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="USD">USD</button>
+              <button data-value="EUR">EUR</button>
+              <button data-value="GBP">GBP</button>
+              <button data-value="SGD">SGD</button>
+              <button data-value="HKD">HKD</button>
+              <button data-value="AUD">AUD</button>
+              <button data-value="CAD">CAD</button>
+            </div>
           </div>
         </div>
         <div class="sparkline-wrap" data-series="balance">
@@ -1570,13 +1589,27 @@
         <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         <div class="label">Sent</div>
         <div class="value"><span class="major">$1.23M</span></div>
-        <div class="period-wrap">
-          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <div class="period-menu">
-            <button data-value="today">Today</button>
-            <button data-value="7">Last 7 days</button>
-            <button data-value="15">Last 15 days</button>
-            <button data-value="90">Last 90 days</button>
+        <div class="card-filters">
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="today">Today</button>
+              <button data-value="7">Last 7 days</button>
+              <button data-value="15">Last 15 days</button>
+              <button data-value="90">Last 90 days</button>
+            </div>
+          </div>
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">USD<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="USD">USD</button>
+              <button data-value="EUR">EUR</button>
+              <button data-value="GBP">GBP</button>
+              <button data-value="SGD">SGD</button>
+              <button data-value="HKD">HKD</button>
+              <button data-value="AUD">AUD</button>
+              <button data-value="CAD">CAD</button>
+            </div>
           </div>
         </div>
         <div class="sparkline-wrap" data-series="sent">
@@ -1589,13 +1622,27 @@
         <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         <div class="label">Received</div>
         <div class="value"><span class="major">$890K</span></div>
-        <div class="period-wrap">
-          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <div class="period-menu">
-            <button data-value="today">Today</button>
-            <button data-value="7">Last 7 days</button>
-            <button data-value="15">Last 15 days</button>
-            <button data-value="90">Last 90 days</button>
+        <div class="card-filters">
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="today">Today</button>
+              <button data-value="7">Last 7 days</button>
+              <button data-value="15">Last 15 days</button>
+              <button data-value="90">Last 90 days</button>
+            </div>
+          </div>
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">USD<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="USD">USD</button>
+              <button data-value="EUR">EUR</button>
+              <button data-value="GBP">GBP</button>
+              <button data-value="SGD">SGD</button>
+              <button data-value="HKD">HKD</button>
+              <button data-value="AUD">AUD</button>
+              <button data-value="CAD">CAD</button>
+            </div>
           </div>
         </div>
         <div class="sparkline-wrap" data-series="received">
@@ -1608,13 +1655,27 @@
         <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         <div class="label">FX Converted</div>
         <div class="value"><span class="major">$320K</span></div>
-        <div class="period-wrap">
-          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <div class="period-menu">
-            <button data-value="today">Today</button>
-            <button data-value="7">Last 7 days</button>
-            <button data-value="15">Last 15 days</button>
-            <button data-value="90">Last 90 days</button>
+        <div class="card-filters">
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="today">Today</button>
+              <button data-value="7">Last 7 days</button>
+              <button data-value="15">Last 15 days</button>
+              <button data-value="90">Last 90 days</button>
+            </div>
+          </div>
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">USD<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="USD">USD</button>
+              <button data-value="EUR">EUR</button>
+              <button data-value="GBP">GBP</button>
+              <button data-value="SGD">SGD</button>
+              <button data-value="HKD">HKD</button>
+              <button data-value="AUD">AUD</button>
+              <button data-value="CAD">CAD</button>
+            </div>
           </div>
         </div>
         <div class="sparkline-wrap" data-series="fx">
@@ -1627,13 +1688,27 @@
         <svg class="drill" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         <div class="label">Cards Active</div>
         <div class="value"><span class="major">142</span></div>
-        <div class="period-wrap">
-          <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-          <div class="period-menu">
-            <button data-value="today">Today</button>
-            <button data-value="7">Last 7 days</button>
-            <button data-value="15">Last 15 days</button>
-            <button data-value="90">Last 90 days</button>
+        <div class="card-filters">
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">Last 30 days<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="today">Today</button>
+              <button data-value="7">Last 7 days</button>
+              <button data-value="15">Last 15 days</button>
+              <button data-value="90">Last 90 days</button>
+            </div>
+          </div>
+          <div class="period-wrap">
+            <button class="period-dropdown" data-period-btn="">USD<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="period-menu">
+              <button data-value="USD">USD</button>
+              <button data-value="EUR">EUR</button>
+              <button data-value="GBP">GBP</button>
+              <button data-value="SGD">SGD</button>
+              <button data-value="HKD">HKD</button>
+              <button data-value="AUD">AUD</button>
+              <button data-value="CAD">CAD</button>
+            </div>
           </div>
         </div>
         <div class="sparkline-wrap" data-series="cards">
