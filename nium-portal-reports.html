@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NIUM Portal — Reports</title>
+  <title>NIUM Portal — Statements</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -2186,32 +2186,24 @@
       </div>
     </a>
 
-    <a href="nium-portal-analytics.html" class="nav-item-link">
-      <div class="nav-item" data-label="Analytics">
-        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-        <span class="nav-label">Analytics</span>
-      </div>
-    </a>
-
     <a href="nium-portal-reports.html" class="nav-item-link">
-      <div class="nav-item active" data-label="Reports">
-        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+      <div class="nav-item active expanded" data-label="Reports" data-expandable="true">
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></span>
         <span class="nav-label">Reports</span>
+        <span class="nav-chevron-wrap" data-chevron=""><svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
       </div>
     </a>
-
-    <a href="nium-portal-compliance.html" class="nav-item-link">
-      <div class="nav-item" data-label="Compliance">
-        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-        <span class="nav-label">Compliance</span>
-      </div>
-    </a>
+    <div class="nav-children">
+      <a href="nium-portal-reports.html" style="text-decoration:none;color:inherit;"><div class="nav-child active">Statements</div></a>
+      <a href="nium-portal-transactions.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Transactions</div></a>
+      <a href="nium-portal-scheduled-reports.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Scheduled reports</div></a>
+    </div>
 
     <div class="nav-spacer"></div>
 
-    <div class="nav-item" data-label="Docs">
+    <div class="nav-item" data-label="Nium docs">
       <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-      <span class="nav-label">Docs</span>
+      <span class="nav-label">Nium docs</span>
     </div>
 
     <div class="nav-item" data-label="Settings">
@@ -2278,7 +2270,7 @@
 
       <div class="travel-page-header">
         <div class="travel-context">
-          <h1 class="travel-title" id="page-h1">Reports</h1>
+          <h1 class="travel-title" id="page-h1">Statements</h1>
         </div>
         <button class="btn-primary travel-cta">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
