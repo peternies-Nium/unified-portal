@@ -2537,10 +2537,9 @@
     /* Kebab (vertical ellipsis) menu */
     .card-kebab-wrap { position: relative; display: inline-block; }
     .card-kebab-btn {
-      background: none; border: none; cursor: pointer; padding: 4px 6px;
-      font-size: 16px; color: var(--color-text-secondary); border-radius: 4px;
-      letter-spacing: 0; writing-mode: vertical-rl; line-height: 1;
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      background: none; border: none; cursor: pointer; padding: 4px 8px;
+      color: var(--color-text-secondary); border-radius: 4px;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
     .card-kebab-btn:hover { background: var(--color-bg-secondary); }
     .card-kebab-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; display: block; }
@@ -3023,7 +3022,7 @@
                   </div>
                 </th>
 
-                <th><span style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.04em;">Actions</span></th>
+                <th><span style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.04em;text-transform:none;">Actions</span></th>
               </tr>
             </thead>
             <tbody>
@@ -3045,7 +3044,7 @@
                   </button>
                   <div class="card-kebab-menu">
                     <button class="card-kebab-item">View statement</button>
-                    <button class="card-kebab-item">Load / Unload card</button>
+                    <button class="card-kebab-item" onclick="openLoadUnloadModal()">Load / Unload card</button>
                     <button class="card-kebab-item">Freeze card</button>
                     <button class="card-kebab-item danger">Delete card</button>
                   </div>
@@ -3069,7 +3068,7 @@
                   </button>
                   <div class="card-kebab-menu">
                     <button class="card-kebab-item">View statement</button>
-                    <button class="card-kebab-item">Load / Unload card</button>
+                    <button class="card-kebab-item" onclick="openLoadUnloadModal()">Load / Unload card</button>
                     <button class="card-kebab-item">Freeze card</button>
                     <button class="card-kebab-item danger">Delete card</button>
                   </div>
@@ -3093,7 +3092,7 @@
                   </button>
                   <div class="card-kebab-menu">
                     <button class="card-kebab-item">View statement</button>
-                    <button class="card-kebab-item">Load / Unload card</button>
+                    <button class="card-kebab-item" onclick="openLoadUnloadModal()">Load / Unload card</button>
                     <button class="card-kebab-item">Freeze card</button>
                     <button class="card-kebab-item danger">Delete card</button>
                   </div>
@@ -3117,7 +3116,7 @@
                   </button>
                   <div class="card-kebab-menu">
                     <button class="card-kebab-item">View statement</button>
-                    <button class="card-kebab-item">Load / Unload card</button>
+                    <button class="card-kebab-item" onclick="openLoadUnloadModal()">Load / Unload card</button>
                     <button class="card-kebab-item">Freeze card</button>
                     <button class="card-kebab-item danger">Delete card</button>
                   </div>
@@ -3141,7 +3140,7 @@
                   </button>
                   <div class="card-kebab-menu">
                     <button class="card-kebab-item">View statement</button>
-                    <button class="card-kebab-item">Load / Unload card</button>
+                    <button class="card-kebab-item" onclick="openLoadUnloadModal()">Load / Unload card</button>
                     <button class="card-kebab-item">Freeze card</button>
                     <button class="card-kebab-item danger">Delete card</button>
                   </div>
@@ -4376,5 +4375,209 @@
         document.querySelectorAll('.col-filter-popover.open').forEach(function(p){ p.classList.remove('open'); });
       }
     });
+  </script>
+
+  <!-- ── Load / Unload Card modal ── -->
+  <style>
+    .lum-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 500;
+      align-items: center; justify-content: center;
+    }
+    .lum-overlay.open { display: flex; }
+    .lum-modal {
+      background: #fff; border-radius: 16px; padding: 28px 28px 0;
+      width: 440px; max-width: calc(100vw - 32px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .lum-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .lum-title { font-size: 17px; font-weight: 700; color: var(--color-text-primary); }
+    .lum-subtitle { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; margin-bottom: 20px; line-height: 1.45; }
+    .lum-close {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: var(--color-text-tertiary); border-radius: 6px; line-height: 1;
+      font-size: 18px; font-family: inherit;
+    }
+    .lum-close:hover { background: var(--color-bg-secondary); color: var(--color-text-primary); }
+    /* Load / Unload toggle */
+    .lum-toggle {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1.5px solid var(--color-border-secondary);
+      border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+    }
+    .lum-tab {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 10px 0; font-size: 14px; font-weight: 500; cursor: pointer;
+      border: none; background: none; font-family: inherit;
+      color: var(--color-text-secondary); transition: background 0.12s, color 0.12s;
+    }
+    .lum-tab.active {
+      background: #fff; color: var(--color-brand-navy);
+      box-shadow: inset 0 0 0 1.5px var(--color-brand-navy);
+      border-radius: 8px;
+    }
+    .lum-tab svg { flex-shrink: 0; }
+    /* Fields */
+    .lum-field { margin-bottom: 16px; }
+    .lum-label { display: block; font-size: 12.5px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+    .lum-select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--color-border-secondary);
+      border-radius: 8px; font-size: 13.5px; font-family: inherit;
+      color: var(--color-text-primary); background: #fff; cursor: pointer; outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .lum-select:focus { border-color: var(--color-brand-navy); }
+    .lum-avail { color: #16A34A; font-size: 13px; }
+    /* Amount field */
+    .lum-amount-wrap {
+      display: flex; align-items: center;
+      border: 1px solid var(--color-border-secondary); border-radius: 8px;
+      overflow: hidden;
+    }
+    .lum-amount-wrap:focus-within { border-color: var(--color-brand-navy); }
+    .lum-currency-prefix {
+      padding: 10px 12px; background: var(--color-bg-secondary);
+      font-size: 13.5px; color: var(--color-text-secondary);
+      border-right: 1px solid var(--color-border-secondary); white-space: nowrap;
+    }
+    .lum-amount-input {
+      flex: 1; border: none; outline: none; padding: 10px 12px;
+      font-size: 13.5px; font-family: inherit; color: var(--color-text-primary);
+      background: #fff;
+    }
+    .lum-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 5px; }
+    /* Footer */
+    .lum-actions {
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+      padding: 20px 0 22px;
+    }
+    .lum-cancel {
+      padding: 9px 18px; border-radius: 8px; border: 1px solid var(--color-border-secondary);
+      background: #fff; font-size: 13.5px; font-weight: 500; color: var(--color-text-primary);
+      cursor: pointer; font-family: inherit;
+    }
+    .lum-cancel:hover { background: var(--color-bg-secondary); }
+    .lum-submit {
+      padding: 9px 20px; border-radius: 8px; border: none;
+      background: var(--color-brand-navy); color: #fff;
+      font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+    }
+    .lum-submit:hover { background: #1a2070; }
+    /* Info bar */
+    .lum-info {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: #EFF6FF; border-radius: 0 0 16px 16px;
+      padding: 12px 16px; margin: 0 -28px;
+      font-size: 12.5px; color: #1e40af; line-height: 1.45;
+    }
+    .lum-info svg { flex-shrink: 0; margin-top: 1px; }
+  </style>
+
+  <div class="lum-overlay" id="lumOverlay">
+    <div class="lum-modal">
+      <div class="lum-header">
+        <div>
+          <div class="lum-title">Manage Card Balance</div>
+          <div class="lum-subtitle">Load funds to or unload funds from the selected card.</div>
+        </div>
+        <button class="lum-close" id="lumClose" aria-label="Close">✕</button>
+      </div>
+
+      <div class="lum-toggle">
+        <button class="lum-tab active" id="lumTabLoad" onclick="lumSetTab('load')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 8 16 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>
+          Load
+        </button>
+        <button class="lum-tab" id="lumTabUnload" onclick="lumSetTab('unload')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 12 12 16 8 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+          Unload
+        </button>
+      </div>
+
+      <div class="lum-field">
+        <label class="lum-label">Funding Account</label>
+        <select class="lum-select">
+          <option>fabapp_DKK — DKK 499,237.25 available</option>
+          <option>fabapp_USD — USD 14,182,104.00 available</option>
+          <option>fabapp_EUR — EUR 9,412.80 available</option>
+          <option>fabapp_GBP — GBP 220,450.00 available</option>
+        </select>
+      </div>
+
+      <div class="lum-field">
+        <label class="lum-label">Currency</label>
+        <select class="lum-select" id="lumCurrency" onchange="lumUpdatePrefix()">
+          <option value="EUR" data-symbol="€">EUR — Euro</option>
+          <option value="USD" data-symbol="$">USD — US Dollar</option>
+          <option value="GBP" data-symbol="£">GBP — British Pound</option>
+          <option value="DKK" data-symbol="kr">DKK — Danish Krone</option>
+          <option value="SGD" data-symbol="S$">SGD — Singapore Dollar</option>
+          <option value="AED" data-symbol="د.إ">AED — UAE Dirham</option>
+        </select>
+      </div>
+
+      <div class="lum-field">
+        <label class="lum-label">Amount</label>
+        <div class="lum-amount-wrap">
+          <span class="lum-currency-prefix" id="lumPrefix">€</span>
+          <input class="lum-amount-input" type="number" id="lumAmount" value="1000.00" min="0" step="0.01" placeholder="0.00" />
+        </div>
+        <div class="lum-hint">Enter amount with up to 2 decimal places.</div>
+      </div>
+
+      <div class="lum-actions">
+        <button class="lum-cancel" id="lumCancelBtn">Cancel</button>
+        <button class="lum-submit" id="lumSubmitBtn">Load Funds</button>
+      </div>
+
+      <div class="lum-info">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="lumInfoText">Funds will be added to this card from the selected funding account.</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load / Unload modal
+    var lumOverlay  = document.getElementById('lumOverlay');
+    var lumClose    = document.getElementById('lumClose');
+    var lumCancelBtn= document.getElementById('lumCancelBtn');
+    var lumSubmitBtn= document.getElementById('lumSubmitBtn');
+    var lumInfoText = document.getElementById('lumInfoText');
+    var lumMode     = 'load';
+
+    function openLoadUnloadModal() {
+      document.querySelectorAll('.card-kebab-menu.open').forEach(function(m){ m.classList.remove('open'); });
+      lumSetTab('load');
+      lumOverlay.classList.add('open');
+    }
+    function closeLoadUnloadModal() { lumOverlay.classList.remove('open'); }
+
+    function lumSetTab(mode) {
+      lumMode = mode;
+      document.getElementById('lumTabLoad').classList.toggle('active', mode === 'load');
+      document.getElementById('lumTabUnload').classList.toggle('active', mode === 'unload');
+      lumSubmitBtn.textContent = mode === 'load' ? 'Load Funds' : 'Unload Funds';
+      lumInfoText.textContent  = mode === 'load'
+        ? 'Funds will be added to this card from the selected funding account.'
+        : 'Funds will be removed from this card to the selected funding account.';
+    }
+
+    function lumUpdatePrefix() {
+      var sel = document.getElementById('lumCurrency');
+      var sym = sel.options[sel.selectedIndex].getAttribute('data-symbol');
+      document.getElementById('lumPrefix').textContent = sym;
+    }
+
+    lumClose.addEventListener('click', closeLoadUnloadModal);
+    lumCancelBtn.addEventListener('click', closeLoadUnloadModal);
+    lumOverlay.addEventListener('click', function(e){ if (e.target === lumOverlay) closeLoadUnloadModal(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLoadUnloadModal(); });
   </script>
 </body></html>
