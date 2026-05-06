@@ -2258,6 +2258,17 @@
     .text-pop-input:focus { border-color: var(--color-brand-accent-light,#a9b4ff); }
     .text-pop-input::placeholder { color: var(--color-text-tertiary); }
 
+
+    .stmt-type-item {
+      padding: 7px 12px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+    }
+    .stmt-type-item:hover { background: var(--color-bg-secondary); }
+    .stmt-type-item.active { font-weight: 600; color: var(--color-brand-navy); }
+
     /* ── Statements page ── */
     .stmt-card {
       background: #fff;
@@ -2547,8 +2558,10 @@
         </div>
       </div>
 
+      <!-- Selectors row -->
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:20px;">
       <!-- Customer selector -->
-      <div style="margin-bottom:20px;position:relative;display:inline-block;">
+      <div style="position:relative;display:inline-block;">
         <button class="bal-customer-select" id="balCustomerBtn">
           <span class="bal-type-dot bal-dot-customer" id="balTypeDot"></span>
           <span id="balCustomerName">Workera AI</span>
@@ -2580,7 +2593,24 @@
           </div>
           <div class="bal-no-results" id="balNoResults">No customers found</div>
         </div>
-      </div>
+      </div><!-- /customer selector -->
+
+      <!-- Statement type selector -->
+      <div style="position:relative;display:inline-block;" id="stmtTypeWrap">
+        <button class="bal-customer-select" id="stmtTypeBtn">
+          <span id="stmtTypeName">Cards statements</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="bal-wallet-menu" id="stmtTypeMenu" style="min-width:200px;">
+          <div style="padding:4px;">
+            <div class="stmt-type-item active" data-value="cards">Cards statements</div>
+            <div class="stmt-type-item" data-value="payouts">Payouts statements</div>
+            <div class="stmt-type-item" data-value="payins">Payins statements</div>
+          </div>
+        </div>
+      </div><!-- /stmtTypeWrap -->
+
+      </div><!-- /selectors row -->
 
       <!-- Tab nav + tables -->
       <div class="stmt-card">
@@ -3657,6 +3687,31 @@
 </script>
 
   <script>
+
+    // Statement type dropdown
+    (function() {
+      var btn  = document.getElementById('stmtTypeBtn');
+      var menu = document.getElementById('stmtTypeMenu');
+      var name = document.getElementById('stmtTypeName');
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+      });
+      menu.querySelectorAll('.stmt-type-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          menu.querySelectorAll('.stmt-type-item').forEach(function(i) { i.classList.remove('active'); });
+          item.classList.add('active');
+          name.textContent = item.textContent;
+          menu.classList.remove('open');
+        });
+      });
+      document.addEventListener('click', function(e) {
+        if (!menu.contains(e.target) && e.target !== btn) menu.classList.remove('open');
+      });
+    })();
+
     // Statements — checkbox selection
     (function() {
       var selectAll = document.getElementById('selectAll');
