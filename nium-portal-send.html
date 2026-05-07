@@ -2684,7 +2684,66 @@
     }
     .dt-badge-cancelled::before { background: #b0b8c8; }
 
-    /* ── Column header filters ─────────────────────────────────── */
+
+    /* ── Sortable column headers ── */
+    .sort-th { cursor: pointer; user-select: none; white-space: nowrap; }
+    .sort-th:hover .sort-icon { opacity: 1; color: var(--color-text-primary); }
+    .sort-th.asc .sort-icon, .sort-th.desc .sort-icon { opacity: 1; color: var(--color-brand-navy); }
+    .sort-th-inner { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-secondary); }
+    .sort-icon { opacity: 0.3; transition: opacity 0.12s, color 0.12s; flex-shrink: 0; }
+
+    /* ── Filter pill bar ── */
+    .filter-pill-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border: 1px solid var(--color-border-secondary);
+      border-radius: 20px; background: #fff;
+      font-size: 13px; font-weight: 500; color: var(--color-text-primary);
+      cursor: pointer; font-family: inherit; position: relative;
+    }
+    .filter-pill:hover { border-color: var(--color-text-secondary); }
+    .filter-pill.active { border-color: var(--color-brand-navy); background: #f0f3ff; color: var(--color-brand-navy); }
+    .filter-pill svg { color: var(--color-text-tertiary); }
+    .filter-pill.active svg { color: var(--color-brand-navy); }
+
+    /* ── Advanced filters panel ── */
+    .adv-filters-wrap { background: #fff; border: 1px solid var(--color-border-tertiary); border-radius: var(--radius-lg); margin-bottom: 16px; display: none; }
+    .adv-filters-wrap.open { display: block; }
+    .adv-filters-body { padding: 20px; display: none; }
+    .adv-filters-body.open { display: block; }
+    .adv-filters-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px 24px; margin-bottom: 20px; }
+    .adv-filter-field { display: flex; flex-direction: column; gap: 6px; }
+    .adv-filter-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); }
+    .adv-filter-select, .adv-filter-input {
+      border: 1px solid var(--color-border-secondary); border-radius: var(--radius-md);
+      padding: 8px 12px; font-size: 13px; font-family: inherit;
+      color: var(--color-text-primary); background: #fff; outline: none;
+      width: 100%; box-sizing: border-box;
+    }
+    .adv-filter-select:focus, .adv-filter-input:focus { border-color: var(--color-brand-accent-light); }
+    .adv-filter-input::placeholder { color: var(--color-text-tertiary); }
+    .adv-filters-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--color-border-tertiary); }
+    .adv-saved-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 28px; }
+    .adv-saved-label { font-size: 12px; color: var(--color-text-tertiary); }
+    .adv-saved-chip { display: inline-flex; align-items: center; gap: 4px; background: #eef0ff; color: var(--color-brand-navy); border: 1px solid #c5caff; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 500; cursor: pointer; }
+    .adv-saved-chip:hover { background: #dce0ff; }
+    .chip-del { font-size: 15px; line-height: 1; opacity: 0.5; margin-left: 2px; }
+    .chip-del:hover { opacity: 1; }
+    .adv-footer-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .adv-btn-save { font-size: 13px; font-weight: 500; color: var(--color-brand-navy); background: none; border: 1px solid var(--color-border-secondary); border-radius: var(--radius-md); padding: 7px 14px; cursor: pointer; font-family: inherit; }
+    .adv-btn-save:hover { background: #f0f3ff; }
+    .adv-btn-clear { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); background: none; border: none; cursor: pointer; font-family: inherit; padding: 7px 10px; }
+    .adv-btn-clear:hover { color: var(--color-text-primary); }
+    .adv-btn-apply { font-size: 13px; font-weight: 600; background: var(--color-brand-navy); color: #fff; border: none; border-radius: var(--radius-md); padding: 7px 18px; cursor: pointer; font-family: inherit; }
+    .adv-btn-apply:hover { background: #1a2070; }
+    .adv-save-pop { display: none; position: absolute; bottom: calc(100% + 8px); right: 0; background: #fff; border: 1px solid var(--color-border-secondary); border-radius: var(--radius-md); box-shadow: 0 6px 20px rgba(0,0,0,0.12); padding: 12px; width: 240px; z-index: 40; }
+    .adv-save-pop.open { display: block; }
+    .adv-save-pop-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px; }
+    .adv-save-pop-input { width: 100%; box-sizing: border-box; border: 1px solid var(--color-border-secondary); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 13px; font-family: inherit; outline: none; margin-bottom: 8px; }
+    .adv-save-pop-input:focus { border-color: var(--color-brand-accent-light); }
+    .adv-save-pop-btn { width: 100%; padding: 6px; background: var(--color-brand-navy); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+
+    /* ── Column header filters (removed — sortable only) ── */
 
     /* Wrapper inside each <th> that has a filter */
     .col-filter-wrap {
@@ -3159,150 +3218,104 @@
           </div>
         </div>
 
+        <!-- Filter pill bar -->
+        <div class="filter-pill-bar">
+          <button class="filter-pill" id="payFiltersPill" onclick="togglePayFilters()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filters
+            <svg id="payFiltersPillChevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+
+        <!-- Advanced filters panel -->
+        <div class="adv-filters-wrap" id="payAdvFiltersWrap">
+          <div class="adv-filters-body open" id="payAdvFiltersBody">
+            <div class="adv-filters-grid">
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">Date Range</label>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <input type="date" class="adv-filter-input" id="pfDateFrom" style="flex:1;" />
+                  <span style="font-size:12px;color:var(--color-text-tertiary);">–</span>
+                  <input type="date" class="adv-filter-input" id="pfDateTo" style="flex:1;" />
+                </div>
+              </div>
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">Type</label>
+                <select class="adv-filter-select" id="pfType">
+                  <option value="">Any</option>
+                  <option>Inline</option>
+                  <option>Upload</option>
+                </select>
+              </div>
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">Status</label>
+                <select class="adv-filter-select" id="pfStatus">
+                  <option value="">Any</option>
+                  <option>Uploaded</option>
+                  <option>Upload failed</option>
+                  <option>Validation failed</option>
+                  <option>Validation partially successful</option>
+                  <option>Validation successful</option>
+                  <option>Submitted for approval</option>
+                  <option>Rejected</option>
+                  <option>Approved</option>
+                  <option>Submitted for payout</option>
+                  <option>Cancelled</option>
+                </select>
+              </div>
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">File name</label>
+                <input type="text" class="adv-filter-input" id="pfFileName" placeholder="Search file name…" />
+              </div>
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">Maker</label>
+                <input type="text" class="adv-filter-input" id="pfMaker" placeholder="Search maker…" />
+              </div>
+
+              <div class="adv-filter-field">
+                <label class="adv-filter-label">Checker</label>
+                <input type="text" class="adv-filter-input" id="pfChecker" placeholder="Search checker…" />
+              </div>
+
+            </div>
+
+            <div class="adv-filters-footer">
+              <div class="adv-saved-wrap" id="payAdvSavedWrap">
+                <span class="adv-saved-label" style="opacity:0.5;">No saved filters</span>
+              </div>
+              <div class="adv-footer-actions">
+                <button class="adv-btn-clear" onclick="clearPayFilters()">Clear Filters</button>
+                <div style="position:relative;">
+                  <button class="adv-btn-save" id="payAdvSaveBtn" onclick="togglePaySavePop()">Save filter</button>
+                  <div class="adv-save-pop" id="payAdvSavePop">
+                    <div class="adv-save-pop-label">Name this filter</div>
+                    <input class="adv-save-pop-input" id="payAdvSaveInput" type="text" placeholder="e.g. Pending approvals" />
+                    <button class="adv-save-pop-btn" onclick="savePayFilter()">Save</button>
+                  </div>
+                </div>
+                <button class="adv-btn-apply" onclick="applyPayFilters()">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Payouts table -->
         <div class="pay-table-wrap">
           <table class="data-table" id="payoutsTable">
             <thead>
               <tr>
-
-                <!-- Created (UTC) — date range preset popover -->
-                <th>
-                  <div class="col-filter-wrap">
-                    <button class="col-filter-btn" id="dateFilterBtn">
-                      Created (UTC)
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                    </button>
-                    <div class="col-filter-popover" id="dateFilterPop" style="min-width:190px;">
-                      <div class="date-pop-presets">
-                        <button class="date-pop-preset active" data-preset="all">All time</button>
-                        <button class="date-pop-preset" data-preset="24h">Last 24 hours</button>
-                        <button class="date-pop-preset" data-preset="7d">Last 7 days</button>
-                        <button class="date-pop-preset" data-preset="30d">Last 30 days</button>
-                      </div>
-                      <div class="date-pop-custom">
-                        <div class="date-pop-custom-label">Custom range</div>
-                        <div class="date-pop-inputs">
-                          <div class="date-pop-field">
-                            <label>From</label>
-                            <input class="date-pop-input" type="date" id="dateFrom" />
-                          </div>
-                          <div class="date-pop-field">
-                            <label>To</label>
-                            <input class="date-pop-input" type="date" id="dateTo" />
-                          </div>
-                        </div>
-                        <button class="date-pop-apply" id="dateApplyBtn">Apply</button>
-                      </div>
-                    </div>
-                  </div>
-                </th>
-
-                <!-- Type — filter popover (Inline / Upload) + sort toggle -->
-                <th>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <div class="col-filter-wrap">
-                      <button class="col-filter-btn" id="typeFilterBtn">
-                        Type
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                      </button>
-                      <div class="col-filter-popover" id="typeFilterPop" style="min-width:140px;">
-                        <div style="padding:6px 4px;">
-                          <label class="status-pop-item"><input class="status-pop-checkbox type-radio" type="radio" name="typeFilter" value="all" checked /><span class="status-pop-name">All</span></label>
-                          <label class="status-pop-item"><input class="status-pop-checkbox type-radio" type="radio" name="typeFilter" value="Inline" /><span class="status-pop-name">Inline</span></label>
-                          <label class="status-pop-item"><input class="status-pop-checkbox type-radio" type="radio" name="typeFilter" value="Upload" /><span class="status-pop-name">Upload</span></label>
-                        </div>
-                      </div>
-                    </div>
-                    <button class="col-sort-btn" id="typeSortBtn" title="Sort by type" data-sort="none">
-                      <svg class="sort-icon sort-icon-both" width="10" height="14" viewBox="0 0 10 14" fill="none"><path d="M5 1L1.5 5H8.5L5 1Z" fill="currentColor" opacity="0.35"/><path d="M5 13L8.5 9H1.5L5 13Z" fill="currentColor" opacity="0.35"/></svg>
-                      <svg class="sort-icon sort-icon-asc" width="10" height="14" viewBox="0 0 10 14" fill="none" style="display:none"><path d="M5 1L1.5 5H8.5L5 1Z" fill="currentColor"/><path d="M5 13L8.5 9H1.5L5 13Z" fill="currentColor" opacity="0.2"/></svg>
-                      <svg class="sort-icon sort-icon-desc" width="10" height="14" viewBox="0 0 10 14" fill="none" style="display:none"><path d="M5 1L1.5 5H8.5L5 1Z" fill="currentColor" opacity="0.2"/><path d="M5 13L8.5 9H1.5L5 13Z" fill="currentColor"/></svg>
-                    </button>
-                  </div>
-                </th>
-
-                <!-- Status — grouped multi-select popover -->
-                <th>
-                  <div class="col-filter-wrap">
-                    <button class="col-filter-btn" id="statusFilterBtn">
-                      Status
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                    </button>
-                    <div class="col-filter-popover" id="statusFilterPop" style="min-width:230px;">
-                      <div class="status-pop-controls">
-                        <button class="status-pop-ctrl" id="statusSelectAll">Select all</button>
-                        <button class="status-pop-ctrl" id="statusClear">Clear</button>
-                      </div>
-                      <div class="status-pop-body">
-                        <!-- Upload -->
-                        <div class="status-pop-group-label">Upload</div>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Uploaded" /><span class="status-pop-dot" style="background:#7a8fa6;"></span><span class="status-pop-name">Uploaded</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Upload failed" /><span class="status-pop-dot" style="background:#d04040;"></span><span class="status-pop-name">Upload failed</span></label>
-                        <!-- Validation -->
-                        <div class="status-pop-group-label">Validation</div>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Validation failed" /><span class="status-pop-dot" style="background:#d04040;"></span><span class="status-pop-name">Validation failed</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Validation partially successful" /><span class="status-pop-dot" style="background:#e07b0e;"></span><span class="status-pop-name">Validation partially successful</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Validation successful" /><span class="status-pop-dot" style="background:#2ea44f;"></span><span class="status-pop-name">Validation successful</span></label>
-                        <!-- Approval -->
-                        <div class="status-pop-group-label">Approval</div>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Submitted for approval" /><span class="status-pop-dot" style="background:#7a5fc0;"></span><span class="status-pop-name">Submitted for approval</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Rejected" /><span class="status-pop-dot" style="background:#d04040;"></span><span class="status-pop-name">Rejected</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Approved" /><span class="status-pop-dot" style="background:#2ea44f;"></span><span class="status-pop-name">Approved</span></label>
-                        <!-- Payout -->
-                        <div class="status-pop-group-label">Payout</div>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Submitted for payout" /><span class="status-pop-dot" style="background:#0a9e9e;"></span><span class="status-pop-name">Submitted for payout</span></label>
-                        <label class="status-pop-item"><input class="status-pop-checkbox" type="checkbox" value="Cancelled" /><span class="status-pop-dot" style="background:#b0b8c8;"></span><span class="status-pop-name">Cancelled</span></label>
-                      </div>
-                    </div>
-                  </div>
-                </th>
-
-                <!-- File name — text search popover -->
-                <th>
-                  <div class="col-filter-wrap">
-                    <button class="col-filter-btn" id="fileFilterBtn">
-                      File name
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                    </button>
-                    <div class="col-filter-popover" id="fileFilterPop" style="min-width:210px;">
-                      <div class="text-pop-inner">
-                        <input class="text-pop-input" id="fileFilterInput" type="text" placeholder="Search file name…" autocomplete="off" />
-                      </div>
-                    </div>
-                  </div>
-                </th>
-
-                <!-- Maker — text search popover -->
-                <th>
-                  <div class="col-filter-wrap">
-                    <button class="col-filter-btn" id="makerFilterBtn">
-                      Maker
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                    </button>
-                    <div class="col-filter-popover" id="makerFilterPop" style="min-width:200px;">
-                      <div class="text-pop-inner">
-                        <input class="text-pop-input" id="makerFilterInput" type="text" placeholder="Search maker…" autocomplete="off" />
-                      </div>
-                    </div>
-                  </div>
-                </th>
-
-                <!-- Checker — text search popover -->
-                <th>
-                  <div class="col-filter-wrap">
-                    <button class="col-filter-btn" id="checkerFilterBtn">
-                      Checker
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-                    </button>
-                    <div class="col-filter-popover" id="checkerFilterPop" style="min-width:200px;">
-                      <div class="text-pop-inner">
-                        <input class="text-pop-input" id="checkerFilterInput" type="text" placeholder="Search checker…" autocomplete="off" />
-                      </div>
-                    </div>
-                  </div>
-                </th>
-
-                <th><span style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.04em;">Actions</span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Created (UTC) <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Type <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Status <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">File name <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Maker <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Checker <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th><span class="sort-th-inner" style="cursor:default;">Actions</span></th>
               </tr>
             </thead>
             <tbody id="payoutsTbody">
@@ -4549,5 +4562,87 @@
   }
 })();
 </script>
+
+  <script>
+    // Payouts — filter pill + advanced filters
+    var payFiltersOpen = false;
+
+    function togglePayFilters() {
+      var wrap = document.getElementById('payAdvFiltersWrap');
+      var body = document.getElementById('payAdvFiltersBody');
+      var pill = document.getElementById('payFiltersPill');
+      var chev = document.getElementById('payFiltersPillChevron');
+      payFiltersOpen = !payFiltersOpen;
+      wrap.classList.toggle('open', payFiltersOpen);
+      body.classList.toggle('open', payFiltersOpen);
+      pill.classList.toggle('active', payFiltersOpen);
+      chev.style.transform = payFiltersOpen ? 'rotate(180deg)' : '';
+    }
+
+    function clearPayFilters() {
+      ['pfDateFrom','pfDateTo','pfType','pfStatus','pfFileName','pfMaker','pfChecker']
+        .forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
+    }
+
+    function applyPayFilters() { togglePayFilters(); }
+
+    var payFiltersSaved = {};
+
+    function togglePaySavePop() {
+      document.getElementById('payAdvSavePop').classList.toggle('open');
+      document.getElementById('payAdvSaveInput').focus();
+    }
+
+    function savePayFilter() {
+      var name = document.getElementById('payAdvSaveInput').value.trim();
+      if (!name) return;
+      payFiltersSaved[name] = {};
+      document.getElementById('payAdvSavePop').classList.remove('open');
+      document.getElementById('payAdvSaveInput').value = '';
+      renderPayChips();
+    }
+
+    function renderPayChips() {
+      var wrap = document.getElementById('payAdvSavedWrap');
+      var names = Object.keys(payFiltersSaved);
+      wrap.innerHTML = names.length
+        ? '<span class="adv-saved-label">Saved:</span>' + names.map(function(n) {
+            return '<span class="adv-saved-chip">' + n + ' <span class="chip-del" onclick="event.stopPropagation();deletePayFilter(\'' + n + '\')">×</span></span>';
+          }).join('')
+        : '<span class="adv-saved-label" style="opacity:0.5;">No saved filters</span>';
+    }
+
+    function deletePayFilter(name) {
+      delete payFiltersSaved[name];
+      renderPayChips();
+    }
+
+    // Sort
+    function sortTable(th) {
+      var table = th.closest('table');
+      var tbody = table.querySelector('tbody');
+      var ths = Array.from(th.closest('tr').querySelectorAll('.sort-th'));
+      var col = ths.indexOf(th);
+      var asc = !th.classList.contains('asc');
+      ths.forEach(function(t) { t.classList.remove('asc','desc'); });
+      th.classList.add(asc ? 'asc' : 'desc');
+      var rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort(function(a, b) {
+        var at = (a.cells[col] ? a.cells[col].textContent : '').trim();
+        var bt = (b.cells[col] ? b.cells[col].textContent : '').trim();
+        var an = parseFloat(at.replace(/[^0-9.-]/g,'')), bn = parseFloat(bt.replace(/[^0-9.-]/g,''));
+        var cmp = (!isNaN(an) && !isNaN(bn)) ? an - bn : at.localeCompare(bt);
+        return asc ? cmp : -cmp;
+      });
+      rows.forEach(function(r) { tbody.appendChild(r); });
+    }
+
+    document.addEventListener('click', function(e) {
+      var pop = document.getElementById('payAdvSavePop');
+      var btn = document.getElementById('payAdvSaveBtn');
+      if (pop && !pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+  </script>
+
 </body>
 </html>
