@@ -2334,7 +2334,7 @@
       margin-bottom: 0;
       margin-top: 0;
       border-bottom: 1px solid var(--color-border-tertiary);
-      padding: 0 16px;
+      padding: 0;
     }
     .cards-tab {
       padding: 12px 16px;
@@ -2365,7 +2365,6 @@
       margin-top: 0;
     }
     .cards-tab-card .cards-tab-panel { padding: 0; }
-    .cards-tab-card .data-table-wrap { border-radius: 0; box-shadow: none; border: none; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .cards-tab-card .data-table { min-width: 960px; }
     .cards-tab-card #tab-management .data-table { border-radius: 0; }
 
@@ -2472,9 +2471,9 @@
     /* Filters panel — now a floating panel below the pill bar */
     .adv-filters-wrap {
       background: #fff;
-      border: 1px solid var(--color-border-tertiary);
+      border: 0.5px solid var(--color-border-tertiary);
       border-radius: var(--radius-lg);
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       display: none;
     }
     .adv-filters-wrap.open { display: block; }
@@ -2492,7 +2491,7 @@
       background: none; border: none; cursor: pointer; font-family: inherit;
     }
     .adv-filters-toggle svg { transition: transform 0.2s; }
-    .adv-filters-body { padding: 0 20px 20px; display: none; border-top: 1px solid var(--color-border-tertiary); padding-top: 20px; }
+    .adv-filters-body { padding: 20px; display: none; border-top: 1px solid var(--color-border-tertiary); }
     .adv-filters-body.open { display: block; }
     .adv-filters-grid {
       display: grid;
@@ -2525,6 +2524,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding-top: 16px;
       border-top: 1px solid var(--color-border-tertiary);
+      margin: 0;
     }
     .adv-saved-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 28px; }
     .adv-saved-label { font-size: 12px; color: var(--color-text-tertiary); }
@@ -2589,6 +2589,121 @@
     .adv-search-input:focus { border-color: var(--color-brand-accent-light); }
     .adv-search-input::placeholder { color: var(--color-text-tertiary); }
 
+
+
+
+
+    /* ── Shared tab action bar (sits between stats and tab card) ── */
+    .cards-action-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 12px 0;
+    }
+    .cards-action-bar-left { display: flex; align-items: center; gap: 8px; }
+    .cards-action-bar-right { display: flex; align-items: center; gap: 8px; }
+
+    /* Table padding matching stats cards */
+    .cards-tab-card .data-table-wrap { border-radius: 0; box-shadow: none; border: none; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0; }
+    .cards-tab-card .stmt-pagination  { padding: 12px 0; border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); }
+
+
+
+    /* Consistent row style across all tabs */
+    .cards-tab-card .data-table tbody tr { border-top: 1px solid var(--color-border-tertiary); }
+    .cards-tab-card .data-table tbody tr:first-child { border-top: none; }
+    .cards-tab-card .data-table tbody tr:hover { background: var(--color-bg-secondary); }
+    .cards-tab-card .data-table tbody td { padding: 14px 12px; vertical-align: middle; font-size: 13px; color: var(--color-text-primary); }
+    .cards-tab-card .stmt-table tbody td { padding: 14px 12px; vertical-align: middle; font-size: 13px; color: var(--color-text-primary); }
+    .cards-tab-card .stmt-table tbody tr { border-top: 1px solid var(--color-border-tertiary); }
+    .cards-tab-card .stmt-table tbody tr:first-child { border-top: none; }
+    .cards-tab-card .stmt-table tbody tr:hover { background: var(--color-bg-secondary); }
+
+    .tab-action-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+    }
+    .status-tag {
+      display: inline-flex; align-items: center;
+      font-size: 11.5px; font-weight: 500;
+      padding: 2px 8px; border-radius: 4px;
+    }
+    .status-tag-success { background: var(--color-success-tag-bg); color: var(--color-success-text); }
+    .status-tag-danger  { background: var(--color-danger-tag-bg);  color: var(--color-danger-tag-text); }
+
+    .tab-filter-bar { padding: 12px 16px 0; }
+    .tab-filter-bar .filter-pill { margin-bottom: 8px; }
+
+    /* ── Scheduled Load drawer ── */
+    .sl-drawer-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35); z-index: 600;
+    }
+    .sl-drawer-overlay.open { display: block; }
+    .sl-drawer {
+      position: fixed; top: 0; right: -520px; width: 480px; height: 100vh;
+      background: #fff; box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+      z-index: 601; display: flex; flex-direction: column;
+      transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+    }
+    .sl-drawer.open { right: 0; }
+    .sl-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--color-border-tertiary);
+      flex-shrink: 0;
+    }
+    .sl-drawer-title { font-size: 17px; font-weight: 700; color: var(--color-text-primary); }
+    .sl-drawer-close {
+      background: none; border: none; cursor: pointer; font-size: 20px;
+      color: var(--color-text-tertiary); line-height: 1; padding: 4px;
+      border-radius: 6px; font-family: inherit;
+    }
+    .sl-drawer-close:hover { background: var(--color-bg-secondary); color: var(--color-text-primary); }
+    .sl-drawer-body { flex: 1; overflow-y: auto; padding: 24px; }
+    .sl-step { margin-bottom: 28px; }
+    .sl-step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .sl-step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--color-brand-navy); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sl-step-title { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+    .sl-step-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+    .sl-field { margin-bottom: 14px; }
+    .sl-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 5px; display: block; }
+    .sl-input {
+      width: 100%; box-sizing: border-box; padding: 9px 12px;
+      border: 1px solid var(--color-border-secondary); border-radius: var(--radius-md);
+      font-size: 13px; font-family: inherit; color: var(--color-text-primary);
+      outline: none; background: #fff;
+    }
+    .sl-input:focus { border-color: var(--color-brand-accent-light); }
+    .sl-load-block {
+      border: 1px solid var(--color-border-tertiary); border-radius: var(--radius-md);
+      padding: 14px; margin-bottom: 12px;
+    }
+    .sl-load-label { font-size: 12px; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 10px; }
+    .sl-amount-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .sl-ccy-select { width: 80px; flex-shrink: 0; padding: 8px 10px; border: 1px solid var(--color-border-secondary); border-radius: var(--radius-sm); font-size: 13px; font-family: inherit; outline: none; background: #fff; }
+    .sl-amount-input { flex: 1; }
+    .sl-date-row { display: flex; align-items: center; gap: 8px; }
+    .sl-date-input { flex: 1; }
+    .sl-add-load {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: var(--color-brand-navy);
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      padding: 0; margin-top: 4px;
+    }
+    .sl-add-load:hover { text-decoration: underline; }
+    .sl-drawer-footer {
+      padding: 16px 24px; border-top: 1px solid var(--color-border-tertiary);
+      display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0;
+    }
+    .sl-btn-cancel { font-size: 13px; font-weight: 500; color: var(--color-text-primary); background: none; border: 1px solid var(--color-border-secondary); border-radius: var(--radius-md); padding: 8px 18px; cursor: pointer; font-family: inherit; }
+    .sl-btn-cancel:hover { background: var(--color-bg-secondary); }
+    .sl-btn-save { font-size: 13px; font-weight: 600; background: var(--color-brand-navy); color: #fff; border: none; border-radius: var(--radius-md); padding: 8px 20px; cursor: pointer; font-family: inherit; }
+    .sl-btn-save:hover { background: #1a2070; }
 
     /* ── Sortable column headers ── */
     .sort-th {
@@ -2799,7 +2914,7 @@
     <div class="nav-children">
       <a href="nium-portal-cards-overview.html" style="text-decoration:none;color:inherit;"><div class="nav-child active">Cards</div></a>
       <a href="nium-portal-send.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Payouts</div></a>
-      <a href="nium-portal-receive.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Payins</div></a>
+      <a href="nium-portal-receive.html" style="text-decoration:none;color:inherit;display:none;"><div class="nav-child">Payins</div></a>
       <a href="nium-portal-money.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Wallets</div></a>
     </div>
     <a href="nium-portal-beneficiaries.html" class="nav-item-link">
@@ -2893,9 +3008,13 @@
             <div class="content-inner">
       <div class="travel-page-header">
         <h1 class="travel-title" id="page-h1">Cards</h1>
-        <div style="display:flex;gap:16px;align-items:center;">
-          <button id="exportBtn" style="display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;color:#0C0E54;font-size:14px;font-weight:500;padding:6px 4px;" onclick="document.getElementById('exportModal').style.display='flex'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="currentColor"/></svg> Export</button>
-          <button class="btn-move-funds" onclick="openDrawer()">+ Issue card</button>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <!-- Export button — hidden (moved to action bar) -->
+          <button id="exportBtn" class="btn-more-actions" style="display:none;" onclick="document.getElementById('exportModal').style.display='flex'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+
         </div>
       </div>
 
@@ -2986,14 +3105,8 @@
 
         </div>
 
-        <!-- Filter pill bar -->
-        <div class="filter-pill-bar">
-          <button class="filter-pill" id="filtersPill" onclick="toggleAdvFilters()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filters
-            <svg id="filtersPillChevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div style="position:relative;display:none;">
+        <!-- Date pill hidden -->
+        <div style="display:none;position:relative;">
             <button class="filter-pill" id="datePill" onclick="toggleDatePill()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               <span id="datePillLabel">Date</span>
@@ -3032,7 +3145,29 @@
         </div>
 
         <!-- Advanced filters panel -->
-        <div class="adv-filters-wrap" id="advFiltersWrap">
+
+      <div class="cards-action-bar" id="cardsActionBar" style="margin:0 32px;">
+        <div class="cards-action-bar-left">
+          <button class="filter-pill" id="mgmtFiltersPill" onclick="toggleAdvFilters()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filters
+            <svg id="filtersPillChevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="cards-action-bar-right">
+          <button class="btn-more-actions" style="display:flex;align-items:center;gap:6px;" onclick="document.getElementById('exportModal').style.display='flex'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <!-- Issue card — Card list only -->
+          <button class="btn-move-funds" id="btnIssueCard" onclick="openDrawer()">+ Issue card</button>
+          <!-- Add scheduled load — Scheduled loads only -->
+          <button class="btn-move-funds" id="btnAddLoad" style="display:none;" onclick="openScheduledLoadDrawer()">+ Add scheduled load</button>
+        </div>
+      </div>
+
+      <!-- Tab card -->
+        <div class="adv-filters-wrap" id="advFiltersWrap" style="margin:0 32px 8px;">
 
 
           <div class="adv-filters-body" id="advFiltersBody">
@@ -3144,15 +3279,18 @@
 
       </div><!-- /cards-stats-block -->
 
-      <!-- Tab card -->
-      <div class="cards-tab-card" style="margin-top:20px;">
+      <!-- Shared action bar — between stats and tab card, updates per tab -->
+
+      <div class="cards-tab-card" style="margin:0 32px 32px;">
         <div id="cards-tabs" class="cards-tab-nav">
-          <button class="cards-tab active" data-tab="management">Management</button>
+          <button class="cards-tab active" data-tab="management">Card list</button>
+          <button class="cards-tab" data-tab="scheduled">Scheduled loads</button>
           <button class="cards-tab" data-tab="history">History</button>
-          <button class="cards-tab" data-tab="funding">Funding</button>
+          <button class="cards-tab" data-tab="authorisations">Authorisations</button>
         </div>
 
-        <!-- Management tab -->
+
+        <!-- Card list tab -->
         <div id="tab-management" class="cards-tab-panel">
 
         <!-- Card table -->
@@ -3370,53 +3508,215 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- History tab -->
         </div><!-- /tab-management -->
 
-        <div id="tab-history" class="cards-tab-panel" style="display:none;">
-        <div class="data-table-wrap">
-          <table class="data-table">
-            <thead><tr>
-              <th>Date</th><th>Card</th><th>Merchant</th><th>Amount</th><th>Currency</th><th>Status</th>
-            </tr></thead>
-            <tbody>
-              <tr>
-                <td colspan="6" style="text-align:center;padding:64px 24px;border:none;">
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);">No transaction history</div>
-                    <div style="font-size:13px;color:var(--color-text-secondary);max-width:300px;line-height:1.5;">Card transactions will appear here once cards are active.</div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <!-- Scheduled loads tab -->
+        <div id="tab-scheduled" class="cards-tab-panel" style="display:none;">
+          <div class="adv-filters-wrap" id="schedFiltersWrap">
+            <div class="adv-filters-body" id="schedFiltersBody">
+              <div class="adv-filters-grid">
+                <div class="adv-filter-field"><label class="adv-filter-label">Card reference</label><input type="text" class="adv-filter-input" placeholder="Search card reference…" /></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Funding account</label><input type="text" class="adv-filter-input" placeholder="Search funding account…" /></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">State</label><select class="adv-filter-select"><option value="">Any</option><option>Pending load</option><option>Scheduled</option><option>Completed</option><option>Failed</option></select></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Schedule date range</label><div style="display:flex;align-items:center;gap:6px;"><input type="date" class="adv-filter-input" style="flex:1;" /><span style="font-size:12px;color:var(--color-text-tertiary);">–</span><input type="date" class="adv-filter-input" style="flex:1;" /></div></div>
+              </div>
+              <div class="adv-filters-footer"><div class="adv-saved-wrap"><span class="adv-saved-label" style="opacity:0.5;">No saved filters</span></div><div class="adv-footer-actions"><button class="adv-btn-clear">Clear Filters</button><button class="adv-btn-apply" onclick="toggleTabFilters('sched')">Apply Filters</button></div></div>
+            </div>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Card reference <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Funding account <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Transaction amount <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Creation date <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Schedule date <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Clearance date <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">State <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+              </tr></thead>
+              <tbody>
+                <tr><td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">OUwJPCiKaWy8c8or3hUkWBeFs</a></td><td>fabapp_DKK</td><td>EUR 50.00</td><td>07/05/2026</td><td>12/05/2026</td><td>31/07/2026</td><td><span class="pdf-badge" style="background:#faeeda;color:#633806;">Pending load</span></td></tr>
+                <tr><td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">Lk9MpQ2nRtYh7vZd8sXfJwPa</a></td><td>fabapp_EUR</td><td>EUR 125.00</td><td>08/05/2026</td><td>15/05/2026</td><td>31/07/2026</td><td><span class="pdf-badge" style="background:#faeeda;color:#633806;">Pending load</span></td></tr>
+                <tr><td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">aRt72BbNxQpL9kMz3vTyHqWe</a></td><td>fabapp_USD</td><td>USD 200.00</td><td>09/05/2026</td><td>16/05/2026</td><td>01/08/2026</td><td><span class="pdf-badge pdf-generating" style="background:#e6f1fb;color:#0c447c;">Scheduled</span></td></tr>
+                <tr><td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">ZpQ8LmVzT7nHpK2sWxRyEdQa</a></td><td>fabapp_GBP</td><td>GBP 75.00</td><td>10/05/2026</td><td>17/05/2026</td><td>02/08/2026</td><td><span class="pdf-badge pdf-generating" style="background:#e6f1fb;color:#0c447c;">Scheduled</span></td></tr>
+                <tr><td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">mNv4QjTyLpRv6wSf2KzBpUdE</a></td><td>fabapp_AED</td><td>AED 300.00</td><td>11/05/2026</td><td>18/05/2026</td><td>03/08/2026</td><td><span class="pdf-badge pdf-ready">Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pay-table-footer">
+            <span>Showing 1 to 5 of 5 results</span>
+            <div class="pay-page-btns">
+              <button class="pay-page-btn" disabled>«</button>
+              <button class="pay-page-btn" disabled>‹</button>
+              <button class="pay-page-btn active">1</button>
+              <button class="pay-page-btn" disabled>›</button>
+              <button class="pay-page-btn" disabled>»</button>
+            </div>
+          </div>
+        </div><!-- /tab-scheduled -->
 
-      <!-- Funding tab -->
-        <div id="tab-funding" class="cards-tab-panel" style="display:none;">
-        <div class="data-table-wrap">
-          <table class="data-table">
-            <thead><tr>
-              <th>Account name</th><th>Bank</th><th>Currency</th><th>Balance</th><th>Status</th><th>Actions</th>
-            </tr></thead>
-            <tbody>
-              <tr>
-                <td colspan="6" style="text-align:center;padding:64px 24px;border:none;">
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);">No funding accounts linked</div>
-                    <div style="font-size:13px;color:var(--color-text-secondary);max-width:300px;line-height:1.5;">Link a bank account or funding source to enable card payments.</div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <!-- History tab -->
+        <div id="tab-history" class="cards-tab-panel" style="display:none;">
+          <div class="adv-filters-wrap" id="histFiltersWrap">
+            <div class="adv-filters-body" id="histFiltersBody">
+              <div class="adv-filters-grid">
+                <div class="adv-filter-field"><label class="adv-filter-label">Card reference</label><input type="text" class="adv-filter-input" placeholder="Search card reference…" /></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Card brand</label><select class="adv-filter-select"><option value="">Any</option><option>Visa</option><option>Mastercard</option><option>UATP</option><option>Diners</option></select></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Card currency</label><select class="adv-filter-select"><option value="">Any</option><option>EUR</option><option>USD</option><option>GBP</option><option>AED</option></select></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Transaction date</label><div style="display:flex;align-items:center;gap:6px;"><input type="date" class="adv-filter-input" style="flex:1;" /><span style="font-size:12px;color:var(--color-text-tertiary);">–</span><input type="date" class="adv-filter-input" style="flex:1;" /></div></div>
+              </div>
+              <div class="adv-filters-footer"><div class="adv-saved-wrap"><span class="adv-saved-label" style="opacity:0.5;">No saved filters</span></div><div class="adv-footer-actions"><button class="adv-btn-clear">Clear Filters</button><button class="adv-btn-apply" onclick="toggleTabFilters('hist')">Apply Filters</button></div></div>
+            </div>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Date <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Card reference <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Transaction type / ref <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Participant amount <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Adjusted amount <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Balance <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Reversal <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Status <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Transaction amount <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">25/11/2019<br><span style="color:var(--color-text-tertiary);">06:10 PM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">OJwJpPnRkBDu7jNnDVe8pYP</a></td>
+                  <td><div style="font-size:13px;">Card Load</div><div style="font-size:11px;color:var(--color-text-tertiary);">TRX-191125-0001</div></td>
+                  <td>EUR 12.45</td>
+                  <td><div>EUR 30.87</div><div style="font-size:11px;color:var(--color-text-tertiary);">Base: EUR 30.87<br>Fees: EUR 0.00<br>FX: 1.0000</div></td>
+                  <td>EUR 30.87</td>
+                  <td>No</td>
+                  <td><span class="pdf-badge pdf-ready">Completed</span></td>
+                  <td>EUR 30.87</td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">24/11/2019<br><span style="color:var(--color-text-tertiary);">11:22 AM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">OJwJpPnRkBDu7jNnDVe8pYP</a></td>
+                  <td><div style="font-size:13px;">Purchase</div><div style="font-size:11px;color:var(--color-text-tertiary);">TRX-191124-0002</div></td>
+                  <td>EUR 15.90</td>
+                  <td><div>EUR 12.45</div><div style="font-size:11px;color:var(--color-text-tertiary);">Base: EUR 12.45<br>Fees: EUR 0.00<br>FX: 1.0000</div></td>
+                  <td>EUR 18.42</td>
+                  <td>No</td>
+                  <td><span class="pdf-badge pdf-ready">Completed</span></td>
+                  <td>EUR 12.45</td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">23/11/2019<br><span style="color:var(--color-text-tertiary);">04:05 PM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">OJwJpPnRkBDu7jNnDVe8pYP</a></td>
+                  <td><div style="font-size:13px;">Purchase</div><div style="font-size:11px;color:var(--color-text-tertiary);">TRX-191123-0004</div></td>
+                  <td>EUR 50.00</td>
+                  <td><div>EUR 58.00</div><div style="font-size:11px;color:var(--color-text-tertiary);">Base: EUR 19.00<br>Fees: EUR 0.00<br>FX: 1.0000</div></td>
+                  <td>EUR 34.32</td>
+                  <td>No</td>
+                  <td><span class="pdf-badge pdf-ready">Completed</span></td>
+                  <td>EUR 15.90</td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">22/11/2019<br><span style="color:var(--color-text-tertiary);">02:15 PM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">OJwJpPnRkBDu7jNnDVe8pYP</a></td>
+                  <td><div style="font-size:13px;">Card Load</div><div style="font-size:11px;color:var(--color-text-tertiary);">TRX-191121-0006</div></td>
+                  <td>EUR 8.20</td>
+                  <td><div>EUR 8.00</div><div style="font-size:11px;color:var(--color-text-tertiary);">Base: EUR 8.20<br>Fees: EUR 0.00<br>FX: 1.0000</div></td>
+                  <td>EUR -15.68</td>
+                  <td>No</td>
+                  <td><span class="pdf-badge pdf-failed">Declined</span></td>
+                  <td>EUR 8.20</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pay-table-footer">
+            <span>Showing 1 to 4 of 22 results</span>
+            <div class="pay-page-btns">
+              <button class="pay-page-btn" disabled>«</button>
+              <button class="pay-page-btn" disabled>‹</button>
+              <button class="pay-page-btn active">1</button>
+              <button class="pay-page-btn">2</button>
+              <button class="pay-page-btn">3</button>
+              <button class="pay-page-btn" disabled>›</button>
+              <button class="pay-page-btn" disabled>»</button>
+            </div>
+          </div>
+        </div><!-- /tab-history -->
+
+        <!-- Authorisations tab -->
+        <div id="tab-authorisations" class="cards-tab-panel" style="display:none;">
+          <div class="adv-filters-wrap" id="authFiltersWrap">
+            <div class="adv-filters-body" id="authFiltersBody">
+              <div class="adv-filters-grid">
+                <div class="adv-filter-field"><label class="adv-filter-label">Card reference</label><input type="text" class="adv-filter-input" placeholder="Search card reference…" /></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Status</label><select class="adv-filter-select"><option value="">Any</option><option>Approved</option><option>Declined</option><option>Reversed</option></select></div>
+                <div class="adv-filter-field"><label class="adv-filter-label">Date range</label><div style="display:flex;align-items:center;gap:6px;"><input type="date" class="adv-filter-input" style="flex:1;" /><span style="font-size:12px;color:var(--color-text-tertiary);">–</span><input type="date" class="adv-filter-input" style="flex:1;" /></div></div>
+              </div>
+              <div class="adv-filters-footer"><div class="adv-saved-wrap"><span class="adv-saved-label" style="opacity:0.5;">No saved filters</span></div><div class="adv-footer-actions"><button class="adv-btn-clear">Clear Filters</button><button class="adv-btn-apply" onclick="toggleTabFilters('auth')">Apply Filters</button></div></div>
+            </div>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table" style="min-width:1000px;">
+              <thead><tr>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Date <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Card reference <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Merchant <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Amount <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Currency <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Auth code <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th class="sort-th" onclick="sortTable(this)"><span class="sort-th-inner">Status <svg class="sort-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 15 12 19 16 15"/><polyline points="8 9 12 5 16 9"/></svg></span></th>
+                <th><span class="sort-th-inner" style="cursor:default;">Actions</span></th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">07/05/2026<br><span style="color:var(--color-text-tertiary);">09:14 AM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">0Uww1PPO_dJQX8tnTsFxTU8Zb</a></td>
+                  <td>LC.EXPEDIA.COM</td><td>EUR 120.00</td><td>EUR</td><td style="font-family:monospace;">AUT-884921</td>
+                  <td><span class="status-tag status-tag-success">Approved</span></td>
+                  <td><button class="pdf-action-btn">Details</button></td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">07/05/2026<br><span style="color:var(--color-text-tertiary);">08:47 AM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">Yt9LmO9A_kPL2mXvR3GhJ2Qd</a></td>
+                  <td>AMAZON.COM</td><td>USD 54.99</td><td>USD</td><td style="font-family:monospace;">AUT-773012</td>
+                  <td><span class="status-tag status-tag-success">Approved</span></td>
+                  <td><button class="pdf-action-btn">Details</button></td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">06/05/2026<br><span style="color:var(--color-text-tertiary);">04:22 PM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">Bn7GxR2L_mK8nVtYp5JsH9Lm</a></td>
+                  <td>UBER EATS</td><td>GBP 28.50</td><td>GBP</td><td style="font-family:monospace;">AUT-661458</td>
+                  <td><span class="status-tag status-tag-danger">Declined</span></td>
+                  <td><button class="pdf-action-btn">Details</button></td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">06/05/2026<br><span style="color:var(--color-text-tertiary);">02:05 PM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">Lc6HpB3D_qV2xYzk8RmNp7Td</a></td>
+                  <td>GOOGLE CLOUD</td><td>USD 312.00</td><td>USD</td><td style="font-family:monospace;">AUT-559207</td>
+                  <td><span class="status-tag status-tag-success">Approved</span></td>
+                  <td><button class="pdf-action-btn">Details</button></td>
+                </tr>
+                <tr>
+                  <td style="white-space:nowrap;font-size:12px;">05/05/2026<br><span style="color:var(--color-text-tertiary);">11:30 AM</span></td>
+                  <td><a href="#" style="color:var(--color-brand-navy);font-size:12px;">Rw2KpX7M_nB4vQzJ6TsL1Yd</a></td>
+                  <td>LC.EXPEDIA.COM</td><td>EUR 120.00</td><td>EUR</td><td style="font-family:monospace;">AUT-447893</td>
+                  <td><span class="status-tag" style="background:#eaf3de;color:#27500a;">Reversed</span></td>
+                  <td><button class="pdf-action-btn">Details</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pay-table-footer">
+            <span>Showing 1 to 5 of 5 results</span>
+            <div class="pay-page-btns">
+              <button class="pay-page-btn" disabled>«</button>
+              <button class="pay-page-btn" disabled>‹</button>
+              <button class="pay-page-btn active">1</button>
+              <button class="pay-page-btn" disabled>›</button>
+              <button class="pay-page-btn" disabled>»</button>
+            </div>
+          </div>
+        </div><!-- /tab-authorisations -->
 
         </div><!-- /tab-funding -->
       </div><!-- /cards-tab-card -->
@@ -5375,6 +5675,126 @@
         return asc ? cmp : -cmp;
       });
       rows.forEach(function(r) { tbody.appendChild(r); });
+    }
+  </script>
+
+
+  <!-- Scheduled Load Drawer -->
+  <div class="sl-drawer-overlay" id="slDrawerOverlay" onclick="closeScheduledLoadDrawer()"></div>
+  <div class="sl-drawer" id="slDrawer">
+    <div class="sl-drawer-header">
+      <div class="sl-drawer-title">Add scheduled load</div>
+      <button class="sl-drawer-close" onclick="closeScheduledLoadDrawer()">×</button>
+    </div>
+    <div class="sl-drawer-body">
+
+      <div class="sl-step">
+        <div class="sl-step-header">
+          <div class="sl-step-num">1</div>
+          <div><div class="sl-step-title">Select card</div><div class="sl-step-sub">Search and select the card you want to schedule a load for.</div></div>
+        </div>
+        <div class="sl-field">
+          <label class="sl-label">Card reference or card number</label>
+          <div style="position:relative;">
+            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-tertiary)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="sl-input" style="padding-left:32px;" placeholder="Search by card reference or number…" />
+          </div>
+        </div>
+      </div>
+
+      <div class="sl-step">
+        <div class="sl-step-header">
+          <div class="sl-step-num">2</div>
+          <div><div class="sl-step-title">Scheduled loads</div><div class="sl-step-sub">Add up to 3 scheduled loads for this card.</div></div>
+        </div>
+
+        <div class="sl-load-block">
+          <div class="sl-load-label">Load #1</div>
+          <div class="sl-amount-row">
+            <select class="sl-ccy-select"><option>EUR</option><option>USD</option><option>GBP</option><option>AED</option></select>
+            <input type="text" class="sl-input sl-amount-input" placeholder="Amount" />
+          </div>
+          <div class="sl-date-row">
+            <label class="sl-label" style="margin:0;white-space:nowrap;">Load date</label>
+            <input type="date" class="sl-input sl-date-input" />
+          </div>
+        </div>
+
+        <div class="sl-load-block">
+          <div class="sl-load-label">Load #2</div>
+          <div class="sl-amount-row">
+            <select class="sl-ccy-select"><option>EUR</option><option>USD</option><option>GBP</option><option>AED</option></select>
+            <input type="text" class="sl-input sl-amount-input" placeholder="Amount" />
+          </div>
+          <div class="sl-date-row">
+            <label class="sl-label" style="margin:0;white-space:nowrap;">Load date</label>
+            <input type="date" class="sl-input sl-date-input" />
+          </div>
+        </div>
+
+        <button class="sl-add-load">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add another load
+        </button>
+      </div>
+
+    </div>
+    <div class="sl-drawer-footer">
+      <button class="sl-btn-cancel" onclick="closeScheduledLoadDrawer()">Cancel</button>
+      <button class="sl-btn-save">Save scheduled load</button>
+    </div>
+  </div>
+
+
+  <script>
+    function openScheduledLoadDrawer() {
+      document.getElementById('slDrawer').classList.add('open');
+      document.getElementById('slDrawerOverlay').classList.add('open');
+    }
+    function closeScheduledLoadDrawer() {
+      document.getElementById('slDrawer').classList.remove('open');
+      document.getElementById('slDrawerOverlay').classList.remove('open');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeScheduledLoadDrawer();
+    });
+
+    // Update header buttons based on active tab
+    function updateHeaderButtons(tab) {
+      var issueBtn = document.getElementById('btnIssueCard');
+      var loadBtn  = document.getElementById('btnAddLoad');
+      if (issueBtn) issueBtn.style.display = (tab === 'management') ? '' : 'none';
+      if (loadBtn)  loadBtn.style.display  = (tab === 'scheduled')  ? '' : 'none';
+
+      // Wire Filters pill to the correct panel for this tab
+      var pill = document.getElementById('mgmtFiltersPill');
+      if (!pill) return;
+      var filterMap = {
+        management:    function(){ toggleAdvFilters(); },
+        scheduled:     function(){ toggleTabFilters('sched'); },
+        history:       function(){ toggleTabFilters('hist'); },
+        authorisations:function(){ toggleTabFilters('auth'); }
+      };
+      pill.onclick = filterMap[tab] || filterMap.management;
+    }
+
+    // Patch into existing tab switching
+    var origCardsTabSwitch = window.cardsTabSwitch;
+    document.querySelectorAll('#cards-tabs .cards-tab').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        updateHeaderButtons(btn.getAttribute('data-tab'));
+      });
+    });
+
+    // Tab-level filter toggles
+    function toggleTabFilters(prefix) {
+      var wrap = document.getElementById(prefix + 'FiltersWrap');
+      var pill = document.getElementById(prefix + 'FiltersPill');
+      var chev = document.getElementById(prefix + 'FiltersPillChevron');
+      if (!wrap) return;
+      var open = wrap.classList.toggle('open');
+      pill.classList.toggle('active', open);
+      chev.style.transform = open ? 'rotate(180deg)' : '';
     }
   </script>
 

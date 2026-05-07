@@ -215,15 +215,6 @@
     .nav-item:hover .nav-chevron,
     .nav-item.active .nav-chevron { color: rgba(255,255,255,0.9); }
     /* Sidebar-link wrapper: keeps anchor purely structural — no visual */
-
-    .nav-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-width: 18px; height: 18px; padding: 0 5px;
-      background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8);
-      border-radius: 20px; font-size: 10px; font-weight: 700;
-      margin-left: auto; flex-shrink: 0;
-    }
-
     .nav-item-link { display: block; text-decoration: none; color: inherit; }
     .nav-item:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
     .nav-item:hover .nav-icon { color: #ffffff; }
@@ -2497,14 +2488,7 @@
       <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
       <span class="nav-label">Dashboard</span>
     </div>
-    <a href="nium-portal-tasks.html" class="nav-item-link">
-      <div class="nav-item" data-label="Tasks">
-        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
-        <span class="nav-label">Tasks</span>
-        <span class="nav-badge">9</span>
-      </div>
-    </a>
-        <a href="nium-portal-cards-overview.html" class="nav-item-link">
+    <a href="nium-portal-cards-overview.html" class="nav-item-link">
       <div class="nav-item" data-label="Payments" data-expandable="true">
         <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></span>
         <span class="nav-label">Payments</span>
@@ -2514,7 +2498,7 @@
     <div class="nav-children">
       <a href="nium-portal-cards-overview.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Cards</div></a>
       <a href="nium-portal-send.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Payouts</div></a>
-      <a href="nium-portal-receive.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Payins</div></a>
+      <a href="nium-portal-receive.html" style="text-decoration:none;color:inherit;display:none;"><div class="nav-child">Payins</div></a>
       <a href="nium-portal-money.html" style="text-decoration:none;color:inherit;"><div class="nav-child">Wallets</div></a>
     </div>
     <a href="nium-portal-beneficiaries.html" class="nav-item-link">
