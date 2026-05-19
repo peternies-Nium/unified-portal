@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nium Portal — Nav variants</title>
+<title>Unified Portal – Navigation Color</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Inter', sans-serif; background: #f5f5f2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; }
-.logo { margin-bottom: 48px; }
-.logo svg { width: 100px; height: auto; }
-h1 { font-size: 14px; font-weight: 500; color: #888780; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 32px; text-align: center; }
+.header { max-width: 900px; width: 100%; margin-bottom: 32px; }
+h1 { font-size: 14px; font-weight: 500; color: #888780; letter-spacing: 0.5px; text-transform: uppercase; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 900px; width: 100%; }
 .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: box-shadow 0.15s, transform 0.15s; }
 .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
 .swatch { height: 80px; display: flex; align-items: center; justify-content: center; }
-.nav-preview { width: 40px; height: 120px; border-radius: 6px; opacity: 0.6; }
 .card-body { padding: 16px; border-top: 0.5px solid #e8e6e1; }
 .card-label { font-size: 13px; font-weight: 500; color: #2c2c2a; margin-bottom: 4px; }
 .card-hex { font-size: 11px; color: #888780; font-family: monospace; margin-bottom: 12px; }
@@ -24,49 +22,40 @@ h1 { font-size: 14px; font-weight: 500; color: #888780; letter-spacing: 0.5px; t
 </style>
 </head>
 <body>
-<div class="logo">
-  <svg viewBox="0 0 372.06 172.79" aria-label="nium" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M42.0300204,42.0299987v88.7301025h288V42.0299987H42.0300204ZM109.9979159,109.7450866h-10.6735229l-18.7653198-29.355835v29.355835h-10.5090332v-46.7000732h10.6731567l18.7607422,29.355896v-29.355896h10.5139771v46.7000732ZM172.7327791,72.3157043h-13.72229v28.1580811h13.72229v9.2713013h-39.385498v-9.2713013h13.72229v-28.1580811h-13.72229v-9.2706909h39.385498v9.2706909ZM236.517203,92.5710754c0,11.515625-6.6069946,17.7440186-20.2178345,17.7440186s-20.2172241-6.2283936-20.2172241-17.7440186v-29.526062h11.8381348v29.59552c0,6.1583862,2.8198242,9.0372925,8.3790894,9.0372925,5.5599365,0,8.3790894-2.7453613,8.3790894-9.0372925v-29.59552h11.8387451v29.526062ZM302.0099398,109.7450866h-10.0028687v-30.9578247l-8.4416504,16.2111206h-5.1624756l-8.5286255-16.2111206v30.9578247h-10.0077515v-46.7000732h11.3969727l10.003479,19.6116943,9.5939331-19.6116943h11.1489868v46.7000732Z"/></svg>
+<div class="header">
+  <h1>Unified Portal – Navigation Color</h1>
 </div>
-<h1>Nav colour variants</h1>
 <div class="grid">
   <a class="card" href="nium-portal-base/nium-dashboard.html">
-    <div class="swatch" style="background:#e7e7df;">
-      <div class="nav-preview" style="background:#e7e7df;border:0.5px solid rgba(0,0,0,0.08);"></div>
-    </div>
+    <div class="swatch" style="background:#e7e7df;"></div>
     <div class="card-body">
       <div class="card-label">Base</div>
       <div class="card-hex">#e7e7df</div>
-      <div class="card-link">Open dashboard</div>
+      <div class="card-link">View dashboard</div>
     </div>
   </a>
   <a class="card" href="nium-portal-20-lighter/nium-dashboard.html">
-    <div class="swatch" style="background:#eeeee8;">
-      <div class="nav-preview" style="background:#eeeee8;border:0.5px solid rgba(0,0,0,0.08);"></div>
-    </div>
+    <div class="swatch" style="background:#eeeee8;"></div>
     <div class="card-body">
       <div class="card-label">20% lighter</div>
       <div class="card-hex">#eeeee8</div>
-      <div class="card-link">Open dashboard</div>
+      <div class="card-link">View dashboard</div>
     </div>
   </a>
   <a class="card" href="nium-portal-40-lighter/nium-dashboard.html">
-    <div class="swatch" style="background:#f5f5f2;">
-      <div class="nav-preview" style="background:#f5f5f2;border:0.5px solid rgba(0,0,0,0.08);"></div>
-    </div>
+    <div class="swatch" style="background:#f5f5f2;"></div>
     <div class="card-body">
       <div class="card-label">40% lighter</div>
       <div class="card-hex">#f5f5f2</div>
-      <div class="card-link">Open dashboard</div>
+      <div class="card-link">View dashboard</div>
     </div>
   </a>
   <a class="card" href="nium-portal-60-lighter/nium-dashboard.html">
-    <div class="swatch" style="background:#f9f9f7;">
-      <div class="nav-preview" style="background:#f9f9f7;border:0.5px solid rgba(0,0,0,0.08);"></div>
-    </div>
+    <div class="swatch" style="background:#f9f9f7;"></div>
     <div class="card-body">
       <div class="card-label">60% lighter</div>
       <div class="card-hex">#f9f9f7</div>
-      <div class="card-link">Open dashboard</div>
+      <div class="card-link">View dashboard</div>
     </div>
   </a>
 </div>
