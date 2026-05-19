@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unified Portal – Competitor Screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f5f5f2; min-height: 100vh; padding: 48px 24px; }
+.page { max-width: 1000px; margin: 0 auto; }
+.header { margin-bottom: 40px; }
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #888780; text-decoration: none; margin-bottom: 20px; transition: color 0.15s; }
+.back:hover { color: #2c2c2a; }
+.back svg { flex-shrink: 0; }
+h1 { font-size: 14px; font-weight: 500; color: #888780; letter-spacing: 0.5px; text-transform: uppercase; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 12px; overflow: hidden; cursor: pointer; transition: box-shadow 0.15s, transform 0.15s; }
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.card-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top; display: block; background: #e8e6e1; }
+.card-img-placeholder { width: 100%; aspect-ratio: 16/10; background: #eeeee8; display: flex; align-items: center; justify-content: center; }
+.card-img-placeholder span { font-size: 12px; color: #b4b2a9; }
+.card-body { padding: 14px 16px; border-top: 0.5px solid #e8e6e1; }
+.card-label { font-size: 13px; font-weight: 500; color: #2c2c2a; }
+
+/* Lightbox */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
+.lightbox.open { display: flex; }
+.lightbox-inner { position: relative; max-width: 1200px; width: 100%; }
+.lightbox img { width: 100%; height: auto; border-radius: 8px; display: block; }
+.lightbox-label { position: absolute; bottom: -36px; left: 0; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); }
+.lightbox-close { position: absolute; top: -40px; right: 0; background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 24px; line-height: 1; padding: 4px; transition: color 0.15s; }
+.lightbox-close:hover { color: #fff; }
+.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: #fff; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.lightbox-nav:hover { background: rgba(255,255,255,0.2); }
+.lightbox-prev { left: -56px; }
+.lightbox-next { right: -56px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <a href="index.html" class="back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Color study
+    </a>
+    <h1>Competitor Screens</h1>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <div class="card" onclick="openLightbox(0)">
+      <div class="card-img-placeholder"><span>airwallex.png</span></div>
+      <div class="card-body"><div class="card-label">Airwallex</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(1)">
+      <div class="card-img-placeholder"><span>rapyd.png</span></div>
+      <div class="card-body"><div class="card-label">Rapyd</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(2)">
+      <div class="card-img-placeholder"><span>mercury.png</span></div>
+      <div class="card-body"><div class="card-label">Mercury</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(3)">
+      <div class="card-img-placeholder"><span>unit.png</span></div>
+      <div class="card-body"><div class="card-label">Unit</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(4)">
+      <div class="card-img-placeholder"><span>column.png</span></div>
+      <div class="card-body"><div class="card-label">Column</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(5)">
+      <div class="card-img-placeholder"><span>stripe.png</span></div>
+      <div class="card-body"><div class="card-label">Stripe</div></div>
+    </div>
+
+    <div class="card" onclick="openLightbox(6)">
+      <div class="card-img-placeholder"><span>wise.png</span></div>
+      <div class="card-body"><div class="card-label">Wise</div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="navigate(-1)">&#8592;</button>
+    <img id="lightbox-img" src="" alt="">
+    <button class="lightbox-nav lightbox-next" onclick="navigate(1)">&#8594;</button>
+    <div class="lightbox-label" id="lightbox-label"></div>
+  </div>
+</div>
+
+<script>
+const items = [
+  { src: 'airwallex.png', label: 'Airwallex' },
+  { src: 'rapyd.png',     label: 'Rapyd' },
+  { src: 'mercury.png',   label: 'Mercury' },
+  { src: 'unit.png',      label: 'Unit' },
+  { src: 'column.png',    label: 'Column' },
+  { src: 'stripe.png',    label: 'Stripe' },
+  { src: 'wise.png',      label: 'Wise' },
+];
+
+let current = 0;
+
+function openLightbox(i) {
+  current = i;
+  document.getElementById('lightbox-img').src = items[i].src;
+  document.getElementById('lightbox-label').textContent = items[i].label;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+
+function navigate(dir) {
+  current = (current + dir + items.length) % items.length;
+  document.getElementById('lightbox-img').src = items[current].src;
+  document.getElementById('lightbox-label').textContent = items[current].label;
+  event.stopPropagation();
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navigate(-1);
+  if (e.key === 'ArrowRight') navigate(1);
+});
+</script>
+</body>
+</html>
