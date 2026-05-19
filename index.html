@@ -1,456 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nium Portal Prototypes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --navy:   #0b0e58;
-      --navy-2: #0d1257;
-      --white:  #ffffff;
-      --off:    #f4f5fb;
-      --muted:  #8a93b2;
-      --border: rgba(11,14,88,0.10);
-      --green:  #16a34a;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'DM Sans', sans-serif;
-      background: var(--off);
-      color: var(--navy);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Layout ── */
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 28px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: var(--white);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      background: var(--navy);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-wordmark {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-      color: var(--navy);
-    }
-
-    .header-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    main {
-      flex: 1;
-      padding: 40px 48px;
-      max-width: 1100px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .intro {
-      margin-bottom: 56px;
-    }
-
-    .intro-label { display: none; }
-    .intro { margin-bottom: 32px; }
-
-    .intro h1 { display: none; }
-    .intro p { display: none; }
-
-    /* ── Cards ── */
-    .portals {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .portal-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: box-shadow 0.2s, transform 0.2s;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .portal-card:hover {
-      box-shadow: 0 12px 40px rgba(11,14,88,0.10);
-      transform: translateY(-2px);
-    }
-
-    .card-preview {
-      height: 220px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-preview-unified {
-      background: linear-gradient(135deg, #0b0e58 0%, #1a2fa0 60%, #2940c8 100%);
-    }
-
-    .card-preview-cards {
-      background: linear-gradient(135deg, #0d1257 0%, #0b1a5e 60%, #162980 100%);
-    }
-
-    /* Decorative sidebar mockup */
-    .preview-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      opacity: 0.9;
-    }
-
-    .preview-sidebar {
-      width: 56px;
-      background: rgba(0,0,0,0.25);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 12px 8px;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .preview-dot {
-      width: 28px;
-      height: 5px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 3px;
-    }
-
-    .preview-dot.active {
-      background: rgba(255,255,255,0.7);
-      width: 32px;
-    }
-
-    .preview-content {
-      flex: 1;
-      background: rgba(241,245,249,0.08);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .preview-topbar {
-      height: 18px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 4px;
-    }
-
-    .preview-cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .preview-kpi {
-      height: 52px;
-      background: rgba(255,255,255,0.09);
-      border-radius: 6px;
-    }
-
-    .preview-kpi.accent {
-      background: linear-gradient(135deg, rgba(11,14,88,0.6), rgba(26,47,160,0.6));
-    }
-
-    .preview-row {
-      height: 8px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 3px;
-    }
-
-    .preview-row.wide { width: 80%; }
-    .preview-row.med  { width: 55%; }
-
-    .card-body {
-      padding: 28px 32px 32px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-      color: var(--navy);
-      margin-bottom: 8px;
-    }
-
-    .card-desc {
-      font-size: 13.5px;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-      margin-bottom: 24px;
-    }
-
-    .card-pages { display: none; }
-
-    .page-chip {
-      font-family: 'DM Mono', monospace;
-      font-size: 10.5px;
-      background: var(--off);
-      color: var(--navy);
-      padding: 3px 9px;
-      border-radius: 99px;
-      letter-spacing: 0.2px;
-    }
-
-    .card-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--navy);
-      color: var(--white);
-      padding: 11px 20px;
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 500;
-      align-self: flex-start;
-      transition: background 0.15s;
-    }
-
-    .card-cta:hover { background: #1a2fa0; }
-
-    .card-cta svg { opacity: 0.7; }
-
-    /* ── Footer ── */
-    footer {
-      padding: 24px 48px;
-      border-top: 1px solid var(--border);
-      background: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-note {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .footer-live {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--green);
-      font-weight: 500;
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* ── Fade in ── */
-    .portal-card {
-      animation: fadeUp 0.4s ease both;
-    }
-    .portal-card:nth-child(2) { animation-delay: 0.1s; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nium Portal — Nav variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f5f5f2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; }
+.logo { margin-bottom: 48px; }
+.logo svg { width: 100px; height: auto; }
+h1 { font-size: 14px; font-weight: 500; color: #888780; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 32px; text-align: center; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 900px; width: 100%; }
+.card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: box-shadow 0.15s, transform 0.15s; }
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.swatch { height: 80px; display: flex; align-items: center; justify-content: center; }
+.nav-preview { width: 40px; height: 120px; border-radius: 6px; opacity: 0.6; }
+.card-body { padding: 16px; border-top: 0.5px solid #e8e6e1; }
+.card-label { font-size: 13px; font-weight: 500; color: #2c2c2a; margin-bottom: 4px; }
+.card-hex { font-size: 11px; color: #888780; font-family: monospace; margin-bottom: 12px; }
+.card-link { font-size: 12px; font-weight: 500; color: #4a7c3f; display: flex; align-items: center; gap: 4px; }
+.card-link::after { content: "→"; }
+</style>
 </head>
 <body>
-<div class="page">
-
-  <header>
-    <div class="logo">
-      <svg width="144" height="23" viewBox="0 0 144 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1_22)">
-<path d="M21.5359 0.00109427V17.5714H24.9986V0.00109427H21.5359ZM31.0792 10.8862C31.0792 15.4287 33.7818 18 38.3424 18C42.5651 18 45.6899 15.4287 45.6899 10.8862V0.00109427H42.2272V10.8862C42.2272 13.0289 41.2136 14.8288 38.3424 14.8288C35.4708 14.8288 34.5418 12.7718 34.5418 10.629V0.00109427H31.0792V10.8862ZM0 0.00109427V17.5714H3.29368V5.65787H3.37824L11.4014 17.5714H14.864V0.00109427H11.5703V11.7432H11.4859L3.54711 0.00109427H0ZM51.7706 0.00109427V17.5714H54.8954V5.48649H54.9797L60.1314 14.3145H60.4693L65.7899 5.48649H65.8745V17.5714H68.999V0.00109427H65.4521L60.6382 8.8291H60.5536L55.4865 0.00109427H51.7706Z" fill="#0B0E58"/>
-</g>
-<path d="M81.6328 17.5725H76.9453V1.5725H81.9141C83.4401 1.5725 84.7448 1.89021 85.8281 2.52563C86.9167 3.16104 87.75 4.0725 88.3281 5.26C88.9062 6.4475 89.1953 7.87198 89.1953 9.53344C89.1953 11.2105 88.8984 12.6506 88.3047 13.8538C87.7161 15.0517 86.8568 15.9709 85.7266 16.6116C84.6016 17.2522 83.237 17.5725 81.6328 17.5725ZM78.4062 16.26H81.5469C82.9219 16.26 84.0729 15.9892 85 15.4475C85.9271 14.9058 86.6224 14.1324 87.0859 13.1272C87.5495 12.122 87.7813 10.9241 87.7813 9.53344C87.776 8.15323 87.5469 6.96573 87.0938 5.97094C86.6458 4.97615 85.9792 4.21313 85.0937 3.68188C84.2135 3.15063 83.125 2.885 81.8281 2.885H78.4062V16.26Z" fill="#0B0E58"/>
-<path d="M97.2988 17.8225C96.179 17.8225 95.2103 17.5621 94.3926 17.0413C93.5749 16.5152 92.9421 15.7886 92.4941 14.8616C92.0514 13.9293 91.8301 12.8564 91.8301 11.6428C91.8301 10.4345 92.0514 9.36156 92.4941 8.42406C92.9421 7.48135 93.5592 6.74438 94.3457 6.21313C95.1374 5.67667 96.0514 5.40844 97.0879 5.40844C97.7389 5.40844 98.3665 5.52823 98.9707 5.76781C99.5749 6.00219 100.117 6.36417 100.596 6.85375C101.08 7.33813 101.463 7.95011 101.744 8.68969C102.025 9.42406 102.166 10.2939 102.166 11.2991V11.9866H92.791V10.76H100.744C100.744 9.98917 100.588 9.29646 100.275 8.68188C99.9681 8.06208 99.5384 7.5725 98.9863 7.21313C98.4395 6.85375 97.8066 6.67406 97.0879 6.67406C96.3275 6.67406 95.6582 6.87719 95.0801 7.28344C94.502 7.68969 94.0488 8.22615 93.7207 8.89281C93.3978 9.55948 93.2337 10.2886 93.2285 11.0803V11.8147C93.2285 12.7678 93.3926 13.6011 93.7207 14.3147C94.054 15.023 94.5254 15.5725 95.1348 15.9631C95.7441 16.3538 96.4655 16.5491 97.2988 16.5491C97.8665 16.5491 98.3639 16.4605 98.791 16.2834C99.2233 16.1064 99.5853 15.8694 99.877 15.5725C100.174 15.2704 100.398 14.9397 100.549 14.5803L101.869 15.01C101.687 15.5152 101.387 15.9814 100.971 16.4084C100.559 16.8355 100.044 17.1793 99.4238 17.4397C98.8092 17.6949 98.1009 17.8225 97.2988 17.8225Z" fill="#0B0E58"/>
-<path d="M113.293 8.20531L112.02 8.56469C111.895 8.20531 111.717 7.87979 111.488 7.58813C111.259 7.29646 110.96 7.06469 110.59 6.89281C110.225 6.72094 109.772 6.635 109.23 6.635C108.418 6.635 107.751 6.82771 107.23 7.21313C106.71 7.59854 106.449 8.09594 106.449 8.70531C106.449 9.22094 106.626 9.64021 106.98 9.96313C107.34 10.2808 107.892 10.5334 108.637 10.7209L110.449 11.1663C111.454 11.411 112.207 11.7991 112.707 12.3303C113.212 12.8616 113.465 13.5282 113.465 14.3303C113.465 15.0074 113.277 15.609 112.902 16.135C112.527 16.661 112.004 17.0751 111.332 17.3772C110.665 17.6741 109.892 17.8225 109.012 17.8225C107.84 17.8225 106.874 17.5595 106.113 17.0334C105.353 16.5022 104.866 15.7366 104.652 14.7366L105.988 14.4084C106.16 15.122 106.496 15.661 106.996 16.0256C107.501 16.3902 108.165 16.5725 108.988 16.5725C109.91 16.5725 110.647 16.3668 111.199 15.9553C111.751 15.5386 112.027 15.0178 112.027 14.3928C112.027 13.9084 111.866 13.5022 111.543 13.1741C111.22 12.8407 110.73 12.5959 110.074 12.4397L108.113 11.9709C107.072 11.7209 106.301 11.3251 105.801 10.7834C105.301 10.2418 105.051 9.5699 105.051 8.76781C105.051 8.10636 105.23 7.52563 105.59 7.02563C105.949 6.52042 106.444 6.12458 107.074 5.83813C107.704 5.55167 108.423 5.40844 109.23 5.40844C110.329 5.40844 111.207 5.65844 111.863 6.15844C112.525 6.65323 113.001 7.33552 113.293 8.20531Z" fill="#0B0E58"/>
-<path d="M116.525 17.5725V5.5725H117.924V17.5725H116.525ZM117.236 3.51C116.95 3.51 116.705 3.41365 116.502 3.22094C116.299 3.02302 116.197 2.78604 116.197 2.51C116.197 2.23396 116.299 1.99958 116.502 1.80688C116.705 1.60896 116.95 1.51 117.236 1.51C117.523 1.51 117.768 1.60896 117.971 1.80688C118.174 1.99958 118.275 2.23396 118.275 2.51C118.275 2.78604 118.174 3.02302 117.971 3.22094C117.768 3.41365 117.523 3.51 117.236 3.51Z" fill="#0B0E58"/>
-<path d="M126.18 22.3225C125.362 22.3225 124.646 22.2157 124.031 22.0022C123.417 21.7939 122.898 21.5074 122.477 21.1428C122.055 20.7782 121.727 20.3694 121.492 19.9163L122.633 19.1663C122.805 19.4683 123.034 19.7652 123.32 20.0569C123.612 20.3485 123.99 20.5907 124.453 20.7834C124.922 20.9761 125.497 21.0725 126.18 21.0725C127.242 21.0725 128.099 20.8069 128.75 20.2756C129.406 19.7444 129.734 18.9189 129.734 17.7991V15.0959H129.609C129.448 15.4605 129.216 15.8251 128.914 16.1897C128.612 16.5491 128.216 16.8485 127.727 17.0881C127.242 17.3277 126.641 17.4475 125.922 17.4475C124.964 17.4475 124.112 17.2105 123.367 16.7366C122.628 16.2626 122.044 15.5855 121.617 14.7053C121.195 13.8199 120.984 12.7652 120.984 11.5413C120.984 10.3277 121.19 9.26 121.602 8.33813C122.018 7.41625 122.599 6.6975 123.344 6.18188C124.089 5.66625 124.956 5.40844 125.945 5.40844C126.68 5.40844 127.289 5.53865 127.773 5.79906C128.258 6.05427 128.646 6.37198 128.937 6.75219C129.234 7.1324 129.466 7.50219 129.633 7.86156H129.773V5.5725H131.133V17.885C131.133 18.9006 130.917 19.7366 130.484 20.3928C130.052 21.0491 129.464 21.5334 128.719 21.8459C127.974 22.1636 127.128 22.3225 126.18 22.3225ZM126.086 16.1741C126.857 16.1741 127.516 15.9892 128.062 15.6194C128.609 15.2444 129.029 14.7079 129.32 14.01C129.612 13.3121 129.758 12.4814 129.758 11.5178C129.758 10.5803 129.615 9.74958 129.328 9.02563C129.042 8.29646 128.625 7.72354 128.078 7.30688C127.536 6.885 126.872 6.67406 126.086 6.67406C125.284 6.67406 124.607 6.89021 124.055 7.3225C123.503 7.75479 123.086 8.33813 122.805 9.0725C122.523 9.80167 122.383 10.6168 122.383 11.5178C122.383 12.4345 122.526 13.2444 122.812 13.9475C123.099 14.6454 123.518 15.1923 124.07 15.5881C124.622 15.9788 125.294 16.1741 126.086 16.1741Z" fill="#0B0E58"/>
-<path d="M136.205 10.0725V17.5725H134.814V5.5725H136.166V7.45531H136.291C136.572 6.84073 137.01 6.34854 137.604 5.97875C138.202 5.60375 138.942 5.41625 139.822 5.41625C140.63 5.41625 141.338 5.58552 141.947 5.92406C142.562 6.2574 143.038 6.74958 143.377 7.40063C143.721 8.05167 143.893 8.85115 143.893 9.79906V17.5725H142.502V9.885C142.502 8.90063 142.226 8.12198 141.674 7.54906C141.127 6.97615 140.393 6.68969 139.471 6.68969C138.84 6.68969 138.281 6.8251 137.791 7.09594C137.301 7.36677 136.913 7.7574 136.627 8.26781C136.346 8.77302 136.205 9.37458 136.205 10.0725Z" fill="#0B0E58"/>
-<defs>
-<clipPath id="clip0_1_22">
-<rect width="69" height="18" fill="white"/>
-</clipPath>
-</defs>
-</svg>
+<div class="logo">
+  <svg viewBox="0 0 372.06 172.79" aria-label="nium" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M42.0300204,42.0299987v88.7301025h288V42.0299987H42.0300204ZM109.9979159,109.7450866h-10.6735229l-18.7653198-29.355835v29.355835h-10.5090332v-46.7000732h10.6731567l18.7607422,29.355896v-29.355896h10.5139771v46.7000732ZM172.7327791,72.3157043h-13.72229v28.1580811h13.72229v9.2713013h-39.385498v-9.2713013h13.72229v-28.1580811h-13.72229v-9.2706909h39.385498v9.2706909ZM236.517203,92.5710754c0,11.515625-6.6069946,17.7440186-20.2178345,17.7440186s-20.2172241-6.2283936-20.2172241-17.7440186v-29.526062h11.8381348v29.59552c0,6.1583862,2.8198242,9.0372925,8.3790894,9.0372925,5.5599365,0,8.3790894-2.7453613,8.3790894-9.0372925v-29.59552h11.8387451v29.526062ZM302.0099398,109.7450866h-10.0028687v-30.9578247l-8.4416504,16.2111206h-5.1624756l-8.5286255-16.2111206v30.9578247h-10.0077515v-46.7000732h11.3969727l10.003479,19.6116943,9.5939331-19.6116943h11.1489868v46.7000732Z"/></svg>
+</div>
+<h1>Nav colour variants</h1>
+<div class="grid">
+  <a class="card" href="nium-portal-base/nium-dashboard.html">
+    <div class="swatch" style="background:#e7e7df;">
+      <div class="nav-preview" style="background:#e7e7df;border:0.5px solid rgba(0,0,0,0.08);"></div>
     </div>
-    <span class="header-badge">Portal Prototypes · April 2026</span>
-  </header>
-
-  <main>
-    <div class="intro">
-      <div class="intro-label">Design prototype</div>
-      <h1>Two portals,<br><strong>one platform.</strong></h1>
-      <p>Interactive HTML prototypes for the Nium unified portal and the cards-optimised experience. Click either to explore.</p>
+    <div class="card-body">
+      <div class="card-label">Base</div>
+      <div class="card-hex">#e7e7df</div>
+      <div class="card-link">Open dashboard</div>
     </div>
-
-    <div class="portals">
-
-      <!-- Unified Portal -->
-      <a class="portal-card" href="nium-dashboard.html">
-        <div class="card-preview card-preview-unified">
-          <div class="preview-inner">
-            <div class="preview-sidebar">
-              <div class="preview-dot active"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-            </div>
-            <div class="preview-content">
-              <div class="preview-topbar"></div>
-              <div class="preview-cards">
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi accent"></div>
-              </div>
-              <div class="preview-row wide"></div>
-              <div class="preview-row med"></div>
-              <div class="preview-row wide"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-tag">Prototype 01 · Full platform</div>
-          <div class="card-title">Unified Portal</div>
-          <div class="card-desc">The full Nium platform — Money, Cards, Funds, Customers, Analytics, Reports and Compliance.</div>
-          <div class="card-pages">
-            <span class="page-chip">Dashboard</span>
-            <span class="page-chip">Balances</span>
-            <span class="page-chip">Cards</span>
-            <span class="page-chip">Beneficiaries</span>
-            <span class="page-chip">Funds</span>
-            <span class="page-chip">Notifications</span>
-            <span class="page-chip">+14 pages</span>
-          </div>
-          <span class="card-cta">
-            Open portal
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
-      </a>
-
-      <!-- Cards Portal -->
-      <a class="portal-card" href="https://design-nium.github.io/cards-portal/cards-dashboard.html">
-        <div class="card-preview card-preview-cards">
-          <div class="preview-inner">
-            <div class="preview-sidebar">
-              <div class="preview-dot active"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-              <div class="preview-dot"></div>
-            </div>
-            <div class="preview-content">
-              <div class="preview-topbar"></div>
-              <div class="preview-cards">
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi"></div>
-                <div class="preview-kpi accent"></div>
-              </div>
-              <div class="preview-row wide"></div>
-              <div class="preview-row med"></div>
-              <div class="preview-row wide"></div>
-              <div class="preview-row med"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-tag">Prototype 02 · Cards-optimised</div>
-          <div class="card-title">Cards Portal</div>
-          <div class="card-desc">Focused for the cards program, with an upsell to the Unified Portal.</div>
-          <div class="card-pages">
-            <span class="page-chip">Dashboard</span>
-            <span class="page-chip">Manage cards</span>
-            <span class="page-chip">Funds</span>
-            <span class="page-chip">Users</span>
-            <span class="page-chip">Money teaser</span>
-            <span class="page-chip">+8 pages</span>
-          </div>
-          <span class="card-cta">
-            Open portal
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
-      </a>
-
+  </a>
+  <a class="card" href="nium-portal-20-lighter/nium-dashboard.html">
+    <div class="swatch" style="background:#eeeee8;">
+      <div class="nav-preview" style="background:#eeeee8;border:0.5px solid rgba(0,0,0,0.08);"></div>
     </div>
-  </main>
-
-  <footer>
-    <span class="footer-note">Nium · Internal design prototype · Not for distribution</span>
-    <span class="footer-live"><span class="live-dot"></span>Hosted on GitHub Pages</span>
-  </footer>
-
+    <div class="card-body">
+      <div class="card-label">20% lighter</div>
+      <div class="card-hex">#eeeee8</div>
+      <div class="card-link">Open dashboard</div>
+    </div>
+  </a>
+  <a class="card" href="nium-portal-40-lighter/nium-dashboard.html">
+    <div class="swatch" style="background:#f5f5f2;">
+      <div class="nav-preview" style="background:#f5f5f2;border:0.5px solid rgba(0,0,0,0.08);"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-label">40% lighter</div>
+      <div class="card-hex">#f5f5f2</div>
+      <div class="card-link">Open dashboard</div>
+    </div>
+  </a>
+  <a class="card" href="nium-portal-60-lighter/nium-dashboard.html">
+    <div class="swatch" style="background:#f9f9f7;">
+      <div class="nav-preview" style="background:#f9f9f7;border:0.5px solid rgba(0,0,0,0.08);"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-label">60% lighter</div>
+      <div class="card-hex">#f9f9f7</div>
+      <div class="card-link">Open dashboard</div>
+    </div>
+  </a>
 </div>
 </body>
 </html>
