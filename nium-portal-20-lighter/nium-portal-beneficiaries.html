@@ -2621,7 +2621,7 @@
         </div>
       </div>
 
-      <div class="page-content-pad" style="margin-top:20px;flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:0;">
+      <div class="page-content-pad" style="margin-top:20px;padding-bottom:32px;">
         <style>
           #beneTable thead th { position: sticky; top: 0; z-index: 1; background: #f9fafb; }
           .card-kebab-wrap { position: relative; display: inline-block; }
@@ -2646,10 +2646,23 @@
           }
           .card-kebab-item:hover { background: var(--color-bg-secondary); }
           .card-kebab-item.danger { color: #d04040; }
+          .pay-table-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 11px 16px; border-top: 1px solid var(--color-border-tertiary);
+            font-size: 12.5px; color: var(--color-text-secondary); background: #fff;
+          }
+          .pay-page-btns { display: flex; gap: 4px; }
+          .pay-page-btn {
+            padding: 4px 10px; font-size: 12.5px; border: 0.5px solid var(--color-border-secondary);
+            border-radius: var(--radius-sm); background: var(--color-bg-primary);
+            cursor: pointer; font-family: inherit; color: var(--color-text-primary);
+          }
+          .pay-page-btn:hover { background: var(--color-bg-secondary); }
+          .pay-page-btn.active { background: var(--color-brand-navy); color: #fff; border-color: var(--color-brand-navy); }
         </style>
 
-        <div class="data-table-wrap" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;border:0.5px solid var(--color-border-tertiary);border-radius:var(--radius-md);background:var(--color-bg-primary);">
-          <div style="flex:1;overflow-y:auto;min-height:0;">
+        <div class="data-table-wrap" style="display:flex;flex-direction:column;border:0.5px solid var(--color-border-tertiary);border-radius:var(--radius-md);background:var(--color-bg-primary);">
+          <div>
           <table class="data-table" id="beneTable">
             <thead>
               <tr>
@@ -2707,33 +2720,15 @@
           </div><!-- /scroll wrapper -->
 
           <!-- Pagination footer -->
-          <div class="dt-footer" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-            <span style="color:var(--color-text-secondary);font-size:13px;">Showing 1–25 of 47 beneficiaries</span>
-            <div style="display:flex;align-items:center;gap:16px;">
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text-secondary);">
-                Beneficiaries per page
-                <select class="dt-show-select" style="padding:4px 8px;">
-                  <option selected>25</option>
-                  <option>50</option>
-                  <option>100</option>
-                </select>
-              </div>
-              <div style="display:flex;align-items:center;gap:4px;">
-                <button class="dt-kebab" title="First page" style="padding:5px 7px;">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
-                </button>
-                <button class="dt-kebab" title="Previous" style="padding:5px 7px;">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                <button style="width:28px;height:28px;border-radius:var(--radius-sm);border:none;background:var(--color-brand-navy);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">1</button>
-                <button class="dt-kebab" style="width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;">2</button>
-                <button class="dt-kebab" title="Next" style="padding:5px 7px;">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </button>
-                <button class="dt-kebab" title="Last page" style="padding:5px 7px;">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
-                </button>
-              </div>
+          <div class="pay-table-footer">
+            <span>Showing 1 to 25 of 47 beneficiaries</span>
+            <div class="pay-page-btns">
+              <button class="pay-page-btn">«</button>
+              <button class="pay-page-btn">‹</button>
+              <button class="pay-page-btn active">1</button>
+              <button class="pay-page-btn">2</button>
+              <button class="pay-page-btn">›</button>
+              <button class="pay-page-btn">»</button>
             </div>
           </div>
         </div>
