@@ -350,6 +350,11 @@
       color: var(--color-text-primary);
       cursor: pointer;
       font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .account-switcher:hover {
+      background: var(--color-bg-secondary);
+      border-color: var(--color-border-secondary);
     }
     .search-wrap {
       flex: 1;
@@ -1093,8 +1098,9 @@
       cursor: pointer;
       text-align: left;
       font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
     }
-    .action-btn:hover { background: #e4eaf0; }
+    .action-btn:hover { background: var(--color-bg-secondary); border-color: var(--color-border-secondary); }
     .action-title {
       font-size: 14px;
       font-weight: 500;
