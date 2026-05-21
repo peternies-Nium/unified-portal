@@ -6,7 +6,7 @@
   <title>NIUM Portal — Beneficiaries</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       /* NIUM neutrals */
@@ -71,7 +71,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #ffffff;
       color: var(--color-text-primary);
       min-height: 100vh;
@@ -2589,12 +2589,11 @@
 
     <div class="content-inner">
 
-      <!-- Page header: H1 + customer fieldset + actions -->
-      <div class="travel-page-header" style="align-items:flex-end;">
-        <div style="display:flex;align-items:flex-end;gap:20px;flex:1;">
-          <h1 class="travel-title" id="page-h1" style="margin:0;line-height:1;">Beneficiaries</h1>
-          <!-- Customer fieldset dropdown -->
-          <div style="position:relative;display:inline-block;">
+      <!-- Page header -->
+      <div class="travel-page-header">
+        <div style="display:flex;align-items:flex-end;gap:16px;">
+          <h1 class="travel-title">New beneficiary</h1>
+          <div style="position:relative;display:inline-block;margin-bottom:2px;">
             <fieldset style="border:1px solid var(--color-border-secondary);border-radius:var(--radius-sm);padding:2px 10px 6px;background:var(--color-bg-primary);min-width:180px;">
               <legend style="font-size:11px;color:var(--color-text-tertiary);padding:0 4px;font-weight:500;letter-spacing:0.02em;">Customer</legend>
               <button id="beneCustomerBtn" style="background:none;border:none;padding:0;font-size:13.5px;font-weight:500;color:var(--color-text-primary);cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;font-family:inherit;">
@@ -2612,494 +2611,413 @@
             </div>
           </div>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <button class="btn-more-actions" id="exportBeneBtn">
-            Export selected as CSV
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <button class="btn-move-funds" onclick="location.href='nium-portal-new-benie-1.html'">New beneficiary</button>
+      </div>
+
+      <!-- Back link -->
+      <div style="margin-bottom:32px;margin-top:-16px;">
+        <a href="nium-portal-beneficiaries.html" style="display:inline-flex;align-items:center;gap:6px;color:#4B5EFF;font-size:13px;text-decoration:none;font-weight:500;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Beneficiaries home
+        </a>
+      </div>
+
+      <style>
+        /* ── Step indicator ── */
+        .nb-stepper { display:flex; align-items:flex-start; gap:0; margin-bottom:40px; max-width:600px; }
+        .nb-step { display:flex; flex-direction:column; align-items:center; gap:8px; }
+        .nb-dot {
+          width:28px; height:28px; border-radius:50%;
+          display:flex; align-items:center; justify-content:center;
+          font-size:12px; font-weight:600; flex-shrink:0;
+        }
+        .nb-dot.active { background:#0f1f6e; color:#fff; border:3px solid #0f1f6e; }
+        .nb-dot.pending { background:#e2e8f0; color:#94a3b8; }
+        .nb-dot.done { background:#0f1f6e; color:#fff; }
+        .nb-label { font-size:13px; font-weight:500; color:var(--color-text-secondary); white-space:nowrap; }
+        .nb-label.active { color:var(--color-text-primary); font-weight:700; }
+        .nb-connector { flex:1; height:2px; background:#e2e8f0; margin-top:13px; min-width:80px; }
+        .nb-connector.done { background:#0f1f6e; }
+
+        /* ── Form fields ── */
+        .nb-form { max-width:900px; }
+        .nb-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px 24px; margin-bottom:32px; }
+
+        /* Floating label field wrapper */
+        .nb-field { position:relative; margin-top:10px; }
+
+        /* Label — sits inside field by default, floats on focus/fill */
+        .nb-field-label {
+          position:absolute; left:12px; top:13px;
+          font-size:14px; font-weight:400;
+          color:var(--color-text-tertiary);
+          padding:0 2px; background:transparent;
+          pointer-events:none; z-index:2;
+          white-space:nowrap;
+          display:flex; align-items:center; gap:3px;
+        }
+        .nb-field.focused .nb-field-label,
+        .nb-field.filled .nb-field-label {
+          top:-8px; left:10px;
+          font-size:11px; font-weight:500;
+          background:#fff; padding:0 4px;
+        }
+        .nb-field.focused .nb-field-label { color:#0f1f6e; }
+        .nb-field.filled .nb-field-label { color:var(--color-text-secondary); }
+        .nb-field-label .req { color:#e53935; }
+
+        /* Select border changes */
+        .nb-select.open { border-color:#0f1f6e; }
+
+        /* Custom select trigger */
+        .nb-select {
+          width:100%; padding:13px 40px 13px 14px;
+          border:1px solid var(--color-border-secondary);
+          border-radius:var(--radius-md);
+          background:#fff; font-size:14px; font-family:inherit;
+          color:var(--color-text-tertiary); cursor:pointer;
+          display:flex; align-items:center; gap:10px;
+          position:relative; box-sizing:border-box;
+          transition:border-color 0.15s; height:48px;
+        }
+        .nb-select.open, .nb-select:focus-within { border-color:#0f1f6e; outline:none; }
+        .nb-select.has-value { color:var(--color-text-primary); }
+        .nb-select-placeholder { visibility:hidden; }
+        .nb-field.filled .nb-select-placeholder { visibility:visible; }
+        .nb-select.disabled { background:var(--color-bg-secondary); cursor:not-allowed; color:var(--color-text-tertiary); }
+        .nb-select-chevron {
+          position:absolute; right:12px; top:50%; transform:translateY(-50%);
+          color:var(--color-text-tertiary); pointer-events:none;
+        }
+        .nb-select-clear {
+          position:absolute; right:32px; top:50%; transform:translateY(-50%);
+          background:none; border:none; cursor:pointer; color:var(--color-text-tertiary);
+          display:flex; align-items:center; padding:2px;
+        }
+        .nb-select-clear:hover { color:var(--color-text-primary); }
+
+        /* Dropdown panel */
+        .nb-dropdown {
+          display:none; position:absolute; top:calc(100% + 4px); left:0; right:0;
+          background:#fff; border:1px solid var(--color-border-secondary);
+          border-radius:var(--radius-md); box-shadow:0 8px 24px rgba(0,0,0,0.12);
+          z-index:100; max-height:280px; overflow:hidden; flex-direction:column;
+        }
+        .nb-dropdown.open { display:flex; }
+        .nb-search {
+          padding:10px 12px; border-bottom:1px solid var(--color-border-tertiary);
+          flex-shrink:0;
+        }
+        .nb-search input {
+          width:100%; border:none; outline:none; font-size:13px; font-family:inherit;
+          color:var(--color-text-primary); background:transparent;
+        }
+        .nb-search input::placeholder { color:var(--color-text-tertiary); }
+        .nb-options { overflow-y:auto; }
+        .nb-option {
+          display:flex; align-items:center; gap:12px; padding:11px 14px;
+          cursor:pointer; font-size:13px; color:var(--color-text-primary);
+          border-bottom:1px solid var(--color-border-tertiary);
+        }
+        .nb-option:last-child { border-bottom:none; }
+        .nb-option:hover { background:var(--color-bg-secondary); }
+        .nb-option-flag { font-size:20px; flex-shrink:0; }
+
+        /* Next button */
+        .nb-next {
+          background:#0f1f6e; color:#fff; border:none;
+          border-radius:999px; padding:13px 32px;
+          font-size:15px; font-weight:600; font-family:inherit;
+          cursor:pointer; transition:background 0.15s;
+        }
+        .nb-next:hover { background:#1a2f8e; }
+        .nb-next:disabled { background:#cbd5e1; cursor:not-allowed; }
+        .nb-next:disabled:hover { background:#cbd5e1; }
+      </style>
+
+      <!-- Step indicator -->
+      <div class="nb-stepper">
+        <div class="nb-step">
+          <div class="nb-dot active">1</div>
+          <div class="nb-label active">Basics</div>
+        </div>
+        <div class="nb-connector"></div>
+        <div class="nb-step">
+          <div class="nb-dot pending">2</div>
+          <div class="nb-label">Demographics</div>
+        </div>
+        <div class="nb-connector"></div>
+        <div class="nb-step">
+          <div class="nb-dot pending">3</div>
+          <div class="nb-label">Account</div>
         </div>
       </div>
 
-      <div class="page-content-pad" style="margin-top:20px;padding-bottom:32px;">
-        <style>
-          #beneTable thead th { position: sticky; top: 0; z-index: 1; background: #f9fafb; }
-          .card-kebab-wrap { position: relative; display: inline-block; }
-          .card-kebab-btn {
-            background: none; border: none; cursor: pointer; padding: 4px 8px;
-            color: var(--color-text-secondary); border-radius: 4px;
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-          }
-          .card-kebab-btn:hover { background: var(--color-bg-secondary); }
-          .card-kebab-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; display: block; }
-          .card-kebab-menu {
-            display: none; position: absolute; right: 0; top: calc(100% + 4px);
-            background: var(--color-bg-primary); border: 0.5px solid var(--color-border-secondary);
-            border-radius: var(--radius-md); box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-            z-index: 50; min-width: 160px; padding: 4px 0;
-          }
-          .card-kebab-menu.open { display: block; }
-          .card-kebab-item {
-            display: block; width: 100%; text-align: left; padding: 8px 14px;
-            font-size: 13px; font-family: inherit; background: none; border: none;
-            color: var(--color-text-primary); cursor: pointer;
-          }
-          .card-kebab-item:hover { background: var(--color-bg-secondary); }
-          .card-kebab-item.danger { color: #d04040; }
-          .pay-table-footer {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 11px 16px; border-top: 1px solid var(--color-border-tertiary);
-            font-size: 12.5px; color: var(--color-text-secondary); background: #fff;
-          }
-          .pay-page-btns { display: flex; gap: 4px; }
-          .pay-page-btn {
-            padding: 4px 10px; font-size: 12.5px; border: 0.5px solid var(--color-border-secondary);
-            border-radius: var(--radius-sm); background: var(--color-bg-primary);
-            cursor: pointer; font-family: inherit; color: var(--color-text-primary);
-          }
-          .pay-page-btn:hover { background: var(--color-bg-secondary); }
-          .pay-page-btn.active { background: var(--color-brand-navy); color: #fff; border-color: var(--color-brand-navy); }
-        </style>
+      <!-- Form -->
+      <div class="nb-form">
+        <div class="nb-grid">
 
-        <div class="data-table-wrap" style="display:flex;flex-direction:column;border:0.5px solid var(--color-border-tertiary);border-radius:var(--radius-md);background:var(--color-bg-primary);">
-          <div>
-          <table class="data-table" id="beneTable">
-            <thead>
-              <tr>
-                <th><input type="checkbox" class="dt-checkbox" id="beneSelectAll"></th>
-                <th>
-                  <span style="display:inline-flex;align-items:center;gap:5px;">
-                    Beneficiary name
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="11" y2="6"/><line x1="4" y1="12" x2="13" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-                  </span>
-                </th>
-                <th>
-                  <span style="display:inline-flex;align-items:center;gap:5px;">
-                    Payout method
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="11" y2="6"/><line x1="4" y1="12" x2="13" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-                  </span>
-                </th>
-                <th>
-                  <span style="display:inline-flex;align-items:center;gap:5px;">
-                    Destination currency
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="11" y2="6"/><line x1="4" y1="12" x2="13" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-                  </span>
-                </th>
-                <th>Created (UTC)</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>United Citizen</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Apr 22, 2024<br><span style="color:var(--color-text-tertiary);font-size:12px;">15:04:29</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>randomName</td><td class="dt-muted">LOCAL</td><td>SGD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 12, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">11:45:18</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Bank Teasdsster</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 06, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">15:34:54</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>batchPayouttest123</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 04, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">14:59:37</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Batch Payout test1</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 04, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">13:49:47</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Test123</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 04, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">10:05:29</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>RanjithP Singh12</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 01, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">23:31:46</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>test 2</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Dec 01, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">22:54:56</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Bank Tester</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 30, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">18:01:30</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Bank Tester</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 30, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">17:46:30</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Bank Tester</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 30, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">16:42:07</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Test Data</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 30, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">16:20:49</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>RanjithP Singh</td><td class="dt-muted">CARD</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 30, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">15:52:59</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Freeda Russel</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 14, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">15:10:18</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Aidan Indian</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:05</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Beryl Bergnaum</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:04</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Johnpaul Proxy</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:03</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Percival Wallet Trantow</td><td class="dt-muted">WALLET</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:03</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Bryana Shields</td><td class="dt-muted">LOCAL</td><td>AUD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:02</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Mustafa Lesch</td><td class="dt-muted">LOCAL</td><td>USD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:28:02</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Koby Indian</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:24:22</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Treva Steuber</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:24:21</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Freddy Proxy</td><td class="dt-muted">PROXY</td><td>INR</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:24:21</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Tracey Wallet Sporer</td><td class="dt-muted">WALLET</td><td>PHP</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:24:20</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-              <tr><td><input type="checkbox" class="dt-checkbox bene-row-check"></td><td>Edward Fisher</td><td class="dt-muted">LOCAL</td><td>AUD</td><td style="color:var(--color-text-secondary);white-space:nowrap;">Nov 10, 2023<br><span style="color:var(--color-text-tertiary);font-size:12px;">08:24:19</span></td><td><div class="card-kebab-wrap"><button class="card-kebab-btn" onclick="toggleCardMenu(this)"><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span><span class="card-kebab-dot"></span></button><div class="card-kebab-menu"><button class="card-kebab-item" onclick="location.href='nium-portal-benie-detail.html'">View details</button><button class="card-kebab-item">Edit</button><button class="card-kebab-item danger">Delete</button></div></div></td></tr>
-            </tbody>
-          </table>
-          </div><!-- /scroll wrapper -->
-
-          <!-- Pagination footer -->
-          <div class="pay-table-footer">
-            <span>Showing 1 to 25 of 47 beneficiaries</span>
-            <div class="pay-page-btns">
-              <button class="pay-page-btn">«</button>
-              <button class="pay-page-btn">‹</button>
-              <button class="pay-page-btn active">1</button>
-              <button class="pay-page-btn">2</button>
-              <button class="pay-page-btn">›</button>
-              <button class="pay-page-btn">»</button>
+          <!-- Beneficiary account type -->
+          <div class="nb-field">
+            <label class="nb-field-label">Beneficiary account type <span class="req">*</span></label>
+            <div class="nb-select" id="sel-account-type" onclick="toggleDropdown('dd-account-type', this)">
+              <span class="nb-select-placeholder" id="val-account-type">Beneficiary account type</span>
+              <button class="nb-select-clear" id="clr-account-type" style="display:none" onclick="clearField(event,'sel-account-type','val-account-type','clr-account-type','Beneficiary account type')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <span class="nb-select-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="nb-dropdown" id="dd-account-type">
+              <div class="nb-options">
+                <div class="nb-option" onclick="selectOption('sel-account-type','val-account-type','clr-account-type','dd-account-type','Corporate',null)">Corporate</div>
+                <div class="nb-option" onclick="selectOption('sel-account-type','val-account-type','clr-account-type','dd-account-type','Individual',null)">Individual</div>
+              </div>
             </div>
           </div>
+
+          <!-- Destination country -->
+          <div class="nb-field">
+            <label class="nb-field-label">Destination country <span class="req">*</span></label>
+            <div class="nb-select" id="sel-country" onclick="toggleDropdown('dd-country', this)">
+              <span class="nb-select-placeholder" id="val-country">Destination country</span>
+              <button class="nb-select-clear" id="clr-country" style="display:none" onclick="clearField(event,'sel-country','val-country','clr-country','Destination country')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <span class="nb-select-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="nb-dropdown" id="dd-country">
+              <div class="nb-search"><input type="text" placeholder="Search..." oninput="filterOptions(this,'dd-country')"></div>
+              <div class="nb-options" id="opts-country"></div>
+            </div>
+          </div>
+
+          <!-- Destination currency -->
+          <div class="nb-field">
+            <label class="nb-field-label">Destination currency <span class="req">*</span></label>
+            <div class="nb-select disabled" id="sel-currency">
+              <span class="nb-select-placeholder" id="val-currency">Destination currency</span>
+              <button class="nb-select-clear" id="clr-currency" style="display:none" onclick="clearField(event,'sel-currency','val-currency','clr-currency','Destination currency')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <span class="nb-select-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="nb-dropdown" id="dd-currency">
+              <div class="nb-search"><input type="text" placeholder="Search..." oninput="filterOptions(this,'dd-currency')"></div>
+              <div class="nb-options" id="opts-currency"></div>
+            </div>
+          </div>
+
+          <!-- Payout method -->
+          <div class="nb-field">
+            <label class="nb-field-label">Payout method <span class="req">*</span></label>
+            <div class="nb-select disabled" id="sel-payout">
+              <span class="nb-select-placeholder" id="val-payout">Payout method</span>
+              <button class="nb-select-clear" id="clr-payout" style="display:none" onclick="clearField(event,'sel-payout','val-payout','clr-payout','Payout method')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+              <span class="nb-select-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="nb-dropdown" id="dd-payout">
+              <div class="nb-options">
+                <div class="nb-option" onclick="selectOption('sel-payout','val-payout','clr-payout','dd-payout','Local',null)">Local</div>
+                <div class="nb-option" onclick="selectOption('sel-payout','val-payout','clr-payout','dd-payout','SWIFT',null)">SWIFT</div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <button class="nb-next" id="nb-next-btn" disabled onclick="location.href='nium-portal-new-benie-2.html'">Next</button>
       </div>
 
     </div><!-- /content-inner -->
-
   </div>
 </div>
 </div>
 
 <script>
-  // Generic dropdown handler — works for period + client menus
-  function setupDropdown(btnSelector, menuSelector) {
-    document.querySelectorAll(btnSelector).forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var menu = btn.nextElementSibling;
-        // Close all other open menus
-        document.querySelectorAll('.period-menu.open, .client-menu.open').forEach(function (m) {
-          if (m !== menu) m.classList.remove('open');
-        });
-        menu.classList.toggle('open');
-      });
-    });
+var COUNTRIES = [
+  {flag:'🇦🇱',name:'Albania'},{flag:'🇩🇿',name:'Algeria'},{flag:'🇦🇸',name:'American Samoa'},
+  {flag:'🇦🇩',name:'Andorra'},{flag:'🇦🇴',name:'Angola'},{flag:'🇦🇮',name:'Anguilla'},
+  {flag:'🇦🇺',name:'Australia'},{flag:'🇦🇹',name:'Austria'},{flag:'🇧🇭',name:'Bahrain'},
+  {flag:'🇧🇩',name:'Bangladesh'},{flag:'🇧🇪',name:'Belgium'},{flag:'🇧🇷',name:'Brazil'},
+  {flag:'🇨🇦',name:'Canada'},{flag:'🇨🇳',name:'China'},{flag:'🇨🇴',name:'Colombia'},
+  {flag:'🇩🇰',name:'Denmark'},{flag:'🇪🇬',name:'Egypt'},{flag:'🇫🇮',name:'Finland'},
+  {flag:'🇫🇷',name:'France'},{flag:'🇩🇪',name:'Germany'},{flag:'🇬🇭',name:'Ghana'},
+  {flag:'🇬🇷',name:'Greece'},{flag:'🇭🇰',name:'Hong Kong'},{flag:'🇮🇳',name:'India'},
+  {flag:'🇮🇩',name:'Indonesia'},{flag:'🇮🇪',name:'Ireland'},{flag:'🇮🇱',name:'Israel'},
+  {flag:'🇮🇹',name:'Italy'},{flag:'🇯🇵',name:'Japan'},{flag:'🇯🇴',name:'Jordan'},
+  {flag:'🇰🇪',name:'Kenya'},{flag:'🇲🇾',name:'Malaysia'},{flag:'🇲🇽',name:'Mexico'},
+  {flag:'🇳🇱',name:'Netherlands'},{flag:'🇳🇿',name:'New Zealand'},{flag:'🇳🇬',name:'Nigeria'},
+  {flag:'🇳🇴',name:'Norway'},{flag:'🇵🇰',name:'Pakistan'},{flag:'🇵🇭',name:'Philippines'},
+  {flag:'🇵🇱',name:'Poland'},{flag:'🇵🇹',name:'Portugal'},{flag:'🇶🇦',name:'Qatar'},
+  {flag:'🇸🇦',name:'Saudi Arabia'},{flag:'🇸🇬',name:'Singapore'},{flag:'🇿🇦',name:'South Africa'},
+  {flag:'🇰🇷',name:'South Korea'},{flag:'🇪🇸',name:'Spain'},{flag:'🇸🇪',name:'Sweden'},
+  {flag:'🇨🇭',name:'Switzerland'},{flag:'🇹🇭',name:'Thailand'},{flag:'🇹🇷',name:'Turkey'},
+  {flag:'🇦🇪',name:'United Arab Emirates'},{flag:'🇬🇧',name:'United Kingdom'},
+  {flag:'🇺🇸',name:'United States'},{flag:'🇻🇳',name:'Vietnam'},{flag:'🇿🇲',name:'Zambia'}
+];
 
-    document.querySelectorAll(menuSelector + ' button').forEach(function (item) {
-      item.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var menu = item.closest(menuSelector);
-        var btn = menu.previousElementSibling;
-        var caret = btn.querySelector('svg').outerHTML;
-        btn.innerHTML = item.textContent + caret;
-        menu.querySelectorAll('button').forEach(function (b) { b.classList.remove('selected'); });
-        item.classList.add('selected');
-        menu.classList.remove('open');
-      });
-    });
-  }
+var CURRENCIES = [
+  {flag:'🇦🇺',code:'AUD',name:'Australian Dollar'},
+  {flag:'🇧🇷',code:'BRL',name:'Brazilian Real'},
+  {flag:'🇨🇦',code:'CAD',name:'Canadian Dollar'},
+  {flag:'🇨🇭',code:'CHF',name:'Swiss Franc'},
+  {flag:'🇨🇳',code:'CNY',name:'Chinese Yuan'},
+  {flag:'🇩🇰',code:'DKK',name:'Danish Krone'},
+  {flag:'🇪🇺',code:'EUR',name:'Euro'},
+  {flag:'🇬🇧',code:'GBP',name:'British Pound'},
+  {flag:'🇭🇰',code:'HKD',name:'Hong Kong Dollar'},
+  {flag:'🇮🇳',code:'INR',name:'Indian Rupee'},
+  {flag:'🇮🇩',code:'IDR',name:'Indonesian Rupiah'},
+  {flag:'🇯🇵',code:'JPY',name:'Japanese Yen'},
+  {flag:'🇲🇾',code:'MYR',name:'Malaysian Ringgit'},
+  {flag:'🇲🇽',code:'MXN',name:'Mexican Peso'},
+  {flag:'🇳🇿',code:'NZD',name:'New Zealand Dollar'},
+  {flag:'🇳🇬',code:'NGN',name:'Nigerian Naira'},
+  {flag:'🇵🇭',code:'PHP',name:'Philippine Peso'},
+  {flag:'🇵🇰',code:'PKR',name:'Pakistani Rupee'},
+  {flag:'🇶🇦',code:'QAR',name:'Qatari Riyal'},
+  {flag:'🇸🇦',code:'SAR',name:'Saudi Riyal'},
+  {flag:'🇸🇬',code:'SGD',name:'Singapore Dollar'},
+  {flag:'🇿🇦',code:'ZAR',name:'South African Rand'},
+  {flag:'🇰🇷',code:'KRW',name:'South Korean Won'},
+  {flag:'🇸🇪',code:'SEK',name:'Swedish Krona'},
+  {flag:'🇹🇭',code:'THB',name:'Thai Baht'},
+  {flag:'🇹🇷',code:'TRY',name:'Turkish Lira'},
+  {flag:'🇦🇪',code:'AED',name:'UAE Dirham'},
+  {flag:'🇺🇸',code:'USD',name:'US Dollar'},
+  {flag:'🇻🇳',code:'VND',name:'Vietnamese Dong'}
+];
 
-  setupDropdown('[data-period-btn]', '.period-menu');
-  setupDropdown('[data-client-btn]', '.client-menu');
+// Country → default currency map
+var COUNTRY_CURRENCY = {
+  'Australia':'AUD','Brazil':'BRL','Canada':'CAD','China':'CNY','Denmark':'DKK',
+  'France':'EUR','Germany':'EUR','Hong Kong':'HKD','India':'INR','Indonesia':'IDR',
+  'Italy':'EUR','Japan':'JPY','Malaysia':'MYR','Mexico':'MXN','Netherlands':'EUR',
+  'New Zealand':'NZD','Nigeria':'NGN','Norway':'SEK','Pakistan':'PKR','Philippines':'PHP',
+  'Poland':'EUR','Portugal':'EUR','Qatar':'QAR','Saudi Arabia':'SAR','Singapore':'SGD',
+  'South Africa':'ZAR','South Korea':'KRW','Spain':'EUR','Sweden':'SEK',
+  'Switzerland':'CHF','Thailand':'THB','Turkey':'TRY','United Arab Emirates':'AED',
+  'United Kingdom':'GBP','United States':'USD','Vietnam':'VND','Zambia':'ZAR'
+};
 
-  // Balances customer dropdown — opens on click, closes on outside click or selection
-  var balBtn  = document.getElementById('balCustomerBtn');
-  var balMenu = document.getElementById('balCustomerMenu');
-  var balName = document.getElementById('balCustomerName');
-  if (balBtn && balMenu) {
-    balBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      balMenu.classList.toggle('open');
-    });
-    balMenu.querySelectorAll('button').forEach(function(item) {
-      item.addEventListener('click', function(e) {
-        e.stopPropagation();
-        balMenu.querySelectorAll('button').forEach(function(b) { b.classList.remove('selected'); });
-        item.classList.add('selected');
-        balName.textContent = item.textContent.trim();
-        balMenu.classList.remove('open');
-      });
-    });
-    document.addEventListener('click', function() {
-      balMenu.classList.remove('open');
-    });
-  }
-
-  // Wallet tabs
-  document.querySelectorAll('.wallet-tab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      document.querySelectorAll('.wallet-tab').forEach(function(t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-    });
-  });
-  // Balances expand/collapse
-  document.querySelectorAll('.bal-expand-btn').forEach(function(btn) {
-    var targetId = btn.getAttribute('data-target');
-    var target = document.getElementById(targetId);
-    // Sync initial state
-    if (btn.classList.contains('open') && target) target.classList.remove('hidden');
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      btn.classList.toggle('open');
-      if (target) target.classList.toggle('hidden');
-    });
-  });
-
-  // Copy to clipboard
-  document.querySelectorAll('.bal-va-copy').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var num = btn.previousSibling.textContent.trim();
-      navigator.clipboard && navigator.clipboard.writeText(num);
-      btn.style.color = 'var(--color-success-dot)';
-      setTimeout(function() { btn.style.color = ''; }, 1200);
-    });
-  });
-
-
-  // Click outside to close all
-  document.addEventListener('click', function () {
-    document.querySelectorAll('.period-menu.open, .client-menu.open').forEach(function (m) {
-      m.classList.remove('open');
-    });
-  });
-
-  // -----------------------------------------------------------------
-  // Sparkline rendering + hover tooltips
-  // -----------------------------------------------------------------
-  var seriesData = {
-    balance: [
-      {date: 'Mar 10', display: '$7,200.18', v: 7200},
-      {date: 'Mar 12', display: '$7,310.52', v: 7310},
-      {date: 'Mar 14', display: '$7,245.66', v: 7245},
-      {date: 'Mar 17', display: '$7,420.00', v: 7420},
-      {date: 'Mar 19', display: '$7,580.81', v: 7581},
-      {date: 'Mar 22', display: '$7,615.34', v: 7615},
-      {date: 'Mar 24', display: '$7,720.09', v: 7720},
-      {date: 'Mar 26', display: '$7,780.45', v: 7780},
-      {date: 'Mar 29', display: '$7,890.22', v: 7890},
-      {date: 'Apr 01', display: '$7,950.10', v: 7950},
-      {date: 'Apr 05', display: '$8,010.88', v: 8011},
-      {date: 'Apr 08', display: '$8,049.39', v: 8049}
-    ],
-    sent: [
-      {date: 'Mar 10', display: '$58,200', v: 58200},
-      {date: 'Mar 12', display: '$72,400', v: 72400},
-      {date: 'Mar 14', display: '$61,800', v: 61800},
-      {date: 'Mar 17', display: '$89,300', v: 89300},
-      {date: 'Mar 19', display: '$94,500', v: 94500},
-      {date: 'Mar 22', display: '$108,200', v: 108200},
-      {date: 'Mar 24', display: '$121,400', v: 121400},
-      {date: 'Mar 26', display: '$135,800', v: 135800},
-      {date: 'Mar 29', display: '$148,200', v: 148200},
-      {date: 'Apr 01', display: '$162,500', v: 162500},
-      {date: 'Apr 05', display: '$175,800', v: 175800},
-      {date: 'Apr 08', display: '$192,400', v: 192400}
-    ],
-    received: [
-      {date: 'Mar 10', display: '$104,500', v: 104500},
-      {date: 'Mar 12', display: '$98,200', v: 98200},
-      {date: 'Mar 14', display: '$95,400', v: 95400},
-      {date: 'Mar 17', display: '$88,100', v: 88100},
-      {date: 'Mar 19', display: '$83,600', v: 83600},
-      {date: 'Mar 22', display: '$79,200', v: 79200},
-      {date: 'Mar 24', display: '$76,400', v: 76400},
-      {date: 'Mar 26', display: '$74,800', v: 74800},
-      {date: 'Mar 29', display: '$72,100', v: 72100},
-      {date: 'Apr 01', display: '$70,500', v: 70500},
-      {date: 'Apr 05', display: '$68,900', v: 68900},
-      {date: 'Apr 08', display: '$67,200', v: 67200}
-    ],
-    fx: [
-      {date: 'Mar 10', display: '$12,800', v: 12800},
-      {date: 'Mar 12', display: '$15,400', v: 15400},
-      {date: 'Mar 14', display: '$14,200', v: 14200},
-      {date: 'Mar 17', display: '$18,900', v: 18900},
-      {date: 'Mar 19', display: '$21,500', v: 21500},
-      {date: 'Mar 22', display: '$19,800', v: 19800},
-      {date: 'Mar 24', display: '$24,200', v: 24200},
-      {date: 'Mar 26', display: '$27,600', v: 27600},
-      {date: 'Mar 29', display: '$29,800', v: 29800},
-      {date: 'Apr 01', display: '$32,400', v: 32400},
-      {date: 'Apr 05', display: '$34,900', v: 34900},
-      {date: 'Apr 08', display: '$36,200', v: 36200}
-    ],
-    cards: [
-      {date: 'Mar 10', display: '128 cards', v: 128},
-      {date: 'Mar 12', display: '129 cards', v: 129},
-      {date: 'Mar 14', display: '131 cards', v: 131},
-      {date: 'Mar 17', display: '133 cards', v: 133},
-      {date: 'Mar 19', display: '134 cards', v: 134},
-      {date: 'Mar 22', display: '136 cards', v: 136},
-      {date: 'Mar 24', display: '137 cards', v: 137},
-      {date: 'Mar 26', display: '139 cards', v: 139},
-      {date: 'Mar 29', display: '140 cards', v: 140},
-      {date: 'Apr 01', display: '141 cards', v: 141},
-      {date: 'Apr 05', display: '141 cards', v: 141},
-      {date: 'Apr 08', display: '142 cards', v: 142}
-    ]
-  };
-
-  function renderSparkline(wrap) {
-    var series = wrap.getAttribute('data-series');
-    var points = seriesData[series];
-    if (!points) return;
-
-    var svg = wrap.querySelector('svg.sparkline');
-    var tooltip = wrap.querySelector('.sparkline-tooltip');
-    if (!svg || !tooltip) return;
-
-    var W = 220, H = 70;
-    var topPad = 10, botPad = 10;
-    var drawH = H - topPad - botPad;
-
-    var values = points.map(function (p) { return p.v; });
-    var minV = Math.min.apply(null, values);
-    var maxV = Math.max.apply(null, values);
-    var range = (maxV - minV) || 1;
-
-    var coords = points.map(function (p, i) {
-      var x = (i / (points.length - 1)) * W;
-      var y = topPad + (1 - (p.v - minV) / range) * drawH;
-      return { x: x, y: y };
-    });
-
-    var linePath = coords.map(function (c, i) {
-      return (i === 0 ? 'M' : 'L') + c.x.toFixed(2) + ' ' + c.y.toFixed(2);
-    }).join(' ');
-    var areaPath = linePath + ' L ' + W + ' ' + H + ' L 0 ' + H + ' Z';
-
-    svg.innerHTML =
-      '<path d="' + areaPath + '" fill="#5567f7" fill-opacity="0.08"/>' +
-      '<path d="' + linePath + '" fill="none" stroke="#5567f7" stroke-width="1.5"/>' +
-      '<line class="hover-line" x1="0" y1="0" x2="0" y2="' + H + '" stroke="#5567f7" stroke-width="0.8" stroke-dasharray="2,2" opacity="0"/>' +
-      '<circle class="hover-dot" cx="0" cy="0" r="3" fill="#ffffff" stroke="#5567f7" stroke-width="1.5" opacity="0"/>';
-
-    var hoverLine = svg.querySelector('.hover-line');
-    var hoverDot  = svg.querySelector('.hover-dot');
-
-    svg.addEventListener('mousemove', function (e) {
-      var svgRect = svg.getBoundingClientRect();
-      var relX = e.clientX - svgRect.left;
-      var ratio = Math.max(0, Math.min(1, relX / svgRect.width));
-      var idx = Math.round(ratio * (points.length - 1));
-      var c = coords[idx];
-      var p = points[idx];
-
-      hoverLine.setAttribute('x1', c.x);
-      hoverLine.setAttribute('x2', c.x);
-      hoverLine.setAttribute('opacity', '1');
-      hoverDot.setAttribute('cx', c.x);
-      hoverDot.setAttribute('cy', c.y);
-      hoverDot.setAttribute('opacity', '1');
-
-      // Tooltip positioning — compute pixel x within wrap from SVG coord
-      var wrapRect = wrap.getBoundingClientRect();
-      var offset = svgRect.left - wrapRect.left; // negative: SVG extends left of wrap
-      var pointPxInSvg = (c.x / W) * svgRect.width;
-      var pointPxInWrap = pointPxInSvg + offset;
-
-      tooltip.style.left = pointPxInWrap + 'px';
-      tooltip.innerHTML = p.display + '<span class="date">' + p.date + '</span>';
-      wrap.classList.add('hover');
-    });
-
-    svg.addEventListener('mouseleave', function () {
-      wrap.classList.remove('hover');
-      hoverLine.setAttribute('opacity', '0');
-      hoverDot.setAttribute('opacity', '0');
-    });
-  }
-
-  document.querySelectorAll('[data-series]').forEach(renderSparkline);
-
-  // -----------------------------------------------------------------
-  // Sidebar: collapse toggle + group expand/collapse
-  // -----------------------------------------------------------------
-  var sidebar = document.getElementById('sidebar');
-  var collapseBtn = document.getElementById('collapseToggle');
-
-  // Restore persisted collapsed state on page load
-  try {
-    if (localStorage.getItem('nium-sidebar-collapsed') === '1') {
-      sidebar.classList.add('collapsed');
-      sidebar.querySelectorAll('.nav-item.expanded').forEach(function (item) {
-        item.classList.remove('expanded');
-      });
-      if (collapseBtn) collapseBtn.title = 'Expand sidebar';
+function buildOptions(containerId, items) {
+  var c = document.getElementById(containerId);
+  c.innerHTML = '';
+  items.forEach(function(item) {
+    var d = document.createElement('div');
+    d.className = 'nb-option';
+    if (item.flag) {
+      d.innerHTML = '<span class="nb-option-flag">' + item.flag + '</span>' +
+        (item.code ? item.code + ' ' + item.name : item.name);
+    } else {
+      d.textContent = item.name || item;
     }
-  } catch (e) { /* localStorage not available */ }
+    if (containerId === 'opts-country') {
+      d.onclick = function() { selectCountry(item); };
+    } else {
+      d.onclick = function() {
+        selectOption('sel-currency','val-currency','clr-currency','dd-currency',
+          item.flag + ' ' + item.code + ' ' + item.name, item.flag);
+      };
+    }
+    c.appendChild(d);
+  });
+}
 
-  if (collapseBtn) {
-    collapseBtn.addEventListener('click', function () {
-      sidebar.classList.toggle('collapsed');
-      // Collapse any open groups when shrinking
-      if (sidebar.classList.contains('collapsed')) {
-        sidebar.querySelectorAll('.nav-item.expanded').forEach(function (item) {
-          item.classList.remove('expanded');
-        });
-        collapseBtn.title = 'Expand sidebar';
-      } else {
-        collapseBtn.title = 'Collapse sidebar';
-      }
-      // Persist
-      try {
-        localStorage.setItem('nium-sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0');
-      } catch (e) { /* localStorage not available */ }
-    });
+buildOptions('opts-country', COUNTRIES);
+buildOptions('opts-currency', CURRENCIES);
+
+function selectCountry(country) {
+  var valEl = document.getElementById('val-country');
+  var selEl = document.getElementById('sel-country');
+  var clrEl = document.getElementById('clr-country');
+  valEl.innerHTML = '<span style="font-size:20px;margin-right:8px;">' + country.flag + '</span>' + country.name;
+  selEl.classList.add('has-value');
+  clrEl.style.display = 'flex';
+  document.getElementById('dd-country').classList.remove('open');
+  selEl.classList.remove('open');
+  selEl.closest('.nb-field').classList.remove('focused');
+  selEl.closest('.nb-field').classList.add('filled');
+
+  // Auto-set currency
+  var code = COUNTRY_CURRENCY[country.name];
+  if (code) {
+    var cur = CURRENCIES.find(function(c) { return c.code === code; });
+    if (cur) {
+      var valCur = document.getElementById('val-currency');
+      var selCur = document.getElementById('sel-currency');
+      var clrCur = document.getElementById('clr-currency');
+      valCur.innerHTML = '<span style="font-size:20px;margin-right:8px;">' + cur.flag + '</span>' + cur.code + ' ' + cur.name;
+      selCur.classList.add('has-value');
+      selCur.classList.remove('disabled');
+      clrCur.style.display = 'flex';
+      selCur.closest('.nb-field').classList.add('filled');
+    }
   }
 
-  // Mercury pattern: chevron toggles, row click navigates (and opens if it has a link)
-  sidebar.querySelectorAll('[data-chevron]').forEach(function (chev) {
-    chev.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (sidebar.classList.contains('collapsed')) return;
-      var item = chev.closest('.nav-item');
-      if (item) item.classList.toggle('expanded');
-    });
+  // Enable payout
+  var selPayout = document.getElementById('sel-payout');
+  selPayout.classList.remove('disabled');
+  selPayout.onclick = function() { toggleDropdown('dd-payout', this); };
+  // Enable currency click
+  document.getElementById('sel-currency').onclick = function() { toggleDropdown('dd-currency', this); };
+}
+
+function selectOption(selId, valId, clrId, ddId, label, flag) {
+  var valEl = document.getElementById(valId);
+  var selEl = document.getElementById(selId);
+  var clrEl = document.getElementById(clrId);
+  if (flag) {
+    valEl.innerHTML = '<span style="font-size:20px;margin-right:8px;">' + flag + '</span>' + label.replace(flag, '').trim();
+  } else {
+    valEl.textContent = label;
+  }
+  selEl.classList.add('has-value');
+  clrEl.style.display = 'flex';
+  document.getElementById(ddId).classList.remove('open');
+  selEl.classList.remove('open');
+  var field = selEl.closest('.nb-field');
+  field.classList.remove('focused');
+  field.classList.add('filled');
+}
+
+function clearField(e, selId, valId, clrId, placeholder) {
+  e.stopPropagation();
+  document.getElementById(valId).textContent = placeholder;
+  var sel = document.getElementById(selId);
+  sel.classList.remove('has-value');
+  document.getElementById(clrId).style.display = 'none';
+  var field = sel.closest('.nb-field');
+  field.classList.remove('filled');
+}
+
+function toggleDropdown(ddId, selEl) {
+  if (selEl.classList.contains('disabled')) return;
+  var dd = document.getElementById(ddId);
+  var isOpen = dd.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.nb-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+  document.querySelectorAll('.nb-select.open').forEach(function(s) { s.classList.remove('open'); });
+  document.querySelectorAll('.nb-field.focused').forEach(function(f) { f.classList.remove('focused'); });
+  if (!isOpen) {
+    dd.classList.add('open');
+    selEl.classList.add('open');
+    selEl.closest('.nb-field').classList.add('focused');
+    var inp = dd.querySelector('input');
+    if (inp) { inp.value=''; filterOptions(inp, ddId); inp.focus(); }
+  }
+}
+
+function filterOptions(input, ddId) {
+  var q = input.value.toLowerCase();
+  var dd = document.getElementById(ddId);
+  dd.querySelectorAll('.nb-option').forEach(function(opt) {
+    opt.style.display = opt.textContent.toLowerCase().includes(q) ? '' : 'none';
   });
+}
 
-  // Row click on expandable items: expand and activate first L2 child.
-  sidebar.querySelectorAll('.nav-item[data-expandable="true"]').forEach(function (item) {
-    item.addEventListener('click', function (e) {
-      if (sidebar.classList.contains('collapsed')) return;
-      if (e.target.closest('[data-chevron]')) return; // chevron handles itself
-      item.classList.add('expanded');
-      // Activate first L2 child
-      var group = item.closest('.nav-item-link')
-        ? item.closest('.nav-item-link').nextElementSibling
-        : null;
-      if (group && group.classList.contains('nav-children')) {
-        var firstChild = group.querySelector('.nav-child');
-        if (firstChild) {
-          sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
-            n.classList.remove('active');
-          });
-          firstChild.classList.add('active');
-        }
-      }
-    });
-  });
-
-  // Child clicks: mark active among siblings + update H1
-  sidebar.querySelectorAll('.nav-children').forEach(function (group) {
-    group.querySelectorAll('.nav-child').forEach(function (child) {
-      child.addEventListener('click', function (e) {
-        e.stopPropagation();
-        // Remove active from all leaf nav items + child items
-        sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
-          n.classList.remove('active');
-        });
-        child.classList.add('active');
-        // Update H1 to match selected L2
-        var h1 = document.getElementById('page-h1');
-        if (h1) h1.textContent = child.textContent.trim();
-      });
-    });
-  });
-
-  // Also update H1 when L1 is clicked (first L2 auto-selected)
-  // Patch: extend the expandable handler's firstChild activation to also set H1
-  (function patchL1H1() {
-    var h1 = document.getElementById('page-h1');
-    if (!h1) return;
-    sidebar.querySelectorAll('.nav-item[data-expandable="true"]').forEach(function (item) {
-      item.addEventListener('click', function (e) {
-        if (e.target.closest('[data-chevron]')) return;
-        var group = item.closest('.nav-item-link')
-          ? item.closest('.nav-item-link').nextElementSibling
-          : null;
-        if (group && group.classList.contains('nav-children')) {
-          var firstChild = group.querySelector('.nav-child');
-          if (firstChild) h1.textContent = firstChild.textContent.trim();
-        }
-      });
-    });
-  }());
-
-  // Leaf nav-items (non-expandable, non-collapse-toggle): mark active on click
-  sidebar.querySelectorAll('.nav-item:not([data-expandable="true"])').forEach(function (item) {
-    item.addEventListener('click', function () {
-      if (item.dataset.noActive) return;
-      sidebar.querySelectorAll('.nav-item:not([data-expandable="true"]).active, .nav-child.active').forEach(function (n) {
-        n.classList.remove('active');
-      });
-      item.classList.add('active');
-    });
-  });
-
-  // Beneficiaries customer dropdown
+// Customer picker
   (function() {
     var btn  = document.getElementById('beneCustomerBtn');
     var menu = document.getElementById('beneCustomerMenu');
@@ -3107,7 +3025,6 @@
     if (!btn || !menu) return;
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      document.querySelectorAll('.client-menu.open').forEach(function(m) { if (m !== menu) m.classList.remove('open'); });
       menu.classList.toggle('open');
     });
     menu.querySelectorAll('button').forEach(function(item) {
@@ -3122,528 +3039,42 @@
     document.addEventListener('click', function() { menu.classList.remove('open'); });
   })();
 
-  // Select-all checkbox
-  (function() {
-    var selectAll = document.getElementById('beneSelectAll');
-    if (!selectAll) return;
-    selectAll.addEventListener('change', function() {
-      document.querySelectorAll('.bene-row-check').forEach(function(cb) { cb.checked = selectAll.checked; });
-    });
-  })();
-
-  // Kebab row menu
-  function toggleCardMenu(btn) {
-    var menu = btn.nextElementSibling;
-    var isOpen = menu.classList.contains('open');
-    document.querySelectorAll('.card-kebab-menu.open').forEach(function(m) {
-      m.classList.remove('open');
-      if (m._origParent) { m._origParent.appendChild(m); delete m._origParent; }
-      m.style.cssText = '';
-    });
-    if (!isOpen) {
-      var btnRect = btn.getBoundingClientRect();
-      menu._origParent = btn.parentNode;
-      document.body.appendChild(menu);
-      menu.style.cssText = 'display:block;position:fixed;z-index:9999;visibility:hidden;';
-      var menuWidth = menu.offsetWidth;
-      var menuHeight = menu.offsetHeight;
-      var left = btnRect.right - menuWidth;
-      var spaceBelow = window.innerHeight - btnRect.bottom;
-      var top = spaceBelow < menuHeight + 8 ? btnRect.top - menuHeight - 4 : btnRect.bottom + 4;
-      menu.style.cssText = 'display:block;position:fixed;z-index:9999;min-width:160px;max-width:200px;width:max-content;left:' + left + 'px;top:' + top + 'px;';
-      menu.classList.add('open');
-    }
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nb-field')) {
+    document.querySelectorAll('.nb-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+    document.querySelectorAll('.nb-select.open').forEach(function(s) { s.classList.remove('open'); });
+    document.querySelectorAll('.nb-field.focused').forEach(function(f) { f.classList.remove('focused'); });
   }
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.card-kebab-wrap') && !e.target.closest('.card-kebab-menu')) {
-      document.querySelectorAll('.card-kebab-menu.open').forEach(function(m) {
-        m.classList.remove('open');
-        if (m._origParent) { m._origParent.appendChild(m); delete m._origParent; }
-        m.style.cssText = '';
-      });
-    }
+});
+
+
+function checkNextEnabled() {
+  var filled = ['sel-account-type','sel-country','sel-currency','sel-payout'].every(function(id) {
+    return document.getElementById(id).classList.contains('has-value');
   });
+  document.getElementById('nb-next-btn').disabled = !filled;
+}
 
+// Patch selectOption and selectCountry to also check
+var _origSelectOption = selectOption;
+selectOption = function(selId, valId, clrId, ddId, label, flag) {
+  _origSelectOption(selId, valId, clrId, ddId, label, flag);
+  checkNextEnabled();
+};
 
+var _origSelectCountry = selectCountry;
+selectCountry = function(country) {
+  _origSelectCountry(country);
+  checkNextEnabled();
+};
+
+var _origClearField = clearField;
+clearField = function(e, selId, valId, clrId, placeholder) {
+  _origClearField(e, selId, valId, clrId, placeholder);
+  checkNextEnabled();
+};
 </script>
 
-
-<!-- =================================================================
-     Search modal (command palette)
-     ================================================================= -->
-<div class="search-backdrop" id="searchBackdrop"></div>
-
-<div class="search-modal" id="searchModal" role="dialog" aria-label="Search">
-  <div class="search-modal-header">
-    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a93a6" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-    <input class="search-modal-input" id="searchModalInput" placeholder="Search for anything" />
-    <button class="search-modal-close" id="searchModalClose" title="Close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-
-  <div class="search-filters" id="searchFilters">
-    <button class="search-filter" data-filter="all">All</button>
-    <button class="search-filter" data-filter="pages">Pages</button>
-    <button class="search-filter active" data-filter="transactions">Transactions</button>
-    <button class="search-filter" data-filter="cards">Cards</button>
-  </div>
-
-  <div class="search-results" id="searchResults"></div>
-</div>
-
-<script>
-(function () {
-  // -----------------------------------------------------------------
-  // Search modal: open/close, filter switching, keyboard shortcuts
-  // -----------------------------------------------------------------
-  var topbarInput   = document.querySelector('.search-input');
-  var backdrop      = document.getElementById('searchBackdrop');
-  var modal         = document.getElementById('searchModal');
-  var modalInput    = document.getElementById('searchModalInput');
-  var closeBtn      = document.getElementById('searchModalClose');
-  var filtersWrap   = document.getElementById('searchFilters');
-  var resultsWrap   = document.getElementById('searchResults');
-
-  // Static placeholder data per filter — no real searching, just navigable scaffolding.
-  var DATA = {
-    all: {
-      placeholder: 'Search for anything',
-      sections: [
-        {
-          label: 'Examples',
-          items: [
-            { icon: 'list',     title: 'Recent transactions' },
-            { icon: 'calendar', title: 'Scheduled payments' },
-            { icon: 'check',    title: 'Payment approvals' },
-            { icon: 'card',     title: 'View your cards' },
-            { icon: 'folder',   title: 'View statements for Gusto' },
-            { icon: 'bank',     title: 'Go to Gusto' }
-          ]
-        }
-      ]
-    },
-    pages: {
-      placeholder: 'Search pages, dashboards, settings',
-      sections: [
-        {
-          items: [
-            { icon: 'home',     title: 'Dashboard' },
-            { icon: 'send',     title: 'Send Money' },
-            { icon: 'card',     title: 'Manage Cards' },
-            { icon: 'people',   title: 'Customers' },
-            { icon: 'chart',    title: 'Analytics' },
-            { icon: 'doc',      title: 'Reports' },
-            { icon: 'shield',   title: 'Compliance' }
-          ]
-        }
-      ]
-    },
-    transactions: {
-      placeholder: 'Search transactions by amount, date, or merchant',
-      sections: [
-        {
-          items: [
-            { icon: 'list', title: 'British Airways',  sub: '−€100.00 · 31/03/2026' },
-            { icon: 'list', title: 'Jet 2',            sub: '€1,800.00 · 20/10/2025' },
-            { icon: 'list', title: 'British Airways',  sub: '−€1,250.00 · 20/10/2025' },
-            { icon: 'list', title: 'Jet 2',            sub: '−€1,850.00 · 20/10/2025' },
-            { icon: 'list', title: 'British Airways',  sub: '−€900.00 · 03/09/2025' },
-            { icon: 'list', title: 'Stripe',           sub: '+$8,049.39 · 28/08/2025' }
-          ]
-        }
-      ]
-    },
-    cards: {
-      placeholder: 'Documents & Statements',
-      sections: [
-        {
-          items: [
-            { icon: 'card', title: 'Jane Black\u2019s Physical Debit', sub: '\u2022\u20223745' },
-            { icon: 'card', title: 'Jane Black\u2019s Grocery/Meals',  sub: '\u2022\u20224928' },
-            { icon: 'card', title: 'Jane Black\u2019s Google Ads',     sub: '\u2022\u20225555' },
-            { icon: 'card', title: 'Jane Black\u2019s AWS billing',    sub: '\u2022\u20220330' },
-            { icon: 'card', title: 'Jane Black\u2019s Facebook ads',   sub: '\u2022\u20223054' }
-          ]
-        }
-      ]
-    }
-  };
-
-  // Tiny inline SVG icon set — kept as path-d strings, rendered into <svg>.
-  var ICONS = {
-    list:     '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
-    calendar: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
-    check:    '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><polyline points="9 12 11 14 15 10"/>',
-    card:     '<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
-    folder:   '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
-    bank:     '<line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
-    home:     '<path d="M3 12l9-9 9 9v9a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9z"/>',
-    send:     '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
-    plane:    '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
-    people:   '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
-    chart:    '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-    doc:      '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',
-    shield:   '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
-  };
-
-  function svgIcon(name) {
-    var path = ICONS[name] || ICONS.list;
-    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + path + '</svg>';
-  }
-
-  function renderResults(filter) {
-    var data = DATA[filter] || DATA.all;
-    modalInput.placeholder = data.placeholder;
-    var html = '';
-    data.sections.forEach(function (section) {
-      if (section.label) {
-        html += '<div class="search-section-label">' + section.label + '</div>';
-      }
-      section.items.forEach(function (item) {
-        html += '<div class="search-result">' +
-          '<span class="search-result-icon">' + svgIcon(item.icon) + '</span>' +
-          '<div class="search-result-text">' +
-            '<div class="search-result-title">' + item.title + '</div>' +
-            (item.sub ? '<div class="search-result-sub">' + item.sub + '</div>' : '') +
-          '</div>' +
-          '<svg class="search-result-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' +
-        '</div>';
-      });
-    });
-    if (!html) html = '<div class="search-empty">No results</div>';
-    resultsWrap.innerHTML = html;
-  }
-
-  function openModal() {
-    backdrop.classList.add('open');
-    modal.classList.add('open');
-    setTimeout(function () { modalInput.focus(); }, 50);
-  }
-  function closeModal() {
-    backdrop.classList.remove('open');
-    modal.classList.remove('open');
-    modalInput.value = '';
-    // Reset to the contextual default filter for this page
-    filtersWrap.querySelectorAll('.search-filter').forEach(function (f) { f.classList.remove('active'); });
-    var defaultBtn = filtersWrap.querySelector('[data-filter="' + DEFAULT_FILTER + '"]');
-    if (defaultBtn) defaultBtn.classList.add('active');
-    renderResults(DEFAULT_FILTER);
-  }
-
-  // Open triggers
-  if (topbarInput) {
-    topbarInput.addEventListener('focus', openModal);
-    topbarInput.addEventListener('click', openModal);
-  }
-
-  // Close triggers
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (backdrop) backdrop.addEventListener('click', closeModal);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
-      closeModal();
-    }
-    // Cmd+K / Ctrl+K to open
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      if (modal.classList.contains('open')) closeModal();
-      else openModal();
-    }
-  });
-
-  // Filter pill switching
-  if (filtersWrap) {
-    filtersWrap.addEventListener('click', function (e) {
-      var btn = e.target.closest('.search-filter');
-      if (!btn) return;
-      filtersWrap.querySelectorAll('.search-filter').forEach(function (f) { f.classList.remove('active'); });
-      btn.classList.add('active');
-      renderResults(btn.dataset.filter);
-    });
-  }
-
-  // Initial render — contextual default for this page
-  var DEFAULT_FILTER = 'transactions';
-  renderResults(DEFAULT_FILTER);
-})();
-</script>
-
-        <div class="notif-panel" id="notifPanel">
-          <div class="notif-panel-header">
-            <span class="notif-panel-title">Notifications</span>
-            <button class="notif-type-btn">
-              All notifications
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="notif-unread-wrap">
-              Unread
-              <button class="notif-toggle" id="notifUnreadToggle"></button>
-            </div>
-          </div>
-          <div class="notif-body">
-            <div class="notif-date-group">
-              <div class="notif-date-label">Today</div>
-              <div class="notif-item">
-                <div class="notif-item-type">Transaction</div>
-                <div class="notif-item-top"><span class="notif-item-title">Payment sent to Andela</span><span class="notif-item-time">09:14</span></div>
-                <div class="notif-item-body">USD 14,500.00 transferred via local payout to account ending 8821.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Card</div>
-                <div class="notif-item-top"><span class="notif-item-title">Card spend limit reached</span><span class="notif-item-time">08:47</span></div>
-                <div class="notif-item-body">Card 460901xxxxxx3192 has reached 90% of its monthly spend limit.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Compliance</div>
-                <div class="notif-item-top"><span class="notif-item-title">Document RFI — action required</span><span class="notif-item-time">07:30</span></div>
-                <div class="notif-item-body">Passport verification for Bryana Shields has failed. Please resubmit a valid passport to avoid account restriction.</div>
-              </div>
-            </div>
-            <div class="notif-date-group">
-              <div class="notif-date-label">Yesterday</div>
-              <div class="notif-item">
-                <div class="notif-item-type">Transaction</div>
-                <div class="notif-item-top"><span class="notif-item-title">Inbound payment received</span><span class="notif-item-time">16:52</span></div>
-                <div class="notif-item-body">EUR 8,200.00 received from Cortex Health into your EUR wallet.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Client management</div>
-                <div class="notif-item-top"><span class="notif-item-title">New client onboarded</span><span class="notif-item-time">14:10</span></div>
-                <div class="notif-item-body">RocketPower has been added to your client portfolio and is ready to transact.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Card</div>
-                <div class="notif-item-top"><span class="notif-item-title">New card issued</span><span class="notif-item-time">11:33</span></div>
-                <div class="notif-item-body">A virtual card ending 7127 was issued to Mustafa Lesch under Goldbelly.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Compliance</div>
-                <div class="notif-item-top"><span class="notif-item-title">Compliance review required</span><span class="notif-item-time">09:05</span></div>
-                <div class="notif-item-body">Annual compliance review is due for Workera AI. Please submit documents by Apr 30.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Transaction</div>
-                <div class="notif-item-top"><span class="notif-item-title">FX conversion completed</span><span class="notif-item-time">08:21</span></div>
-                <div class="notif-item-body">GBP 5,000.00 converted to USD 6,287.50 at a rate of 1.2575.</div>
-              </div>
-            </div>
-            <div class="notif-date-group">
-              <div class="notif-date-label">April 25, 2026</div>
-              <div class="notif-item">
-                <div class="notif-item-type">Client management</div>
-                <div class="notif-item-top"><span class="notif-item-title">Client details updated</span><span class="notif-item-time">17:44</span></div>
-                <div class="notif-item-body">Billing address for Andela has been updated by admin user peter@nium.com.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Card</div>
-                <div class="notif-item-top"><span class="notif-item-title">Card frozen by cardholder</span><span class="notif-item-time">15:20</span></div>
-                <div class="notif-item-body">Card 492921xxxxxx3745 was temporarily frozen at the cardholder's request.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Transaction</div>
-                <div class="notif-item-top"><span class="notif-item-title">Payment failed</span><span class="notif-item-time">12:08</span></div>
-                <div class="notif-item-body">USD 3,100.00 payout to United Citizen failed. Reason: invalid account number.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Compliance</div>
-                <div class="notif-item-top"><span class="notif-item-title">Enhanced due diligence triggered</span><span class="notif-item-time">10:55</span></div>
-                <div class="notif-item-body">Transaction pattern for RanjithP Singh has triggered an EDD review.</div>
-              </div>
-            </div>
-            <div class="notif-date-group">
-              <div class="notif-date-label">April 24, 2026</div>
-              <div class="notif-item">
-                <div class="notif-item-type">Transaction</div>
-                <div class="notif-item-top"><span class="notif-item-title">Batch payout completed</span><span class="notif-item-time">18:30</span></div>
-                <div class="notif-item-body">Batch of 12 payouts totalling PHP 920,000.00 processed successfully.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Client management</div>
-                <div class="notif-item-top"><span class="notif-item-title">API key rotated</span><span class="notif-item-time">14:02</span></div>
-                <div class="notif-item-body">Production API key for Mercury was rotated. Previous key deactivated.</div>
-              </div>
-              <div class="notif-item">
-                <div class="notif-item-type">Card</div>
-                <div class="notif-item-top"><span class="notif-item-title">Card programme limit updated</span><span class="notif-item-time">11:17</span></div>
-                <div class="notif-item-body">Monthly aggregate limit for the Gusto card programme increased to USD 500,000.</div>
-              </div>
-            </div>
-          </div>
-          <a class="notif-view-all" href="#">View all notifications</a>
-        </div>
-<script>
-  // ── Notifications panel ──
-  (function() {
-    var btn    = document.getElementById('notifBtn');
-    var panel  = document.getElementById('notifPanel');
-    var toggle = document.getElementById('notifUnreadToggle');
-    if (!btn || !panel) return;
-    function positionPanel() {
-      var r = btn.getBoundingClientRect();
-      panel.style.top   = (r.bottom + 8) + 'px';
-      panel.style.right = (window.innerWidth - r.right) + 'px';
-    }
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (panel.classList.contains('open')) {
-        panel.classList.remove('open');
-      } else {
-        positionPanel();
-        panel.classList.add('open');
-      }
-    });
-    document.addEventListener('click', function(e) {
-      if (!panel.contains(e.target) && e.target !== btn) {
-        panel.classList.remove('open');
-      }
-    });
-    panel.addEventListener('click', function(e) { e.stopPropagation(); });
-    if (toggle) toggle.addEventListener('click', function() { toggle.classList.toggle('on'); });
-  })();
-</script>
-
-<!-- Environment switch confirmation modal -->
-<div class="env-modal-backdrop" id="envModalBackdrop">
-  <div class="env-modal">
-    <div class="env-modal-title">Switch to Sandbox?</div>
-    <div class="env-modal-body">You're switching to Sandbox mode. All data shown will be test data and no real transactions will be processed.</div>
-    <div class="env-modal-actions">
-      <button class="env-modal-cancel" id="envModalCancel">Cancel</button>
-      <button class="env-modal-confirm" id="envModalConfirm">Switch to Sandbox</button>
-    </div>
-  </div>
-</div>
-<script>
-  // ── Environment dropdown ──
-  (function() {
-    var currentBtn   = document.getElementById('envCurrentBtn');
-    var currentLabel = document.getElementById('envCurrentLabel');
-    var menu         = document.getElementById('envMenu');
-    var optProd      = document.getElementById('envOptProd');
-    var optSandbox   = document.getElementById('envOptSandbox');
-    var backdrop     = document.getElementById('envModalBackdrop');
-    var cancel       = document.getElementById('envModalCancel');
-    var confirm      = document.getElementById('envModalConfirm');
-    if (!currentBtn || !menu) return;
-
-    var current = 'Production';
-    currentBtn.classList.add('env-production');
-
-    function setEnv(env) {
-      current = env;
-      currentLabel.textContent = env;
-      optProd.className    = 'env-menu-item' + (env === 'Production' ? ' active' : '');
-      optSandbox.className = 'env-menu-item' + (env === 'Sandbox'    ? ' active' : '');
-      optProd.innerHTML    = 'Production' + (env === 'Production' ? ' <svg class="env-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' : '');
-      optSandbox.innerHTML = 'Sandbox'    + (env === 'Sandbox'    ? ' <svg class="env-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' : '');
-      menu.classList.remove('open');
-    }
-
-    currentBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      menu.classList.toggle('open');
-    });
-
-    document.addEventListener('click', function() { menu.classList.remove('open'); });
-    menu.addEventListener('click', function(e) { e.stopPropagation(); });
-
-    if (optProd) optProd.addEventListener('click', function() {
-      if (current === 'Production') { menu.classList.remove('open'); return; }
-      // If in Sandbox, show confirmation modal instead of switching immediately
-      menu.classList.remove('open');
-      var confirmBackdrop = document.getElementById('prodConfirmBackdrop');
-      if (confirmBackdrop) { confirmBackdrop.style.display='flex'; confirmBackdrop.classList.add('open'); }
-    });
-
-    if (optSandbox) optSandbox.addEventListener('click', function() {
-      if (current !== 'Sandbox') {
-        menu.classList.remove('open');
-        if (backdrop) backdrop.classList.add('open');
-      } else {
-        menu.classList.remove('open');
-      }
-    });
-
-    if (cancel)  cancel.addEventListener('click', function() { backdrop.classList.remove('open'); });
-    if (confirm) confirm.addEventListener('click', function() {
-      setEnv('Sandbox');
-      backdrop.classList.remove('open');
-    });
-    if (backdrop) backdrop.addEventListener('click', function(e) {
-      if (e.target === backdrop) backdrop.classList.remove('open');
-    });
-  })();
-</script>
-<script>
-  // Colour-code env button
-  (function() {
-    function updateEnvColor() {
-      var btn = document.getElementById('envCurrentBtn');
-      var label = document.getElementById('envCurrentLabel');
-      if (!btn || !label) return;
-      btn.classList.remove('env-production', 'env-sandbox');
-      btn.classList.add(label.textContent.trim() === 'Sandbox' ? 'env-sandbox' : 'env-production');
-    }
-    updateEnvColor();
-    var observer = new MutationObserver(updateEnvColor);
-    var label = document.getElementById('envCurrentLabel');
-    if (label) observer.observe(label, { childList: true, characterData: true, subtree: true });
-  })();
-</script>
-
-<!-- Switch to Production confirmation modal -->
-<div class="env-modal-backdrop" id="prodConfirmBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:20000;align-items:center;justify-content:center;">
-  <div class="env-modal">
-    <div class="env-modal-title">Switch to Production?</div>
-    <div class="env-modal-body">You&#39;re about to switch to the live environment. Real transactions will be processed.</div>
-    <div class="env-modal-actions">
-      <button class="env-modal-cancel" id="prodConfirmCancel">Cancel</button>
-      <button class="env-modal-confirm" id="prodConfirmOk">Switch to Production</button>
-    </div>
-  </div>
-</div>
-<script>
-(function() {
-  var backdrop = document.getElementById('prodConfirmBackdrop');
-  if (!backdrop) return;
-  backdrop.style.display = 'flex';
-  backdrop.style.display = 'none';
-  backdrop.classList.remove('open');
-
-  function openModal()  { backdrop.style.display = 'flex'; backdrop.classList.add('open'); }
-  function closeModal() { backdrop.classList.remove('open'); setTimeout(function(){ backdrop.style.display='none'; }, 200); }
-
-  document.getElementById('prodConfirmCancel').addEventListener('click', closeModal);
-  backdrop.addEventListener('click', function(e){ if(e.target===backdrop) closeModal(); });
-
-  document.getElementById('prodConfirmOk').addEventListener('click', function() {
-    closeModal();
-    // Actually switch to production
-    var label = document.getElementById('envCurrentLabel');
-    var btn   = document.getElementById('envCurrentBtn');
-    var optProd    = document.getElementById('envOptProd');
-    var optSandbox = document.getElementById('envOptSandbox');
-    if (label) label.textContent = 'Production';
-    if (optProd)    optProd.className    = 'env-menu-item active';
-    if (optSandbox) optSandbox.className = 'env-menu-item';
-    if (btn) {
-      btn.classList.remove('env-sandbox');
-      btn.classList.add('env-production');
-    }
-  });
-
-  // Wire up the Production menu item click to open modal when in Sandbox
-  var optProd = document.getElementById('envOptProd');
-  if (optProd) {
-    optProd.addEventListener('click', function() {
-      var label = document.getElementById('envCurrentLabel');
-      if (label && label.textContent.trim() === 'Sandbox') {
-        document.getElementById('envMenu').classList.remove('open');
-        openModal();
-      }
-    }, true); // capture phase to intercept before existing handler
-  }
 })();
 
     // Profile popover
