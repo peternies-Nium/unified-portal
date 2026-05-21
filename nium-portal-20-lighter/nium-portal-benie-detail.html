@@ -3194,17 +3194,40 @@
       </div>
 
       <style>
-        .bv-section { background:#fff; border:1px solid var(--color-border-tertiary); border-radius:var(--radius-lg); overflow:hidden; margin-bottom:16px; }
+        .bv-section { background:#fff; border:1px solid var(--color-border-tertiary); border-radius:var(--radius-lg); overflow:visible; margin-bottom:16px; }
         .bv-section-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; border-bottom:1px solid var(--color-border-tertiary); }
         .bv-section-title { font-size:16px; font-weight:700; color:var(--color-text-primary); }
-        .bv-section-body { padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:16px 24px; }
-        .bv-field label { font-size:12px; color:var(--color-text-secondary); margin-bottom:5px; display:flex; align-items:center; gap:4px; }
+        .bv-section-body { padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:24px 24px; }
+        .bv-field { position:relative; margin-top:8px; }
+        .bv-field label {
+          position:absolute; left:10px; top:-9px;
+          font-size:11px; color:var(--color-text-secondary);
+          background:#fff; padding:0 4px;
+          pointer-events:none;
+          display:flex; align-items:center; gap:4px; white-space:nowrap;
+        }
         .bv-field label .req { color:#e53935; }
-        .bv-input { width:100%; padding:9px 12px; background:var(--color-bg-secondary,#f8fafc); border:1px solid var(--color-border-tertiary); border-radius:var(--radius-sm); font-size:13px; font-family:inherit; color:var(--color-text-primary); display:flex; align-items:center; gap:8px; min-height:38px; }
+        .bv-input {
+          width:100%; padding:12px 12px;
+          background:#fff;
+          border:1px solid var(--color-border-tertiary); border-radius:var(--radius-sm);
+          font-size:13px; font-family:inherit; color:var(--color-text-primary);
+          display:flex; align-items:center; gap:8px; min-height:46px;
+        }
         .bv-chevron { transition:transform 0.2s; }
         .bv-section.collapsed .bv-section-body { display:none; }
         .bv-section.collapsed .bv-chevron { transform:rotate(-90deg); }
       </style>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.bv-field').forEach(function(field) {
+            var input = field.querySelector('.bv-input');
+            if (!input) return;
+            var text = input.textContent.trim();
+            if (text) field.classList.add('has-value');
+          });
+        });
+      </script>
 
       <!-- Basics -->
       <div class="bv-section">
